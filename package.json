@@ -2,6 +2,7 @@
   "name": "express-init-template",
   "version": "1.5.0",
   "description": "This is a basic Express application template designed to help you create APIs quickly. It includes essential configurations and setup for starting an Express server.",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
