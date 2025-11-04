@@ -2,8 +2,13 @@ POST http://localhost:3000/api/users/register
 Content-Type: application/json
 
 {
-  "email": "test@example.com",
-  "password": "123456"
+  "username": "leopoldo",
+  "email": "leopoldo@gmail.com",
+  "password": "1234",
+  "image": "https://i.pravatar.cc/150?u=leopoldo",
+  "phone": "600123456",
+  "bio": "le gusta ser leopoldo",
+  "interests": "music sin mas"
 }
 
 ###
@@ -11,6 +16,6 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "test@example.com",
-  "password": "123456"
+  "email": "leopoldo@gmail.com",
+  "password": "1234"
 }
