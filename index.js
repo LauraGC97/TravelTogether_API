@@ -1,10 +1,11 @@
 // Server creation and configuration
-const http = require("node:http");
-const app = require("./src/app");
-const { default: pool } = require("./src/config/db");
+import http from 'node:http';
+import app from './src/app.js';
+import pool from './src/config/db.js';
+import dotenv from 'dotenv';
 
 // Config .env
-require("dotenv").config();
+dotenv.config();
 
 // Server creation
 const server = http.createServer(app);
