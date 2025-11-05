@@ -2,6 +2,6 @@ services:
   - type: web
     name: travel-together-api
     env: node
-    rootDirrectory : .
+    rootDirectory : .
     buildCommand: "npm install"
     startCommand: "node index.js"
