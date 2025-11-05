@@ -1,6 +1,7 @@
 import pool from '../config/db.js';
 
 export class UserModel {
+
     constructor({ id, username, email, password, image, phone, bio, interests, role, created_at, updated_at, is_active }) {
         this.id = id;
         this.username = username;
@@ -49,6 +50,19 @@ export class UserModel {
         );
 
         return rows[0];
+    }
+
+    static async count() {
+        const [rows] = await pool.query('SELECT COUNT(*) AS total FROM users');
+        return rows[0].total;
+    }
+
+    static async getPaginated(offset, limit) {
+        const [rows] = await pool.query(
+            'SELECT * FROM users ORDER BY id ASC LIMIT ? OFFSET ?',
+            [limit, offset]
+        );
+        return rows;
     }
 
     static async getAll() {

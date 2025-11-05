@@ -100,10 +100,35 @@ const login = async (req, res) => {
 
 };
 
+/*
+  GET /api/users
+  Opcional: ?page=1&per_page=10 para paginado.
+  Respuesta: { page, per_page, total, total_pages, results: [...] }
+*/
 const getAllUsers = async (req, res) => {
     try {
-        const users = await UserModel.getAll();
-        res.status(200).json(users);
+        
+        // Leemos parametros de paginación de query
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
+        const offset = (page - 1) * per_page;
+
+        // Obtener total de registros y datos paginados
+        const total = await UserModel.count();                // método que deberás implementar
+        const results = await UserModel.getPaginated(offset, per_page); // idem
+
+        // Calcular páginas totales
+        const total_pages = Math.ceil(total / per_page);
+
+        // Devolvemos respuesta
+        res.status(200).json({
+            page,
+            per_page,
+            total,
+            total_pages,
+            results
+        });
+
     } catch (error) {
         console.error('Error en getAllUsers:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
