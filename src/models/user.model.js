@@ -1,8 +1,14 @@
 import pool from '../config/db.js';
+import BaseModel from './base.model.js';
 
-export class UserModel {
+export class UserModel extends BaseModel {
+    
+    static tableName = 'users' ;
 
     constructor({ id, username, email, password, image, phone, bio, interests, role, created_at, updated_at, is_active }) {
+        
+        super('users');
+
         this.id = id;
         this.username = username;
         this.email = email;
@@ -51,7 +57,7 @@ export class UserModel {
 
         return rows[0];
     }
-
+    /*
     static async count() {
         const [rows] = await pool.query('SELECT COUNT(*) AS total FROM users');
         return rows[0].total;
@@ -72,6 +78,8 @@ export class UserModel {
         );
         return rows;
     }
+
+    */
 
     static async getUserById(id) {
         const [rows] = await pool.query(

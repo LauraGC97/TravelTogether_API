@@ -1,4 +1,4 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoibGVvcG9sZG8iLCJlbWFpbCI6Imxlb3BvbGRvQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyMzIzNTE0LCJleHAiOjE3NjIzMzA3MTR9.vPFX49DjZYDrXJx4srqiEE73OQXfkViZux-tppuK4x8
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoibGVvcG9sZG8iLCJlbWFpbCI6Imxlb3BvbGRvQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyMzMxMTUyLCJleHAiOjE3NjIzMzgzNTJ9.Iv-wAPz1ymgXXpam8InLZEgFOKqgUYBxbZyRhFPwIy8
 POST http://localhost:3000/api/users/register
 Content-Type: application/json
 
@@ -26,7 +26,7 @@ GET http://localhost:3000/api/users
 Authorization: Bearer {{TOKEN}}
 
 ###
-GET http://localhost:3000/api/users?page=2&per_page=1
+GET http://localhost:3000/api/users?page=1&per_page=5&search=esmeralda
 Authorization: Bearer {{TOKEN}}
 
 ###
