@@ -107,15 +107,27 @@ const login = async (req, res) => {
 */
 const getAllUsers = async (req, res) => {
     try {
-        
+
         // Leemos parametros de paginación de query
         const page = Math.max(1, parseInt(req.query.page) || 1);
         const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
+        const search = req.query.search || '';
+
+        // Tambien podriamos serializarlo, pero para pruebas lo dejo así 
+        // const { page = 1, per_page = 10, search = '' } = req.query;
+
         const offset = (page - 1) * per_page;
 
         // Obtener total de registros y datos paginados
-        const total = await UserModel.count();                // método que deberás implementar
-        const results = await UserModel.getPaginated(offset, per_page); // idem
+        const total = await UserModel.count('username',search);  
+        // const results = await UserModel.getPaginated(offset, per_page);
+
+        const results = await UserModel.getPaginated({
+            page: parseInt(page),
+            per_page: parseInt(per_page),
+            searchField: 'username',
+            searchValue: search
+        });
 
         // Calcular páginas totales
         const total_pages = Math.ceil(total / per_page);
