@@ -8,7 +8,7 @@ export class TripModel extends BaseModel {
     constructor({
         id, origin, destination, title, description,
         creator_id, start_date, end_date, estimated_cost,
-        min_paticipants, transport, accommodation, itinerary,
+        min_participants, transport, accommodation, itinerary,
         status, latitude, longitude, created_at, updated_at,
     }) {
         
@@ -23,7 +23,7 @@ export class TripModel extends BaseModel {
         this.start_date = start_date;
         this.end_date = end_date;
         this.estimated_cost = estimated_cost;
-        this.min_paticipants = min_paticipants;
+        this.min_participants = min_participants;
         this.transport = transport;
         this.accommodation = accommodation;
         this.itinerary = itinerary;
@@ -39,13 +39,14 @@ export class TripModel extends BaseModel {
     async createTrip() {
         const query = `
         INSERT INTO ${TripModel.tableName}
-        (origin, destination, title, description, creator_id, start_date, end_date, estimated_cost, min_paticipants, transport, accommodation, itinerary, status, latitude, longitude)
+        (origin, destination, title, description, creator_id, start_date, end_date, estimated_cost,
+        min_paticipants, transport, accommodation, itinerary, status, latitude, longitude)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
     const values = [
         this.origin, this.destination, this.title, this.description,
         this.creator_id, this.start_date, this.end_date, this.estimated_cost,
-        this.min_paticipants, this.transport, this.accommodation, this.itinerary,
+        this.min_participants, this.transport, this.accommodation, this.itinerary,
         this.status, this.latitude, this.longitude
     ];
     
