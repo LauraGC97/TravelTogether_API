@@ -12,7 +12,7 @@ export class TripModel extends BaseModel {
         status, latitude, longitude, created_at, updated_at,
     }) {
         
-        super('trips');
+        super();
 
         this.id = id;
         this.origin = origin;
@@ -40,7 +40,7 @@ export class TripModel extends BaseModel {
         const query = `
         INSERT INTO ${TripModel.tableName}
         (origin, destination, title, description, creator_id, start_date, end_date, estimated_cost,
-        min_paticipants, transport, accommodation, itinerary, status, latitude, longitude)
+        min_participants, transport, accommodation, itinerary, status, latitude, longitude)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
     const values = [
