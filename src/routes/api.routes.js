@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import pool from '../config/db.js';
 
-// import apiTravelsRoutes from './api/travels.routes.js';
+import apiTripsRoutes from './api/trips.routes.js';
 import apiUserRoutes from './api/users.routes.js';
 
 const router = Router();
@@ -31,7 +31,7 @@ router.get('/status', async (req, res) => {
     });
 });
 
-// router.use('/travels', apiTravelsRoutes);
+router.use('/trips', apiTripsRoutes);
 router.use('/users', apiUserRoutes);
 
 export default router;
