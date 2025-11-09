@@ -4,55 +4,44 @@ export default class BaseModel {
     static tableName = '';
 
     // contar registros (con búsqueda opcional)
-    static async count(searchField = '', searchValue = '') {
-        let query = `SELECT COUNT(*) AS total FROM ${this.tableName}`;
-        const params = [];
-
-        if (searchField && searchValue) {
-            query += ` WHERE ${searchField} LIKE ?`;
-            params.push(`%${searchValue}%`);
-        }
-
+    static async count(whereClause = '', params = []) {
+        let query = `SELECT COUNT(*) AS total FROM ${this.tableName} ${whereClause}`;
+        
         const [rows] = await pool.query(query, params);
         return rows[0].total;
     }
 
-    // obtener registros con paginación, búsqueda y orden
+    // obtener registros con paginación, filtros dinamicos y orden
     static async getPaginated({
         page = 1,
         per_page = 10,
-        searchField = '',
-        searchValue = '',
+        whereClause = '',
+        queryParams = [],
         sort = 'id',
-        order = 'ASC'
+        order = 'DESC'
     } = {}) {
         const offset = (page - 1) * per_page;
-        const params = [];
-        let where = '';
-
-        if (searchField && searchValue) {
-            where = `WHERE ${searchField} LIKE ?`;
-            params.push(`%${searchValue}%`);
-        }
-
-        const query = `
+        //1.Contal el total de registros que cumplen la condición
+        const total = await this.count(whereClause, queryParams);
+       //2.Obtener los registros paginados
+       const query = `
             SELECT * FROM ${this.tableName}
-            ${where}
+            ${whereClause}
             ORDER BY ${sort} ${order}
-            LIMIT ? OFFSET ?
-        `;
-        params.push(per_page, offset);
+            LIMIT ? OFFSET ?`;
+        
+        const finalParams = [...queryParams, per_page, offset];
 
         // 👇 Diagnóstico
         console.log('📘 [BaseModel.getPaginated]');
         console.log('🔹 table:', this.tableName);
         console.log('🔹 query:', query.trim());
-        console.log('🔹 params:', params);
+        console.log('🔹 params:', finalParams);
         console.log('🔹 page:', page, 'per_page:', per_page, 'offset:', offset);
 
-        const [rows] = await pool.query(query, params);
+        const [rows] = await pool.query(query, finalParams);
 
-        return rows;
+        return {total, results: rows, page, per_page, total_pages: Math.ceil(total / per_page) };
     }
 
     static async getAll() {

@@ -3,12 +3,12 @@ POST http://localhost:3000/api/users/register
 Content-Type: application/json
 
 {
-  "username": "leopoldo",
-  "email": "leopoldo@gmail.com",
+  "username": "elenagarcia",
+  "email": "elenagarcia@gmail.com",
   "password": "1234",
-  "image": "https://i.pravatar.cc/150?u=leopoldo",
-  "phone": "600123456",
-  "bio": "le gusta ser leopoldo",
+  "image": "https://images.piclumen.com/normal/20251109/19/b332132861a84d339ab55a617e0289ed.webp",
+  "phone": "600123458",
+  "bio": "le gusta ser elenagarcia",
   "interests": "music sin mas"
 }
 
@@ -17,7 +17,7 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "leopoldo@gmail.com",
+  "email": "elenagarcia@gmail.com",
   "password": "1234"
 }
 
@@ -50,5 +50,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/api/users/8
+DELETE http://localhost:3000/api/users/12
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJsZW9wb2xkbyIsImVtYWlsIjoibGVvcG9sZG9AZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjIyNzE3NzksImV4cCI6MTc2MjI3ODk3OX0.oifPT4QdZOwvGX2ax5V8KYdfDmSyivzS5DX1Ad43mmI
