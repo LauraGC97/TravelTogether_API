@@ -37,8 +37,9 @@ export class TripModel extends BaseModel {
     // Crear nuevo viaje
     //-----------------------
     async createTrip() {
+        const { tableName } = TripModel;
         const query = `
-        INSERT INTO ${TripModel.tableName}
+        INSERT INTO ${tableName}
         (origin, destination, title, description, creator_id, start_date, end_date, estimated_cost,
         min_participants, transport, accommodation, itinerary, status, latitude, longitude)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -52,7 +53,7 @@ export class TripModel extends BaseModel {
     
     const [result] = await pool.execute(query, values);
     //--------Recuperar el viaje creado---------
-    const [rows] = await pool.execute(`SELECT * FROM ${TripModel.tableName} WHERE id = ?`, [result.insertId]);
+    const [rows] = await pool.execute(`SELECT * FROM ${tableName} WHERE id = ?`, [result.insertId]);
     return rows[0];
     }
 
@@ -60,7 +61,8 @@ export class TripModel extends BaseModel {
     // Obtener viaje por ID
     //-----------------------
     static async getTripById(id) {
-        const [rows] = await pool.query(`SELECT * FROM ${TripModel.tableName} WHERE id = ?`, [id]);
+        const { tableName } = TripModel;
+        const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE id = ?`, [id]);
         return rows[0] || null;
     }
 
@@ -68,6 +70,7 @@ export class TripModel extends BaseModel {
     // Buscar, filtrar y paginar viajes
     //-----------------------
     static async searchTrips(filters = {}) {
+        const { tableName } = TripModel;
         const page = parseInt(filters.page) || 1;
         const per_page = parseInt(filters.per_page) || 10;
         const offset = (page - 1) * per_page;
@@ -75,9 +78,9 @@ export class TripModel extends BaseModel {
         let where = 'WHERE 1=1';
         const params = [];
 
-        if (filters.creatorID) {
+        if (filters.creator_id) {
             where += ' AND creator_id = ?';
-            params.push(filters.creatorID);
+            params.push(filters.creator_id);
         }
         if (filters.status) {
             where += ' AND status = ?';
@@ -88,19 +91,19 @@ export class TripModel extends BaseModel {
             params.push(`%${filters.destination}%`);
         }
         //-------Contar el total de registros que cumplen con los filtros------
-        const [countRows] = await pool.query(`SELECT COUNT(*) as total FROM ${TripModel.tableName} ${where}`, params);
+        const [countRows] = await pool.query(`SELECT COUNT(*) as total FROM ${tableName} ${where}`, params);
         const total = countRows[0].total;
 
         //-------Recuperar los registros con paginación------
         let query = `
-        SELECT * FROM ${this.tableName}
+        SELECT * FROM ${tableName}
         ${where}
         ORDER BY id DESC
         LIMIT ? OFFSET ?
         `;
-        params.push(per_page, offset);
+        const queryParams = [...params, per_page, offset];
 
-        const [rows] = await pool.query(query, params);
+        const [rows] = await pool.query(query, queryParams);
 
         return {
             total,
@@ -114,8 +117,12 @@ export class TripModel extends BaseModel {
     // Actualizar viaje
     //-----------------------
     static async updateTrip(id, updatedData) {
+        const { tableName } = TripModel;
         const setClauses = [];
         const values = [];
+
+        delete updatedData.id;
+        delete updatedData.creator_id;
         
         for (const key in updatedData) {
             if (updatedData.hasOwnProperty(key)) {
@@ -128,7 +135,7 @@ export class TripModel extends BaseModel {
         values.push(id);
 
         const query = `
-        UPDATE ${this.tableName}
+        UPDATE ${tableName}
         SET ${setClauses.join(', ')}, updated_at = NOW()
         WHERE id = ?
         `;
@@ -136,7 +143,7 @@ export class TripModel extends BaseModel {
         const [result] = await pool.query(query, values);
         if (result.affectedRows === 0) return null;
         //--------Recuperar el viaje actualizado---------
-        const [rows] = await pool.query(`SELECT * FROM ${this.tableName} WHERE id = ?`, [id]);
+        const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE id = ?`, [id]);
         return rows[0];
     }
 
@@ -144,7 +151,8 @@ export class TripModel extends BaseModel {
     // Eliminar viaje
     //-----------------------
     static async deleteTrip(id) {
-        const [result] = await pool.query(`DELETE FROM ${this.tableName} WHERE id = ?`, [id]);
+        const { tableName } = TripModel;
+        const [result] = await pool.query(`DELETE FROM ${tableName} WHERE id = ?`, [id]);
         return result.affectedRows > 0;
     }
 }

@@ -5,28 +5,27 @@ import { TripModel } from '../models/trip.model.js';
 //----------------------------------------------------------
 const createTrip = async (req, res) => {
   try {
-    const tripData = req.body;
-
-    if (!tripData.title || !tripData.origin || !tripData.destination || !tripData.creator_id) {
-        return res.status(400).json({ message: 'Faltan datos obligatorios para crear el viaje.' });
+    const creator_id = req.user.id;
+    const tripData = {...req.body, creator_id };
+    if (!tripData.title || !tripData.origin || !tripData.destination) {
+        return res.status(400).json({ message: 'Faltan campos obligatorios: title, origin, destination.' });
     }
-    
+
     const trip = new TripModel(tripData);
     const newTrip = await trip.createTrip();
 
     res.status(201).json({
-       message: 'Viaje creado exitosamente',
-       trip: newTrip
+        message: 'Viaje creado exitosamente',
+        trip: newTrip
     });
-    
   } catch (error) {
     console.error('Error al crear el viaje:', error);
-    res.status(500).json({ 
+    res.status(500).json({
         message: 'Error interno del servidor al crear el viaje.',
         error: error.message
     });
   }
-}; 
+};
 
 //----------------------------------------------------------
 // READ: Obtener viaje por ID
@@ -88,13 +87,20 @@ const searchTrips = async (req, res) => {
 //----------------------------------------------------------
 const updateTrip = async (req, res) => {
     try {
-        const updatedTrip = await TripModel.updateTrip(req.params.id, req.body);
+        const tripId = req.params.id;
+        const userId = req.user.id;
 
-        if (!updatedTrip) {
+        const tripToUpdate = await TripModel.getTripById(tripId);
+        if (!tripToUpdate) {
             return res.status(404).json({ message: 'Viaje no encontrado para actualizar.' });
         }
+        if (tripToUpdate.creator_id !== userId) {
+            return res.status(403).json({ message: 'No tienes permiso para actualizar este viaje.' });
+        }
+
+        const updatedTrip = await TripModel.updateTrip(tripId, req.body);
         res.status(200).json({
-            message: 'Viaje actualizado exitosamente',
+            message: 'Viaje actualizado correctamente',
             trip: updatedTrip
         });
     } catch (error) {
@@ -105,18 +111,23 @@ const updateTrip = async (req, res) => {
         });
     }
 };
-
 //----------------------------------------------------------
 // DELETE: Eliminar viaje
 //----------------------------------------------------------
 const deleteTrip = async (req, res) => {
     try {
-        const deleted = await TripModel.deleteTrip(req.params.id);
-        
-        if (!deleted) {
+        const tripId = req.params.id;
+        const userId = req.user.id;
+
+        const tripToDelete = await TripModel.getTripById(tripId);
+        if (!tripToDelete) {
             return res.status(404).json({ message: 'Viaje no encontrado para eliminar.' });
         }
-        res.status(200).json({ message: 'Viaje eliminado correctamente' });
+        if (tripToDelete.creator_id !== userId) {
+            return res.status(403).json({ message: 'No tienes permiso para eliminar este viaje.' });
+        }
+        await TripModel.deleteTrip(tripId);
+        res.status(200).json({ message: 'Viaje eliminado correctamente.' });
     } catch (error) {
         console.error('Error al eliminar el viaje:', error);
         res.status(500).json({
@@ -124,7 +135,7 @@ const deleteTrip = async (req, res) => {
             error: error.message
         });
     }
-};
+};    
 
 export {
     createTrip,
