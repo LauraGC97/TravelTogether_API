@@ -4,13 +4,24 @@ import { TripModel } from '../models/trip.model.js';
 // CREATE: Crear viaje
 //----------------------------------------------------------
 const createTrip = async (req, res) => {
-  try {
+  //1. Validacion de campos obligatorios
+    try {
     const creator_id = req.user.id;
     const tripData = {...req.body, creator_id };
-    if (!tripData.title || !tripData.origin || !tripData.destination) {
-        return res.status(400).json({ message: 'Faltan campos obligatorios: title, origin, destination.' });
+    if (!tripData.title || !tripData.origin || !tripData.destination || !tripData.start_date || !tripData.end_date) {
+        return res.status(400).json({ message: 'Faltan campos obligatorios: titulo, origen, destino, fecha de comiendo, fecha de fin del viaje.' });
     }
-
+  
+    // 2. Validacion de superposicion de fechas
+    const conflictTripId = await TripModel.hasDateOverlap(creator_id, tripData.start_date, tripData.end_date);
+    
+    if (conflictTripId) {
+        return res.status(409).json({
+            message: `Conflicto de fechas: Ya tienes un viaje con estas fechas (ID: ${conflictTripId}). Por favor, elige fechas diferentes.`,
+            conflict_trip_id: conflictTripId
+        });
+    }
+    // 3. Crear el viaje  
     const trip = new TripModel(tripData);
     const newTrip = await trip.createTrip();
 
@@ -89,6 +100,7 @@ const updateTrip = async (req, res) => {
     try {
         const tripId = req.params.id;
         const userId = req.user.id;
+        const updatedData = req.body;
 
         const tripToUpdate = await TripModel.getTripById(tripId);
         if (!tripToUpdate) {
@@ -98,7 +110,22 @@ const updateTrip = async (req, res) => {
             return res.status(403).json({ message: 'No tienes permiso para actualizar este viaje.' });
         }
 
-        const updatedTrip = await TripModel.updateTrip(tripId, req.body);
+        const newStartDate = updatedData.start_date || tripToUpdate.start_date;
+        const newEndDate = updatedData.end_date || tripToUpdate.end_date;
+
+        if (updatedData.start_date || updatedData.end_date) {
+            
+            const conflictTripId = await TripModel.hasDateOverlap(userId, newStartDate, newEndDate, tripId);
+            
+            if (conflictTripId) {
+                return res.status(409).json({
+                    message: `Conflicto de fechas: Ya tienes un viaje con estas fechas (ID: ${conflictTripId}). Por favor, elige fechas diferentes.`,
+                    conflict_trip_id: conflictTripId
+                });
+            }
+        }    
+
+        const updatedTrip = await TripModel.updateTrip(tripId, updatedData);
         res.status(200).json({
             message: 'Viaje actualizado correctamente',
             trip: updatedTrip
