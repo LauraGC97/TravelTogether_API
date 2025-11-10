@@ -4,6 +4,7 @@ import BaseModel from './base.model.js';
 export class TripModel extends BaseModel {
     
     static tableName = 'trips' ;
+    static participantsTableName = 'participants';
 
     constructor({
         id, origin, destination, title, description,
@@ -65,7 +66,51 @@ export class TripModel extends BaseModel {
         const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE id = ?`, [id]);
         return rows[0] || null;
     }
+    //--------------------------------------------------------------------------
+    //Verificar si hay superposición de fechas para un usuario creado o apuntado
+    //--------------------------------------------------------------------------
+    static async hasDateOverlap(userId, startDate, endDate, excludeTripId = null) {
+        const { tableName, participantsTableName } = TripModel;
+    //Logica de la función es A <= Y AND X <= B
+        const overlapCondiction = `
+        (t.start_date <= ? AND t.end_date >= ?)
+        `;
 
+        let excludeClause = '';
+        if (excludeTripId) {
+            excludeClause = 'AND t.id != ?';
+        }
+        const commonDateParams = [endDate, startDate];
+        const finalParams = [
+            userId, //t.creator_id
+            ...commonDateParams,
+            userId,//p.user_id
+            ...commonDateParams
+        ];
+        if (excludeTripId) {
+            finalParams.push(excludeTripId);
+        }
+
+        const query = `
+        SELECT t.id FROM ${tableName} t
+        WHERE
+        (
+            (t.creator_id = ? AND ${overlapCondiction})
+            OR
+            (t.id IN (
+                SELECT p.trip_id 
+                FROM ${participantsTableName} p 
+                WHERE p.user_id = ?
+            ) AND ${overlapCondiction})
+        )
+            ${excludeClause}
+        LIMIT 1
+        `;
+    
+        const [rows] = await pool.query(query, finalParams);
+
+        return rows[0] ? rows[0].id : null;
+    }
     //-----------------------
     // Buscar, filtrar y paginar viajes
     //-----------------------
@@ -120,9 +165,10 @@ export class TripModel extends BaseModel {
         const { tableName } = TripModel;
         const setClauses = [];
         const values = [];
-
+    // Protecciones de seguridad
         delete updatedData.id;
         delete updatedData.creator_id;
+        delete updatedData.created_at;
         
         for (const key in updatedData) {
             if (updatedData.hasOwnProperty(key)) {
