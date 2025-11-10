@@ -9,7 +9,7 @@ const createTrip = async (req, res) => {
     const creator_id = req.user.id;
     const tripData = {...req.body, creator_id };
     if (!tripData.title || !tripData.origin || !tripData.destination || !tripData.start_date || !tripData.end_date) {
-        return res.status(400).json({ message: 'Faltan campos obligatorios: titulo, origen, destino, fecha de comiendo, fecha de fin del viaje.' });
+        return res.status(400).json({ message: 'Faltan campos obligatorios: titulo, origen, destino, fecha de comienzo, fecha de fin del viaje.' });
     }
   
     // 2. Validacion de superposicion de fechas
