@@ -1,0 +1,5 @@
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyOTY5NzI1LCJleHAiOjE3OTQ1MDU3MjV9.OSu-RcsnHEIog6_jXJDnOCVWs92NmVgrSxsOyPqfYO4
+
+###
+GET http://localhost:3000/api/favorites/1
+Authorization: Bearer {{TOKEN}}
