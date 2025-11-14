@@ -2,8 +2,8 @@ import pool from '../config/db.js';
 import BaseModel from './base.model.js';
 
 export class TripModel extends BaseModel {
-    
-    static tableName = 'trips' ;
+
+    static tableName = 'trips';
     static participantsTableName = 'participants';
 
     constructor({
@@ -12,7 +12,7 @@ export class TripModel extends BaseModel {
         min_participants, transport, accommodation, itinerary,
         status, latitude, longitude, created_at, updated_at,
     }) {
-        
+
         super();
 
         this.id = id;
@@ -45,17 +45,17 @@ export class TripModel extends BaseModel {
         min_participants, transport, accommodation, itinerary, status, latitude, longitude)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
-    const values = [
-        this.origin, this.destination, this.title, this.description,
-        this.creator_id, this.start_date, this.end_date, this.estimated_cost,
-        this.min_participants, this.transport, this.accommodation, this.itinerary,
-        this.status, this.latitude, this.longitude
-    ];
-    
-    const [result] = await pool.execute(query, values);
-    //--------Recuperar el viaje creado---------
-    const [rows] = await pool.execute(`SELECT * FROM ${tableName} WHERE id = ?`, [result.insertId]);
-    return rows[0];
+        const values = [
+            this.origin, this.destination, this.title, this.description,
+            this.creator_id, this.start_date, this.end_date, this.estimated_cost,
+            this.min_participants, this.transport, this.accommodation, this.itinerary,
+            this.status, this.latitude, this.longitude
+        ];
+
+        const [result] = await pool.execute(query, values);
+        //--------Recuperar el viaje creado---------
+        const [rows] = await pool.execute(`SELECT * FROM ${tableName} WHERE id = ?`, [result.insertId]);
+        return rows[0];
     }
 
     //-----------------------
@@ -71,7 +71,7 @@ export class TripModel extends BaseModel {
     //--------------------------------------------------------------------------
     static async hasDateOverlap(userId, startDate, endDate, excludeTripId = null) {
         const { tableName, participantsTableName } = TripModel;
-    //Logica de la función es A <= Y AND X <= B
+        //Logica de la función es A <= Y AND X <= B
         const overlapCondiction = `
         (t.start_date <= ? AND t.end_date >= ?)
         `;
@@ -106,7 +106,7 @@ export class TripModel extends BaseModel {
             ${excludeClause}
         LIMIT 1
         `;
-    
+
         const [rows] = await pool.query(query, finalParams);
 
         return rows[0] ? rows[0].id : null;
@@ -131,7 +131,7 @@ export class TripModel extends BaseModel {
             where += ' AND status = ?';
             params.push(filters.status);
         }
-        if (filters.destination){
+        if (filters.destination) {
             where += ' AND destination LIKE ?';
             params.push(`%${filters.destination}%`);
         }
@@ -157,7 +157,7 @@ export class TripModel extends BaseModel {
             per_page
         };
     }
-    
+
     //-----------------------
     // Actualizar viaje
     //-----------------------
@@ -165,15 +165,15 @@ export class TripModel extends BaseModel {
         const { tableName } = TripModel;
         const setClauses = [];
         const values = [];
-    // Protecciones de seguridad
+        // Protecciones de seguridad
         delete updatedData.id;
         delete updatedData.creator_id;
         delete updatedData.created_at;
-        
+
         for (const key in updatedData) {
             if (updatedData.hasOwnProperty(key)) {
-            setClauses.push(`${key} = ?`);
-            values.push(updatedData[key]);
+                setClauses.push(`${key} = ?`);
+                values.push(updatedData[key]);
             }
         }
 
@@ -202,4 +202,3 @@ export class TripModel extends BaseModel {
         return result.affectedRows > 0;
     }
 }
-    

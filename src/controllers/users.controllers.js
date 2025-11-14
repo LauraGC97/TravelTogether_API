@@ -2,8 +2,6 @@ import bcrypt from 'bcrypt';
 import { UserModel } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 
-// const { User } = require('../models');
-
 const register = async (req, res) => {
 
     try {
@@ -38,7 +36,7 @@ const register = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en registerUser:', error);
+        logger.error('Error en registerUser:', error);
         res.status(500).json({ message: 'Error interno del servidor.', error: error.message });
     }
 };
@@ -68,7 +66,7 @@ const login = async (req, res) => {
         const expiresIn = process.env.JWT_EXPIRES_IN || '2h';
 
         if (!secret) {
-            console.error('JWT_SECRET no está configurada en .env');
+            logger.error('JWT_SECRET no está configurada en .env');
             return res.status(500).json({ message: 'Configuración del servidor incompleta.' });
         }
 
@@ -94,7 +92,7 @@ const login = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en login:', error);
+        logger.error('Error en login:', error);
         res.status(500).json({ message: 'Error interno del servidor.', error: error.message });
     }
 
@@ -142,7 +140,7 @@ const getAllUsers = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en getAllUsers:', error);
+        logger.error('Error en getAllUsers:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -159,7 +157,7 @@ const getUserById = async (req, res) => {
 
         res.status(200).json(user);
     } catch (error) {
-        console.error('Error en getUserById:', error);
+        logger.error('Error en getUserById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -187,7 +185,7 @@ const updateUser = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error en updateUser:', error);
+    logger.error('Error en updateUser:', error);
     res.status(500).json({ message: 'Error interno del servidor.' });
   }
 };
@@ -211,7 +209,7 @@ const deleteUser = async (req, res) => {
 
     res.status(200).json({ message: 'Usuario eliminado correctamente.' });
   } catch (error) {
-    console.error('Error en deleteUser:', error);
+    logger.error('Error en deleteUser:', error);
     res.status(500).json({ message: 'Error interno del servidor.' });
   }
 };
