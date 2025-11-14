@@ -33,5 +33,6 @@ router.get('/status', async (req, res) => {
 
 router.use('/trips', apiTripsRoutes);
 router.use('/users', apiUserRoutes);
+router.use('/images', apiUserRoutes);
 
 export default router;
