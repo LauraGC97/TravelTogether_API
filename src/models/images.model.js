@@ -39,4 +39,53 @@ export default class ImagesModel extends BaseModel {
         const [rows] = await pool.execute(sql, [id]);
         return rows[0];
     };
+
+    static async getByIdTrip(id) {
+        const sql = `SELECT * FROM images WHERE trip_id = ?`;
+        const [rows] = await pool.execute(sql, [id]);
+        return rows[0];
+    };
+
+    static async getByIdTrip({
+        page = 1,
+        per_page = 10,
+        whereClause = '',
+        queryParams = [],
+        sort = 'id',
+        order = 'DESC'
+    } = {}) {
+        const offset = (page - 1) * per_page;
+
+        const total = await this.count(whereClause, queryParams);
+
+        const query = `
+            SELECT * FROM ${this.tableName}
+            ${whereClause}
+            ORDER BY ${sort} ${order}
+            LIMIT ? OFFSET ?`;
+
+        const finalParams = [...queryParams, per_page, offset];
+
+        const [rows] = await pool.query(query, finalParams);
+
+        return { total, results: rows, page, per_page, total_pages: Math.ceil(total / per_page) };
+    }
+
+
+    static async getByIdUser(id) {
+        const sql = `SELECT * FROM images WHERE user_id = ?`;
+        const [rows] = await pool.execute(sql, [id]);
+        return rows[0];
+    };
+
+    static async deleteById(id) {
+        
+        const row = await this.getById(id);
+        if (!row) return null;
+
+        const sql = `DELETE FROM ${this.tableName} WHERE id = ?`;
+        await pool.execute(sql, [id]);
+
+        return row;
+    }
 }
