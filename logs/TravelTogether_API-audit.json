@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\cursos\\UNIR\\Proyecto09\\TravelTogether_API\\logs\\TravelTogether_API-audit.json",
+    "files": [
+        {
+            "date": 1763107483983,
+            "name": "D:\\cursos\\UNIR\\Proyecto09\\TravelTogether_API\\logs\\TravelTogether_API_total_20251114.log",
+            "hash": "91da964fa38571f1756df66061e3683ffb8bcf6bbdfd5c46f2f8ea20b371dc3f"
+        },
+        {
+            "date": 1763107484001,
+            "name": "D:\\cursos\\UNIR\\Proyecto09\\TravelTogether_API\\logs\\TravelTogether_API_error_20251114.log",
+            "hash": "3df3167e06eca79cd79f6b19633e923cfcfafb4caeee1cf284b05459784d6d08"
+        }
+    ],
+    "hashType": "sha256"
+}

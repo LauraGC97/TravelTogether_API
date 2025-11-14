@@ -1,6 +1,7 @@
 import 'dotenv/config'; 
 import { BlobServiceClient } from '@azure/storage-blob';
 import ImagesModel from '../models/images.model.js';
+
 import path from 'path';
 
 const AZ_CONN = process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -46,12 +47,11 @@ const uploadImage = async (req, res, next) => {
 
     // Guardar en BD (ejemplo): guardar filename, url, mimetype, tamaño, created_at...
     const imageRecord = {
-      filename: blobName,
-      originalName,
+      description: req.body.description || null,
       url: blobUrl,
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      created_at: new Date(),
+      trip_id: req.body.trip_id || null,
+      user_id: req.body.user_id || null,
+      main_img: req.body.main_img ?? 0
     };
 
     // usar el modelo para insertar (adaptar según tu BD)
@@ -75,4 +75,7 @@ const getById = async (req, res, next) => {
   }
 };
 
-export { uploadImage, getById };
+export default {
+  uploadImage,
+  getById
+};

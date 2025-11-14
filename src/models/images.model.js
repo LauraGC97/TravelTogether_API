@@ -1,12 +1,13 @@
 import pool from '../config/db.js';
+import BaseModel from './base.model.js';
 
-export class UserModel extends BaseModel {
+export default class ImagesModel extends BaseModel {
 
     static tableName = 'images';
 
     constructor({ description, url, trip_id, user_id, main_img }) {
 
-        super('users');
+        super('images');
 
         this.description = description;
         this.url = url;
@@ -19,7 +20,15 @@ export class UserModel extends BaseModel {
 
         const sql = `INSERT INTO images ( description, url, trip_id, user_id, main_img )
                VALUES (?, ?, ?, ?, ?)`;
-        const params = [ description, url, trip_id, user_id, main_img ];
+
+        const params = [
+            image.description,
+            image.url,
+            image.trip_id,
+            image.user_id,
+            image.main_img ?? 0
+        ];
+
         const [result] = await pool.execute(sql, params);
 
         return { id: result.insertId, ...image };

@@ -3,6 +3,7 @@ import http from 'node:http';
 import app from './src/app.js';
 import pool from './src/config/db.js';
 import dotenv from 'dotenv';
+import logger from './src/config/logger.js';
 
 // Config .env
 dotenv.config();
@@ -15,17 +16,17 @@ server.listen(PORT);
 
 // Listeners
 server.on("listening", async () => {
-    console.log(`Server listening on port ${PORT}`);
+    logger.info(`Server listening on port ${PORT}`);
 
     try {
         const connection = await pool.getConnection();
-        console.log('Conexión a la base de datos MySQL exitosa!');
+        logger.info('Conexión a la base de datos MySQL exitosa!');
         connection.release();
     } catch (error) {
-        console.error('Error conectando a la base de datos:', error.message);
+        logger.error('Error conectando a la base de datos:', error.message);
     }    
 });
 
 server.on("error", (error) => {
-    console.log(error);
+    logger.error(error);
 });

@@ -3,6 +3,7 @@ import pool from '../config/db.js';
 
 import apiTripsRoutes from './api/trips.routes.js';
 import apiUserRoutes from './api/users.routes.js';
+import apiImagesRoutes from './api/images.routes.js';
 
 const router = Router();
 
@@ -33,6 +34,6 @@ router.get('/status', async (req, res) => {
 
 router.use('/trips', apiTripsRoutes);
 router.use('/users', apiUserRoutes);
-router.use('/images', apiUserRoutes);
+router.use('/images', apiImagesRoutes);
 
 export default router;
