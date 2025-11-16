@@ -28,5 +28,5 @@ server.on("listening", async () => {
 });
 
 server.on("error", (error) => {
-    logger.error(error);
+    console.error('Server error:', error);
 });

@@ -1,8 +1,10 @@
 @TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoibGVvcG9sZG8iLCJlbWFpbCI6Imxlb3BvbGRvQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyNzkwODcyLCJleHAiOjE3NjI3OTgwNzJ9.gFpYbSaNuyPUS9nZfTB50vqHByMjYC_cLJ0VBQbKE4w
-@URL_AZURE = https://traveltogetherapi.azurewebsites.net/api/users/login
-@URL_LOCAL = http://localhost:3000/api/users/login
+@URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
+@URL_LOCAL = http://localhost:3000/api
 
-POST http://localhost:3000/api/users/register
+@URL = {{URL_AZURE}}
+
+POST {{URL}}/users/register
 Content-Type: application/json
 
 {
@@ -16,7 +18,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://traveltogetherapi.azurewebsites.net/api/users/login
+POST {{URL}}/users/login
 Content-Type: application/json
 
 {

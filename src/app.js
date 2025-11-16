@@ -1,6 +1,7 @@
 // Creation and configuration of the Express APP
 import express from 'express';
 import cors from 'cors';
+import logger from './config/logger.js';
 
 import createError from 'http-errors';
 import path from 'path';
@@ -26,8 +27,11 @@ app.use((req, res, next) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-    logger.error(err.stack);
-    res.status(500).json({ message: err.message });
+  console.error(err.stack);
+  res.status(500).json({ message: err.message });
 });
 
 export default app;
+
+
+
