@@ -1,12 +1,9 @@
-// Creation and configuration of the Express APP
 import express from 'express';
 import cors from 'cors';
 import logger from './config/logger.js';
 
 import createError from 'http-errors';
 import path from 'path';
-// const cookieParser = require('cookie-parser') ;
-// var logger = require('morgan');
 
 // importamos rutas propias
 import apiRoutes from './routes/api.routes.js';
@@ -14,7 +11,11 @@ import apiRoutes from './routes/api.routes.js';
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use('/api', apiRoutes);
 
