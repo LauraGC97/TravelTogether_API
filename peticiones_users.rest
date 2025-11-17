@@ -1,5 +1,6 @@
 @TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoibGVvcG9sZG8iLCJlbWFpbCI6Imxlb3BvbGRvQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyNzkwODcyLCJleHAiOjE3NjI3OTgwNzJ9.gFpYbSaNuyPUS9nZfTB50vqHByMjYC_cLJ0VBQbKE4w
 @URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
+traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net
 @URL_LOCAL = http://localhost:3000/api
 
 @URL = {{URL_AZURE}}
