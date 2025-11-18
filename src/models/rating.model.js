@@ -2,11 +2,11 @@ import pool from '../config/db.js';
 import BaseModel from './base.model.js';
 
 export class RatingModel extends BaseModel {
-    
-    static tableName = 'ratings' ;
+
+    static tableName = 'ratings';
 
     constructor({ id, trip_id, author_id, rated_user_id, score, comment, created_at }) {
-        
+
         super('ratings');
 
         this.id = id;
@@ -21,8 +21,6 @@ export class RatingModel extends BaseModel {
 
     // Insertar nuevo usuario
     async createRating() {
-        
-        console.log('createRating : this.trip_id : ' , this.trip_id ) ;
 
         const [result] = await pool.query(
             `INSERT INTO ratings (trip_id, author_id, rated_user_id, score, comment)
@@ -47,17 +45,49 @@ export class RatingModel extends BaseModel {
         return rows[0] || null;
     }
 
+    static async getWithWhereClause({
+        page = 1,
+        per_page = 10,
+        whereClause = '',
+        queryParams = [],
+        sort = 'id',
+        order = 'DESC'
+    } = {}) {
+        const offset = (page - 1) * per_page;
+
+        const total = await this.count(whereClause, queryParams);
+
+        const query = `
+            SELECT * FROM ${this.tableName}
+            ${whereClause}
+            ORDER BY ${sort} ${order}
+            LIMIT ? OFFSET ?`;
+
+        const finalParams = [...queryParams, per_page, offset];
+
+        const [rows] = await pool.query(query, finalParams);
+
+        return { total, results: rows, page, per_page, total_pages: Math.ceil(total / per_page) };
+    }
+
+    static async getSumScoreById(id) {
+        const [rows] = await pool.query(
+            `SELECT SUM(score) as total
+             FROM ratings 
+             WHERE rated_user_id = ?`, [id]
+        );
+        return rows[0] || null;
+    }    
+    
     static async updateRatingById(id, data) {
 
-        console.log('model updateRatingById') ;
-        
-        const { score, comment  } = data;
+        const { score, comment } = data;
 
         const [result] = await pool.query(
             `UPDATE ratings 
              SET  score = ?, comment = ?
              WHERE id = ?`,
-            [score, comment]
+            [score, comment, id]
         );
 
         if (result.affectedRows === 0) return null;

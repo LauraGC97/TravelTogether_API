@@ -63,21 +63,150 @@ const getRatingById = async (req, res) => {
     }
 };
 
+const getRatingsByTrip = async (req, res, next) => {
+
+    const id = req.params.id;
+
+    try {
+
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
+        let search = req.query.search || '';
+
+        const offset = (page - 1) * per_page;
+
+        const total = await RatingModel.count('WHERE trip_id = ?', [id]);
+
+        const results = await RatingModel.getWithWhereClause({
+            page: parseInt(page),
+            per_page: parseInt(per_page),
+            whereClause: 'WHERE trip_id = ?',
+            queryParams: [id]
+        });
+
+        const total_pages = Math.ceil(total / per_page);
+
+        res.status(200).json({
+            page,
+            per_page,
+            total,
+            total_pages,
+            results
+        });
+
+    } catch (error) {
+        logger.error('Error en getRatingsByTrip:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+
+};
+
+const getRatingsByAuthor = async (req, res, next) => {
+
+    const id = req.params.id;
+
+    try {
+
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
+        let search = req.query.search || '';
+
+        const offset = (page - 1) * per_page;
+
+        const total = await RatingModel.count('WHERE author_id = ?', [id]);
+
+        const results = await RatingModel.getWithWhereClause({
+            page: parseInt(page),
+            per_page: parseInt(per_page),
+            whereClause: 'WHERE author_id = ?',
+            queryParams: [id]
+        });
+
+        const total_pages = Math.ceil(total / per_page);
+
+        res.status(200).json({
+            page,
+            per_page,
+            total,
+            total_pages,
+            results
+        });
+
+    } catch (error) {
+        logger.error('Error en getRatingsByAuthor:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+
+};
+
+const getRatingsByRatedUser = async (req, res, next) => {
+
+    const id = req.params.id;
+
+    try {
+
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
+        let search = req.query.search || '';
+
+        const offset = (page - 1) * per_page;
+
+        const total = await RatingModel.count('WHERE rated_user_id = ?', [id]);
+
+        const results = await RatingModel.getWithWhereClause({
+            page: parseInt(page),
+            per_page: parseInt(per_page),
+            whereClause: 'WHERE rated_user_id = ?',
+            queryParams: [id]
+        });
+
+        const total_pages = Math.ceil(total / per_page);
+
+        res.status(200).json({
+            page,
+            per_page,
+            total,
+            total_pages,
+            results
+        });
+
+    } catch (error) {
+        logger.error('Error en getRatingsByRatedUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+
+};
+
+const getRatingScoreByRatedUser = async (req, res) => {
+
+    try {
+        const { id } = req.params;
+        const total = Number(await RatingModel.count('WHERE rated_user_id = ?', [id]));
+
+        if (total === 0) {
+            return res.status(404).json({ message: 'Rating no encontrado.' });
+        }
+
+        const score = await RatingModel.getSumScoreById(id);
+        const average = Number(score.total) / total;
+
+        const totalScore = Math.round(average * 10) / 10;
+
+        res.status(200).json({ score: totalScore });
+
+    } catch (error) {
+        logger.error('Error en getRatingScoreByRatedUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+};
+
+
 const createRating = async (req, res) => {
 
     try {
         const creatorId = await getUserFromToken(req.headers.authorization);
-
-        console.log('creatorId : ' , creatorId) ;
-
         const ratingData = { ...req.body, creatorId };
-
-        console.log('ratingData : ' , ratingData) ;
-
         const rating = new RatingModel(ratingData);
-
-        console.log('rating : ' , rating) ;
-
         const newTrip = await rating.createRating();
 
         res.status(201).json({
@@ -94,14 +223,10 @@ const createRating = async (req, res) => {
 };
 
 const updateRatingById = async (req, res) => {
-    
-    console.log('Entro updateRatingById') ;
 
     try {
         const { id } = req.params;
-        const { score, comment } = req.body;
-
-        const updatedRating = await RatingModel.updateRatingById(idUser, req.body);
+        const updatedRating = await RatingModel.updateRatingById(id, req.body);
 
         if (!updatedRating) {
             return res.status(404).json({ message: 'Rating no encontrado.' });
@@ -121,7 +246,6 @@ const updateRatingById = async (req, res) => {
 const deleteRatingById = async (req, res) => {
     try {
         const { id } = req.params;
-        const { userId, role } = req.user;
 
         /*
         // Permitir solo al propio usuario o admin
@@ -149,4 +273,14 @@ const deleteRatingById = async (req, res) => {
     }
 };
 
-export default { getAllRatings, getRatingById, updateRatingById, deleteRatingById, createRating };
+export default {
+    getAllRatings,
+    getRatingById,
+    getRatingsByTrip,
+    getRatingsByAuthor,
+    getRatingsByRatedUser,
+    getRatingScoreByRatedUser,
+    updateRatingById,
+    deleteRatingById,
+    createRating
+};

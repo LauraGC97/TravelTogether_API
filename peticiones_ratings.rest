@@ -4,15 +4,31 @@
 
 @URL = {{URL_LOCAL}}
 
-###
+### - getAllRatings
 GET {{URL}}/ratings
 Authorization: Bearer {{TOKEN}}
 
-###
+### - getRatingsById
 GET {{URL}}/ratings/3
 Authorization: Bearer {{TOKEN}}
 
-###
+### - Valoraciones por Trip ( getRatingsByTrip )
+GET {{URL}}/ratings/trip/1
+Authorization: Bearer {{TOKEN}}
+
+### - Valoraciones por author ( getRatingsByAuthor )
+GET {{URL}}/ratings/author/2
+Authorization: Bearer {{TOKEN}}
+
+### - Valoraciones por rated_user_id  ( getRatingsByRatedUser )
+GET {{URL}}/ratings/rated_user/14
+Authorization: Bearer {{TOKEN}}
+
+### - Valoracion media  ( getRatingScoreByRatedUser )
+GET {{URL}}/ratings/score/1
+Authorization: Bearer {{TOKEN}}
+
+### - Create Rating
 POST {{URL}}/ratings
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
@@ -25,7 +41,7 @@ Content-Type: application/json
   "comment": "Compañero simpatico, aunque escrupuloso con el comer"
 }
 
-###
+### - updateRatingById
 PUT {{URL}}/ratings/5
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
@@ -35,5 +51,8 @@ Content-Type: application/json
   "comment": "Compañero simpatico, aunque escrupuloso con el comer"
 }
 
+### - deleteRatingById
+DELETE {{URL}}/ratings/5
+Authorization: Bearer {{TOKEN}}
 
 
