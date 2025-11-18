@@ -51,8 +51,6 @@ const register = async (req, res) => {
 
         delete newUser.password;
 
-        console.log(token);
-
         res.status(201).json({
             message: 'Usuario registrado correctamente.',
             token,

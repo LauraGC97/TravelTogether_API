@@ -19,7 +19,13 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.use(express.json());
+// app.use(express.json());
+app.use((req, res, next) => {
+    if (req.path.includes('/api/images/upload')) {
+        return next(); // no parsear JSON en los upload para permitir form.data desde angular
+    }
+    express.json()(req, res, next);
+});
 
 app.options('/', handleOptions);
 app.options('/api', handleOptions);
