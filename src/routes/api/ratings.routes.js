@@ -1,13 +1,12 @@
 import express from 'express';
-import imagesController from '../../controllers/images.controller.js';
-import imagesMiddleware from '../../middlewares/images.middleware.js';
+import ratingsController from '../../controllers/ratings.controller.js';
 
 const router = express.Router();
 
-router.get('/', imagesController.getById);
-router.get('/:id', imagesController.getById);
-router.post('/', imagesController.getByIdTrip);
-router.put('/:id', imagesController.getById);
-router.delete('/:id', imagesController.deleteImage);
+router.get('/', ratingsController.getAllRatings);
+router.get('/:id', ratingsController.getRatingById);
+router.post('/', ratingsController.createRating);
+router.put('/:id', ratingsController.updateRatingById);
+router.delete('/:id', ratingsController.deleteRatingById);
 
 export default router;

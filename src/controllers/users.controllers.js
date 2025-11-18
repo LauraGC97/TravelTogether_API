@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { UserModel } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
+import logger from '../config/logger.js';
 
 const register = async (req, res) => {
 

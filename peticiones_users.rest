@@ -2,7 +2,7 @@
 @URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
 @URL_LOCAL = http://localhost:3000/api
 
-@URL = {{URL_AZURE}}
+@URL = {{URL_LOCAL}}
 
 ###
 POST {{URL}}/users/register
