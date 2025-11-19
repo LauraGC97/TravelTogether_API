@@ -37,5 +37,6 @@ router.use('/trips', apiTripsRoutes);
 router.use('/users', apiUserRoutes);
 router.use('/images', apiImagesRoutes);
 router.use('/ratings', apiRatingsRoutes);
+router.use('/notifications', apiRatingsRoutes);
 
 export default router;

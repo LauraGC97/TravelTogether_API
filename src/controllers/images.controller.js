@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { BlobServiceClient } from '@azure/storage-blob';
 import ImagesModel from '../models/images.model.js';
+import logger from '../config/logger.js';
 
 import path from 'path';
 
@@ -47,6 +48,8 @@ const uploadImage = async (req, res, next) => {
             user_id: req.body.user_id || null,
             main_img: req.body.main_img ?? 0
         };
+
+        console.log ('imageRecord : ', imageRecord) ;
 
         const inserted = await ImagesModel.insert(imageRecord);
 
