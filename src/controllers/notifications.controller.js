@@ -103,6 +103,8 @@ const getNotificationByReceiverId = async (req, res, next) => {
 
 function parseWhereString(whereString) {
 
+    console.log('Entro en parseWhereString');
+
     if (!whereString) return { whereSQL: '', params: [] };
 
     const parts = whereString.split(' and ').map(p => p.trim());
@@ -115,6 +117,7 @@ function parseWhereString(whereString) {
 
         conditions.push(`${field} = ?`);
 
+        // Intentamos detectar si es número
         const numericValue = Number(value);
         values.push(isNaN(numericValue) ? value : numericValue);
     }
@@ -130,6 +133,8 @@ const getNotificationWithWhere = async (req, res, next) => {
     const id = req.params.id;
     const baseWhere = 'WHERE 1=1 ';
     const baseParams = [] ;
+
+    const where = req.query.where;
 
     try {
         const { whereSQL, params } = parseWhereString(where);
