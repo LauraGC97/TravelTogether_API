@@ -1,0 +1,154 @@
+2025-11-19 07:24:00 [info] Server listening on port 3000
+2025-11-19 07:24:00 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 07:42:16 [info] Server listening on port 3000
+2025-11-19 07:42:17 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 07:47:41 [info] Server listening on port 3000
+2025-11-19 07:47:42 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:28:50 [info] Server listening on port 3000
+2025-11-19 08:28:50 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:29:15 [info] Server listening on port 3000
+2025-11-19 08:29:15 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:31:00 [info] Server listening on port 3000
+2025-11-19 08:31:00 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:31:44 [info] Server listening on port 3000
+2025-11-19 08:31:44 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:34:40 [info] Server listening on port 3000
+2025-11-19 08:34:40 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:38:22 [info] Server listening on port 3000
+2025-11-19 08:38:22 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:43:47 [info] Server listening on port 3000
+2025-11-19 08:43:47 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:50:34 [info] Server listening on port 3000
+2025-11-19 08:50:34 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:50:42 [info] Server listening on port 3000
+2025-11-19 08:50:43 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:53:41 [info] Server listening on port 3000
+2025-11-19 08:53:41 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 08:55:17 [error] Puerto 3000 en uso. Azure App Service asigna automáticamente otro puerto.
+2025-11-19 08:55:45 [info] Server listening on port 3000
+2025-11-19 08:55:45 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 09:00:38 [info] Server listening on port 3000
+2025-11-19 09:00:38 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 09:01:09 [info] Server listening on port 3000
+2025-11-19 09:01:09 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 09:51:39 [info] Server listening on port 3000
+2025-11-19 09:51:40 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 09:54:08 [info] Server listening on port 3000
+2025-11-19 09:54:08 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 09:56:26 [info] Server listening on port 3000
+2025-11-19 09:56:26 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 10:16:21 [info] Server listening on port 3000
+2025-11-19 10:16:21 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 10:17:21 [info] Server listening on port 3000
+2025-11-19 10:17:21 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 10:17:59 [info] Server listening on port 3000
+2025-11-19 10:18:00 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 10:18:26 [info] Server listening on port 3000
+2025-11-19 10:18:26 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 10:19:20 [info] Server listening on port 3000
+2025-11-19 10:19:20 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 10:19:23 [error] Cannot add or update a child row: a foreign key constraint fails ("defaultdb"."images", CONSTRAINT "fk_images_trip" FOREIGN KEY ("trip_id") REFERENCES "trips" ("id") ON DELETE CASCADE ON UPDATE CASCADE)
+2025-11-19 10:23:48 [info] Server listening on port 3000
+2025-11-19 10:23:48 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 10:23:54 [error] Cannot add or update a child row: a foreign key constraint fails ("defaultdb"."images", CONSTRAINT "fk_images_trip" FOREIGN KEY ("trip_id") REFERENCES "trips" ("id") ON DELETE CASCADE ON UPDATE CASCADE)
+2025-11-19 11:00:30 [info] Server listening on port 3000
+2025-11-19 11:00:30 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:02:08 [info] Server listening on port 3000
+2025-11-19 11:02:09 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:02:22 [info] Server listening on port 3000
+2025-11-19 11:02:22 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:02:35 [info] Server listening on port 3000
+2025-11-19 11:02:35 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:02:48 [info] Server listening on port 3000
+2025-11-19 11:02:49 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:04:35 [info] Server listening on port 3000
+2025-11-19 11:04:35 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:04:54 [info] Server listening on port 3000
+2025-11-19 11:04:54 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:05:16 [info] Server listening on port 3000
+2025-11-19 11:05:16 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:05:20 [info] Server listening on port 3000
+2025-11-19 11:05:20 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:05:57 [info] Server listening on port 3000
+2025-11-19 11:05:58 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:06:02 [info] Server listening on port 3000
+2025-11-19 11:06:02 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:06:54 [info] Server listening on port 3000
+2025-11-19 11:06:55 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:07:05 [info] Server listening on port 3000
+2025-11-19 11:07:06 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:10:29 [info] Server listening on port 3000
+2025-11-19 11:10:29 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:12:10 [info] Server listening on port 3000
+2025-11-19 11:12:11 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:27:51 [info] Server listening on port 3000
+2025-11-19 11:27:52 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 11:29:54 [error] Error en getUserById: NotificationModel.getRatingById is not a function
+2025-11-19 11:31:08 [info] Server listening on port 3000
+2025-11-19 11:31:08 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:31:23 [error] Error al crear el Notification: Token inválido o expirado
+2025-11-19 12:32:19 [error] Error en updateNotification: score is not defined
+2025-11-19 12:32:30 [error] Error en deleteNotificationById: NotificationModelModel is not defined
+2025-11-19 12:33:50 [info] Server listening on port 3000
+2025-11-19 12:33:50 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:34:30 [info] Server listening on port 3000
+2025-11-19 12:34:30 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:35:14 [error] Error en deleteNotificationById: RatingModel is not defined
+2025-11-19 12:35:36 [info] Server listening on port 3000
+2025-11-19 12:35:37 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:35:41 [error] Error en deleteNotificationById: NotificationModel.deletenotification is not a function
+2025-11-19 12:36:10 [info] Server listening on port 3000
+2025-11-19 12:36:11 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:36:14 [error] Error en deleteNotificationById: NotificationModel.deletenotification is not a function
+2025-11-19 12:36:39 [info] Server listening on port 3000
+2025-11-19 12:36:40 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:40:24 [info] Server listening on port 3000
+2025-11-19 12:40:25 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:40:27 [info] Server listening on port 3000
+2025-11-19 12:40:27 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:47:39 [info] Server listening on port 3000
+2025-11-19 12:47:39 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:47:42 [info] Server listening on port 3000
+2025-11-19 12:47:42 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:51:06 [info] Server listening on port 3000
+2025-11-19 12:51:06 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 12:51:15 [error] Error en getNotificationByReceiverId: id is not defined
+2025-11-19 13:00:47 [info] Server listening on port 3000
+2025-11-19 13:00:47 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 13:00:58 [error] Error en getNotificationByReceiverId: baseWhere is not defined
+2025-11-19 13:02:08 [info] Server listening on port 3000
+2025-11-19 13:02:08 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 13:03:27 [info] Server listening on port 3000
+2025-11-19 13:03:27 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:36:31 [info] Server listening on port 3000
+2025-11-19 15:36:31 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:37:22 [info] Server listening on port 3000
+2025-11-19 15:37:22 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:37:26 [error] Error en getNotificationByReceiverId: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AND type = 'trip' AND is_read = 0' at line 1
+2025-11-19 15:37:39 [info] Server listening on port 3000
+2025-11-19 15:37:39 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:38:37 [info] Server listening on port 3000
+2025-11-19 15:38:37 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:40:23 [info] Server listening on port 3000
+2025-11-19 15:40:23 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:41:01 [info] Server listening on port 3000
+2025-11-19 15:41:01 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:42:09 [info] Server listening on port 3000
+2025-11-19 15:42:09 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:42:17 [info] Server listening on port 3000
+2025-11-19 15:42:17 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:42:32 [error] Error en getNotificationByReceiverId: where is not defined
+2025-11-19 15:42:36 [error] Error en getNotificationByReceiverId: where is not defined
+2025-11-19 15:43:00 [info] Server listening on port 3000
+2025-11-19 15:43:00 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:43:48 [info] Server listening on port 3000
+2025-11-19 15:43:48 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:46:24 [info] Server listening on port 3000
+2025-11-19 15:46:24 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:47:50 [info] Server listening on port 3000
+2025-11-19 15:47:50 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:49:38 [info] Server listening on port 3000
+2025-11-19 15:49:38 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 15:49:54 [info] Server listening on port 3000
+2025-11-19 15:49:54 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-19 18:36:49 [info] Server listening on port 3000

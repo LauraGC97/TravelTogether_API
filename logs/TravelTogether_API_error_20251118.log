@@ -1,0 +1,23 @@
+2025-11-18 11:46:39 [error] Error al crear el rating: getUserFromToken is not defined
+2025-11-18 11:50:06 [error] Error al crear el rating: Token inválido o expirado
+2025-11-18 11:51:38 [error] Error al crear el rating: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, ?, ?)' at line 2
+2025-11-18 11:52:13 [error] Error al crear el rating: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, ?, ?)' at line 2
+2025-11-18 11:53:23 [error] Error al crear el rating: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, ?, ?)' at line 2
+2025-11-18 11:55:37 [error] Error al crear el rating: Unknown column 'trip_id' in 'field list'
+2025-11-18 11:56:35 [error] Error al crear el rating: Duplicate entry '1-2-1' for key 'ratings.unique_rating'
+2025-11-18 12:03:42 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:04:38 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:05:22 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:06:55 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:08:24 [error] Error en updateUser: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 3
+2025-11-18 12:09:38 [error] Error en updateUser: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 3
+2025-11-18 12:15:33 [error] Error en deleteRating: Cannot destructure property 'userId' of 'req.user' as it is undefined.
+2025-11-18 13:02:03 [error] Error en getUserById: rating is not defined
+2025-11-18 13:03:08 [error] Error en getUserById: rating is not defined
+2025-11-18 13:04:49 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:05:30 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:06:20 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:10:29 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:10:40 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:11:25 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:12:10 [error] Error en getRatingScoreByRatedUser: rating is not defined

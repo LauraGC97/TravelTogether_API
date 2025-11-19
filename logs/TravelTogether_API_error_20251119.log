@@ -1,0 +1,15 @@
+2025-11-19 08:55:17 [error] Puerto 3000 en uso. Azure App Service asigna automáticamente otro puerto.
+2025-11-19 10:19:23 [error] Cannot add or update a child row: a foreign key constraint fails ("defaultdb"."images", CONSTRAINT "fk_images_trip" FOREIGN KEY ("trip_id") REFERENCES "trips" ("id") ON DELETE CASCADE ON UPDATE CASCADE)
+2025-11-19 10:23:54 [error] Cannot add or update a child row: a foreign key constraint fails ("defaultdb"."images", CONSTRAINT "fk_images_trip" FOREIGN KEY ("trip_id") REFERENCES "trips" ("id") ON DELETE CASCADE ON UPDATE CASCADE)
+2025-11-19 11:29:54 [error] Error en getUserById: NotificationModel.getRatingById is not a function
+2025-11-19 12:31:23 [error] Error al crear el Notification: Token inválido o expirado
+2025-11-19 12:32:19 [error] Error en updateNotification: score is not defined
+2025-11-19 12:32:30 [error] Error en deleteNotificationById: NotificationModelModel is not defined
+2025-11-19 12:35:14 [error] Error en deleteNotificationById: RatingModel is not defined
+2025-11-19 12:35:41 [error] Error en deleteNotificationById: NotificationModel.deletenotification is not a function
+2025-11-19 12:36:14 [error] Error en deleteNotificationById: NotificationModel.deletenotification is not a function
+2025-11-19 12:51:15 [error] Error en getNotificationByReceiverId: id is not defined
+2025-11-19 13:00:58 [error] Error en getNotificationByReceiverId: baseWhere is not defined
+2025-11-19 15:37:26 [error] Error en getNotificationByReceiverId: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AND type = 'trip' AND is_read = 0' at line 1
+2025-11-19 15:42:32 [error] Error en getNotificationByReceiverId: where is not defined
+2025-11-19 15:42:36 [error] Error en getNotificationByReceiverId: where is not defined

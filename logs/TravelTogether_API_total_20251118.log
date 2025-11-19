@@ -1,0 +1,133 @@
+2025-11-18 11:06:50 [info] Server listening on port 3000
+2025-11-18 11:06:50 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:26:12 [info] Server listening on port 3000
+2025-11-18 11:26:13 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:35:36 [info] Server listening on port 3000
+2025-11-18 11:35:37 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:36:47 [info] Server listening on port 3000
+2025-11-18 11:36:47 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:43:06 [info] Server listening on port 3000
+2025-11-18 11:43:07 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:43:22 [info] Server listening on port 3000
+2025-11-18 11:43:22 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:45:06 [info] Server listening on port 3000
+2025-11-18 11:45:06 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:46:20 [info] Server listening on port 3000
+2025-11-18 11:46:20 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:46:29 [info] Server listening on port 3000
+2025-11-18 11:46:30 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:46:39 [error] Error al crear el rating: getUserFromToken is not defined
+2025-11-18 11:49:46 [info] Server listening on port 3000
+2025-11-18 11:49:46 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:49:52 [info] Server listening on port 3000
+2025-11-18 11:49:52 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:50:06 [error] Error al crear el rating: Token inválido o expirado
+2025-11-18 11:51:38 [error] Error al crear el rating: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, ?, ?)' at line 2
+2025-11-18 11:52:05 [info] Server listening on port 3000
+2025-11-18 11:52:05 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:52:13 [error] Error al crear el rating: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, ?, ?)' at line 2
+2025-11-18 11:53:14 [info] Server listening on port 3000
+2025-11-18 11:53:15 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:53:23 [error] Error al crear el rating: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, ?, ?)' at line 2
+2025-11-18 11:55:32 [info] Server listening on port 3000
+2025-11-18 11:55:32 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:55:37 [error] Error al crear el rating: Unknown column 'trip_id' in 'field list'
+2025-11-18 11:56:29 [info] Server listening on port 3000
+2025-11-18 11:56:30 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 11:56:35 [error] Error al crear el rating: Duplicate entry '1-2-1' for key 'ratings.unique_rating'
+2025-11-18 12:01:40 [info] Server listening on port 3000
+2025-11-18 12:01:41 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:03:28 [info] Server listening on port 3000
+2025-11-18 12:03:28 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:03:42 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:04:33 [info] Server listening on port 3000
+2025-11-18 12:04:33 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:04:38 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:05:20 [info] Server listening on port 3000
+2025-11-18 12:05:20 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:05:22 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:05:58 [info] Server listening on port 3000
+2025-11-18 12:05:58 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:06:55 [error] Error en updateUser: idUser is not defined
+2025-11-18 12:08:17 [info] Server listening on port 3000
+2025-11-18 12:08:17 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:08:24 [error] Error en updateUser: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 3
+2025-11-18 12:09:28 [info] Server listening on port 3000
+2025-11-18 12:09:29 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:09:38 [error] Error en updateUser: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?' at line 3
+2025-11-18 12:12:08 [info] Server listening on port 3000
+2025-11-18 12:12:08 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:15:33 [error] Error en deleteRating: Cannot destructure property 'userId' of 'req.user' as it is undefined.
+2025-11-18 12:16:04 [info] Server listening on port 3000
+2025-11-18 12:16:04 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:16:08 [info] Server listening on port 3000
+2025-11-18 12:16:08 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:16:49 [info] Server listening on port 3000
+2025-11-18 12:16:49 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:44:36 [info] Server listening on port 3000
+2025-11-18 12:44:37 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:48:12 [info] Server listening on port 3000
+2025-11-18 12:48:12 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:49:03 [info] Server listening on port 3000
+2025-11-18 12:49:04 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:49:40 [info] Server listening on port 3000
+2025-11-18 12:49:40 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:50:57 [info] Server listening on port 3000
+2025-11-18 12:50:57 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:51:47 [info] Server listening on port 3000
+2025-11-18 12:51:47 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:52:02 [info] Server listening on port 3000
+2025-11-18 12:52:03 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:52:15 [info] Server listening on port 3000
+2025-11-18 12:52:15 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 12:59:16 [info] Server listening on port 3000
+2025-11-18 12:59:16 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:01:46 [info] Server listening on port 3000
+2025-11-18 13:01:47 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:02:03 [error] Error en getUserById: rating is not defined
+2025-11-18 13:03:05 [info] Server listening on port 3000
+2025-11-18 13:03:05 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:03:08 [error] Error en getUserById: rating is not defined
+2025-11-18 13:03:45 [info] Server listening on port 3000
+2025-11-18 13:03:46 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:04:09 [info] Server listening on port 3000
+2025-11-18 13:04:09 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:04:16 [info] Server listening on port 3000
+2025-11-18 13:04:16 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:04:49 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:05:26 [info] Server listening on port 3000
+2025-11-18 13:05:26 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:05:30 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:06:15 [info] Server listening on port 3000
+2025-11-18 13:06:15 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:06:20 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:09:52 [info] Server listening on port 3000
+2025-11-18 13:09:52 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:10:23 [info] Server listening on port 3000
+2025-11-18 13:10:23 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:10:29 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:10:40 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:11:19 [info] Server listening on port 3000
+2025-11-18 13:11:20 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:11:25 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:12:07 [info] Server listening on port 3000
+2025-11-18 13:12:07 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:12:10 [error] Error en getRatingScoreByRatedUser: rating is not defined
+2025-11-18 13:12:57 [info] Server listening on port 3000
+2025-11-18 13:12:57 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:13:43 [info] Server listening on port 3000
+2025-11-18 13:13:43 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:13:52 [info] Server listening on port 3000
+2025-11-18 13:13:52 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:18:37 [info] Server listening on port 3000
+2025-11-18 13:18:38 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:19:32 [info] Server listening on port 3000
+2025-11-18 13:19:33 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:31:08 [info] Server listening on port 3000
+2025-11-18 13:31:08 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:31:51 [info] Server listening on port 3000
+2025-11-18 13:31:52 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:34:00 [info] Server listening on port 3000
+2025-11-18 13:34:01 [info] Conexión a la base de datos MySQL exitosa!
+2025-11-18 13:34:20 [info] Server listening on port 3000
+2025-11-18 13:34:21 [info] Conexión a la base de datos MySQL exitosa!
