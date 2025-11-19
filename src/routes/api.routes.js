@@ -5,6 +5,7 @@ import apiTripsRoutes from './api/trips.routes.js';
 import apiUserRoutes from './api/users.routes.js';
 import apiImagesRoutes from './api/images.routes.js';
 import apiRatingsRoutes from './api/ratings.routes.js';
+import apiNotificationsRoutes from './api/notifications.routes.js';
 
 const router = Router();
 
@@ -37,6 +38,6 @@ router.use('/trips', apiTripsRoutes);
 router.use('/users', apiUserRoutes);
 router.use('/images', apiImagesRoutes);
 router.use('/ratings', apiRatingsRoutes);
-router.use('/notifications', apiRatingsRoutes);
+router.use('/notifications', apiNotificationsRoutes);
 
 export default router;

@@ -1,17 +1,14 @@
 import express from 'express';
-import ratingsController from '../../controllers/ratings.controller.js';
+import noticationsController from '../../controllers/notifications.controller.js';
+import notificationsController from '../../controllers/notifications.controller.js';
 
 const router = express.Router();
 
-router.get('/', ratingsController.getAllRatings);
-router.get('/:id', ratingsController.getRatingById);
-router.get('/trip/:id', ratingsController.getRatingsByTrip);
-router.get('/author/:id', ratingsController.getRatingsByAuthor);
-router.get('/rated_user/:id', ratingsController.getRatingsByRatedUser);
-router.get('/score/:id', ratingsController.getRatingScoreByRatedUser);
+router.get('/', noticationsController.getAllNotifications);
+router.get('/:id', notificationsController.getNotificationById);
 
-router.post('/', ratingsController.createRating);
-router.put('/:id', ratingsController.updateRatingById);
-router.delete('/:id', ratingsController.deleteRatingById);
+router.post('/', noticationsController.createNotification);
+router.put('/:id', noticationsController.updateNotificationById);
+router.delete('/:id', noticationsController.deleteNotificationById);
 
 export default router;

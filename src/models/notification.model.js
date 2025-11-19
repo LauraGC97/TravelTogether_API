@@ -1,46 +1,49 @@
 import pool from '../config/db.js';
 import BaseModel from './base.model.js';
 
-export class RatingModel extends BaseModel {
+export class NotificationModel extends BaseModel {
 
-    static tableName = 'ratings';
+    static tableName = 'notifications';
 
-    constructor({ id, trip_id, author_id, rated_user_id, score, comment, created_at }) {
+    constructor({ id, title, message, type, is_read, created_at, sender_id, receiver_id }) {
 
-        super('ratings');
+        super('notifications');
 
         this.id = id;
-        this.trip_id = trip_id;
-        this.author_id = author_id;
-        this.rated_user_id = rated_user_id;
-        this.score = score;
-        this.comment = comment;
+        this.title = title;
+        this.message = message;
+        this.type = type;
+        this.is_read = is_read;
         this.created_at = created_at;
+        this.sender_id = sender_id;
+        this.receiver_id = receiver_id;
 
     }
 
-    // Insertar nuevo usuario
-    async createRating() {
+    async createNotification() {
 
         const [result] = await pool.query(
-            `INSERT INTO ratings (trip_id, author_id, rated_user_id, score, comment)
-       VALUES (?, ?, ?, ?, ? )`,
-            [this.trip_id, this.author_id, this.rated_user_id, this.score, this.comment]
+            `INSERT INTO notifications ( title, message, type, is_read, sender_id, receiver_id)
+       VALUES (?, ?, ?, ?, ?, ? )`,
+            [this.title, this.message, this.type, this.is_read, this.sender_id, this.receiver_id]
         );
 
         // Recuperamos el usuario recién creado para enviarlo al Front
         const [rows] = await pool.query(
-            'SELECT id, trip_id, author_id, rated_user_id, score, comment, created_at FROM ratings WHERE id = ?',
+            ` SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id  
+              FROM notifications 
+              WHERE id = ?`,
             [result.insertId]
         );
 
         return rows[0];
     }
 
-    static async getRatingById(id) {
+    static async getNotificationById(id) {
         const [rows] = await pool.query(
-            `SELECT id, trip_id, author_id, rated_user_id, score, comment, created_at 
-     FROM ratings WHERE id = ?`, [id]
+            `SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id
+             FROM notifications 
+             WHERE id = ?`, [id]
         );
         return rows[0] || null;
     }
@@ -77,31 +80,33 @@ export class RatingModel extends BaseModel {
              WHERE rated_user_id = ?`, [id]
         );
         return rows[0] || null;
-    }    
-    
-    static async updateRatingById(id, data) {
+    }
 
-        const { score, comment } = data;
+    static async updateNotificationById(id, data) {
+
+        const { title, message } = data;
 
         const [result] = await pool.query(
-            `UPDATE ratings 
-             SET  score = ?, comment = ?
+            `UPDATE notifications 
+             SET  title = ?, message = ?
              WHERE id = ?`,
-            [score, comment, id]
+            [title, message, id]
         );
 
         if (result.affectedRows === 0) return null;
 
         const [rows] = await pool.query(
-            'SELECT id, trip_id, author_id, rated_user_id, score, comment, created_at FROM ratings WHERE id = ?',
+            ` SELECT  id, title, message, type, is_read, created_at, sender_id, receiver_id 
+              FROM notifications
+              WHERE id = ?`,
             [id]
         );
 
         return rows[0];
     }
 
-    static async deleteRating(id) {
-        const [result] = await pool.query('DELETE FROM ratings WHERE id = ?', [id]);
+    static async deleteNotifications(id) {
+        const [result] = await pool.query('DELETE FROM notifications WHERE id = ?', [id]);
         return result.affectedRows > 0;
     }
 

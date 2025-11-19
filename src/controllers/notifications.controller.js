@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { RatingModel } from '../models/rating.model.js';
+import { NotificationModel } from '../models/notification.model.js';
 import logger from '../config/logger.js';
 import { getUserFromToken } from '../utils/myUtils.js';
 
@@ -18,10 +18,10 @@ const getAllNotifications = async (req, res) => {
         const offset = (page - 1) * per_page;
 
         // Obtener total de registros y datos paginados
-        const total = await RatingModel.count('username', search);
+        const total = await NotificationModel.count('username', search);
         // const results = await UserModel.getPaginated(offset, per_page);
 
-        const results = await RatingModel.getPaginated({
+        const results = await NotificationModel.getPaginated({
             page: parseInt(page),
             per_page: parseInt(per_page),
             searchField: 'username',
@@ -50,15 +50,15 @@ const getNotificationById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const rating = await RatingModel.getRatingById(id);
+        const rating = await NotificationModel.getNotificationById(id);
 
         if (!rating) {
-            return res.status(404).json({ message: 'Rating no encontrado.' });
+            return res.status(404).json({ message: 'Notification no encontrado.' });
         }
 
         res.status(200).json(rating);
     } catch (error) {
-        logger.error('Error en getUserById:', error);
+        logger.error('Error en getNotificationById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -75,9 +75,9 @@ const getRatingsByTrip = async (req, res, next) => {
 
         const offset = (page - 1) * per_page;
 
-        const total = await RatingModel.count('WHERE trip_id = ?', [id]);
+        const total = await NotificationModel.count('WHERE trip_id = ?', [id]);
 
-        const results = await RatingModel.getWithWhereClause({
+        const results = await NotificationModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
             whereClause: 'WHERE trip_id = ?',
@@ -113,9 +113,9 @@ const getRatingsByAuthor = async (req, res, next) => {
 
         const offset = (page - 1) * per_page;
 
-        const total = await RatingModel.count('WHERE author_id = ?', [id]);
+        const total = await NotificationModel.count('WHERE author_id = ?', [id]);
 
-        const results = await RatingModel.getWithWhereClause({
+        const results = await NotificationModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
             whereClause: 'WHERE author_id = ?',
@@ -151,9 +151,9 @@ const getRatingsByRatedUser = async (req, res, next) => {
 
         const offset = (page - 1) * per_page;
 
-        const total = await RatingModel.count('WHERE rated_user_id = ?', [id]);
+        const total = await NotificationModel.count('WHERE rated_user_id = ?', [id]);
 
-        const results = await RatingModel.getWithWhereClause({
+        const results = await NotificationModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
             whereClause: 'WHERE rated_user_id = ?',
@@ -181,18 +181,18 @@ const createNotification = async (req, res) => {
 
     try {
         const creatorId = await getUserFromToken(req.headers.authorization);
-        const ratingData = { ...req.body, creatorId };
-        const rating = new RatingModel(ratingData);
-        const newTrip = await rating.createRating();
+        const notificationData = { ...req.body, creatorId };
+        const notification = new NotificationModel(notificationData);
+        const newNotification = await notification.createNotification();
 
         res.status(201).json({
-            message: 'Rating creado exitosamente',
-            trip: newTrip
+            message: 'Notificaction creado exitosamente',
+            notification: newNotification
         });
     } catch (error) {
-        logger.error('Error al crear el rating:', error);
+        logger.error('Error al crear el Notification:', error);
         res.status(500).json({
-            message: 'Error interno del servidor al crear el viaje.',
+            message: 'Error interno del servidor al crear notification.',
             error: error.message
         });
     }
@@ -202,19 +202,19 @@ const updateNotificationById = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const updatedRating = await RatingModel.updateRatingById(id, req.body);
+        const updatedNotification = await NotificationModel.updateNotificationById(id, req.body);
 
-        if (!updatedRating) {
-            return res.status(404).json({ message: 'Rating no encontrado.' });
+        if (!updatedNotification) {
+            return res.status(404).json({ message: 'Notification no encontrado.' });
         }
 
         res.status(200).json({
-            message: 'Rating actualizado correctamente.',
-            rating: updatedRating
+            message: 'Notification actualizado correctamente.',
+            notification: updatedNotification
         });
 
     } catch (error) {
-        logger.error('Error en updateUser:', error);
+        logger.error('Error en updateNotification:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -223,28 +223,21 @@ const deleteNotificationById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        /*
-        // Permitir solo al propio usuario o admin
-        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
-          return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
-        }
-        */
+        const notification = await NotificationModel.getNotificationById(id);
 
-        const rating = await RatingModel.getRatingById(id);
-
-        if (!rating) {
-            return res.status(404).json({ message: 'Rating no encontrado.' });
+        if (!notification) {
+            return res.status(404).json({ message: 'Notification no encontrado.' });
         }
 
-        const deleted = await RatingModel.deleteRating(id);
+        const deleted = await RatingModel.deletenotification(id);
         if (!deleted) {
-            return res.status(404).json({ message: 'Rating no encontrado.' });
+            return res.status(404).json({ message: 'Notification no encontrado.' });
         }
 
-        res.status(200).json({ message: 'Rating eliminado correctamente.', rating: rating });
+        res.status(200).json({ message: 'Notification eliminado correctamente.', notification: notification });
 
     } catch (error) {
-        logger.error('Error en deleteRating:', error);
+        logger.error('Error en deleteNotificationById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
