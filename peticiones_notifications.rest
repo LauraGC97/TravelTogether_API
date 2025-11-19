@@ -8,12 +8,20 @@
 GET {{URL}}
 Authorization: Bearer {{TOKEN}}
 
+### Petición 0 : LISTAR TODAS LAS NOTIFICACIONES con un where chulo
+GET {{URL}}/where?page=1&per_page=5&where=type:trip and is_read:1
+Authorization: Bearer {{TOKEN}}
+
 ### Petición 1 : LISTAR NOTIFICACIONES POR ID
 GET {{URL}}/1
 Authorization: Bearer {{TOKEN}}
 
 ### Petición 3 : LISTAR NOTIFICACIONES POR USER_ID
-GET {{URL}}/users/1
+GET {{URL}}/sender/1
+Authorization: Bearer {{TOKEN}}
+
+### Petición 3 : LISTAR NOTIFICACIONES POR USER_ID
+GET {{URL}}/receiver/1
 Authorization: Bearer {{TOKEN}}
 
 ### - Create NOTIFICACIONES
@@ -24,7 +32,7 @@ Content-Type: application/json
 {
   "title": "un titulo cualquiera",
   "message": "un message mas cualquiera todavia",
-  "type": "message",
+  "type": "trip",
   "is_read": 1,
   "sender_id": 3,
   "receiver_id": 1

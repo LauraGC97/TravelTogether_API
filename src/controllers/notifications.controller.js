@@ -63,7 +63,7 @@ const getNotificationById = async (req, res) => {
     }
 };
 
-const getRatingsByTrip = async (req, res, next) => {
+const getNotificationByReceiverId = async (req, res, next) => {
 
     const id = req.params.id;
 
@@ -75,12 +75,12 @@ const getRatingsByTrip = async (req, res, next) => {
 
         const offset = (page - 1) * per_page;
 
-        const total = await NotificationModel.count('WHERE trip_id = ?', [id]);
+        const total = await NotificationModel.count('WHERE receiver_id = ?', [id]);
 
         const results = await NotificationModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
-            whereClause: 'WHERE trip_id = ?',
+            whereClause: 'WHERE receiver_id = ?',
             queryParams: [id]
         });
 
@@ -95,17 +95,47 @@ const getRatingsByTrip = async (req, res, next) => {
         });
 
     } catch (error) {
-        logger.error('Error en getRatingsByTrip:', error);
+        logger.error('Error en getNotificationByReceiverId:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 
 };
 
-const getRatingsByAuthor = async (req, res, next) => {
+function parseWhereString(whereString) {
+
+    if (!whereString) return { whereSQL: '', params: [] };
+
+    const parts = whereString.split(' and ').map(p => p.trim());
+
+    const conditions = [];
+    const values = [];
+
+    for (const p of parts) {
+        const [field, value] = p.split(':');
+
+        conditions.push(`${field} = ?`);
+
+        const numericValue = Number(value);
+        values.push(isNaN(numericValue) ? value : numericValue);
+    }
+
+    return {
+        whereSQL: conditions.join(' AND '),
+        params: values
+    };
+}
+
+const getNotificationWithWhere = async (req, res, next) => {
 
     const id = req.params.id;
+    const baseWhere = 'WHERE 1=1 ';
+    const baseParams = [] ;
 
     try {
+        const { whereSQL, params } = parseWhereString(where);
+
+        const finalWhere = whereSQL ? `${baseWhere} AND ${whereSQL}` : baseWhere;
+        const finalParams = [...baseParams, ...params];
 
         const page = Math.max(1, parseInt(req.query.page) || 1);
         const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
@@ -113,13 +143,14 @@ const getRatingsByAuthor = async (req, res, next) => {
 
         const offset = (page - 1) * per_page;
 
-        const total = await NotificationModel.count('WHERE author_id = ?', [id]);
+        const total = await NotificationModel.count('WHERE receiver_id = ?', [id]);
 
         const results = await NotificationModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
-            whereClause: 'WHERE author_id = ?',
-            queryParams: [id]
+            whereClause:finalWhere,
+            queryParams: finalParams
+
         });
 
         const total_pages = Math.ceil(total / per_page);
@@ -133,13 +164,13 @@ const getRatingsByAuthor = async (req, res, next) => {
         });
 
     } catch (error) {
-        logger.error('Error en getRatingsByAuthor:', error);
+        logger.error('Error en getNotificationByReceiverId:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 
 };
 
-const getRatingsByRatedUser = async (req, res, next) => {
+const getNotificationBySenderId = async (req, res, next) => {
 
     const id = req.params.id;
 
@@ -151,12 +182,12 @@ const getRatingsByRatedUser = async (req, res, next) => {
 
         const offset = (page - 1) * per_page;
 
-        const total = await NotificationModel.count('WHERE rated_user_id = ?', [id]);
+        const total = await NotificationModel.count('WHERE sender_id = ?', [id]);
 
         const results = await NotificationModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
-            whereClause: 'WHERE rated_user_id = ?',
+            whereClause: 'WHERE sender_id = ?',
             queryParams: [id]
         });
 
@@ -171,7 +202,7 @@ const getRatingsByRatedUser = async (req, res, next) => {
         });
 
     } catch (error) {
-        logger.error('Error en getRatingsByRatedUser:', error);
+        logger.error('Error en getNotificationBySenderId:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 
@@ -229,7 +260,7 @@ const deleteNotificationById = async (req, res) => {
             return res.status(404).json({ message: 'Notification no encontrado.' });
         }
 
-        const deleted = await RatingModel.deletenotification(id);
+        const deleted = await NotificationModel.deleteNotification(id);
         if (!deleted) {
             return res.status(404).json({ message: 'Notification no encontrado.' });
         }
@@ -245,9 +276,9 @@ const deleteNotificationById = async (req, res) => {
 export default {
     getAllNotifications,
     getNotificationById,
-    getRatingsByTrip,
-    getRatingsByAuthor,
-    getRatingsByRatedUser,
+    getNotificationBySenderId,
+    getNotificationByReceiverId,
+    getNotificationWithWhere,
     updateNotificationById,
     deleteNotificationById,
     createNotification

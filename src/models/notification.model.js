@@ -105,7 +105,7 @@ export class NotificationModel extends BaseModel {
         return rows[0];
     }
 
-    static async deleteNotifications(id) {
+    static async deleteNotification(id) {
         const [result] = await pool.query('DELETE FROM notifications WHERE id = ?', [id]);
         return result.affectedRows > 0;
     }

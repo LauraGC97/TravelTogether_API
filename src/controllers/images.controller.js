@@ -49,8 +49,6 @@ const uploadImage = async (req, res, next) => {
             main_img: req.body.main_img ?? 0
         };
 
-        console.log ('imageRecord : ', imageRecord) ;
-
         const inserted = await ImagesModel.insert(imageRecord);
 
         return res.status(201).json({ message: 'Uploaded', data: inserted || imageRecord });
