@@ -1,26 +1,29 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoibGVvcG9sZG8iLCJlbWFpbCI6Imxlb3BvbGRvQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyNzkwODcyLCJleHAiOjE3NjI3OTgwNzJ9.gFpYbSaNuyPUS9nZfTB50vqHByMjYC_cLJ0VBQbKE4w
-@URL_AZURE = https://traveltogetherapi.azurewebsites.net/api/users/login
-@URL_LOCAL = http://localhost:3000/api/users/login
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNDAwNTAxLCJleHAiOjE3NjM0MDc3MDF9.tsvbsMTPYdqOF6Xiuh__WapwhVuvB_kZD0dQZeAtLJ0
+@URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
+@URL_LOCAL = http://localhost:3000/api
+ 
+@URL = {{URL_LOCAL}}
+ 
 
-POST http://localhost:3000/api/users/register
+POST {{URL}}/users/register
 Content-Type: application/json
 
 {
-  "username": "elenagarcia",
-  "email": "elenagarcia@gmail.com",
+  "username": "lauragarcia",
+  "email": "lauragarcia@gmail.com",
   "password": "1234",
   "image": "https://images.piclumen.com/normal/20251109/19/b332132861a84d339ab55a617e0289ed.webp",
   "phone": "600123458",
-  "bio": "le gusta ser elenagarcia",
-  "interests": "music sin mas"
+  "bio": "Me gusta la aventura",
+  "interests": "musica, animales, viajar"
 }
 
 ###
-POST https://traveltogetherapi.azurewebsites.net/api/users/login
+POST {{URL}}/users/login
 Content-Type: application/json
 
 {
-  "email": "elenagarcia@gmail.com",
+  "email": "lauragarcia@gmail.com",
   "password": "1234"
 }
 
