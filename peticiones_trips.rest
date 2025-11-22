@@ -1,4 +1,4 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyNzAzNTc5LCJleHAiOjE3NjI3MTA3Nzl9.DGinLb3bWqRh2dRY8RvJ-GZqgMzUuHcvS9kb4S6OAMo
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJuYW1lIjoibGF1cmFnYXJjaWEiLCJlbWFpbCI6ImxhdXJhZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNzk0NzM1LCJleHAiOjE3NjM4MDE5MzV9.BXYcfzhRxbFrwCiySb0Ic477MWh6sUH0EQ_e5AzsCX8
 @URL = http://localhost:3000/api/trips
 
 ### Petición 1 : LISTAR TODOS LOS VIAJES (PROTEGIDO)
@@ -19,27 +19,38 @@ Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
-  "origin": "Madrid",
-  "destination": "Tromsø, Noruega",
-  "title": "Caza de la Aurora Boreal en el Ártico",
-  "description": "Una expedición emocionante para presenciar la majestuosa Aurora Boreal en Tromsø, Noruega. Incluye actividades como paseos en trineo de perros, visitas a pueblos Sami y noches en acogedoras cabañas árticas.",
-  "creator_id": 12,
-  "start_date": "2026-02-10 00:00:00",
-  "end_date": "2026-02-15 00:00:00",
-  "estimated_cost": "950.00",
-  "min_participants": 5,
-  "transport": "Avión",
-  "accommodation": "Cabaña compartida",
-  "itinerary": "Día 1: Llegada a Tromsø y orientación. Día 2: Paseo en trineo de perros y búsqueda de la Aurora Boreal. Día 3: Visita a un pueblo Sami y cultura local. Día 4: Tiempo libre y actividades opcionales. Día 5: Desayuno y egreso a casa.",
-  "status": "open",
-  "latitude": "69.64920000",
-  "longitude": "18.95530000",
-  "created_at": "2025-02-11 00:00:00",
-  "updated_at": "2025-02-11 00:00:00"
+"origin": "Zaragoza",
+"destination": "Fairbanks, Alaska, Estados Unidos",
+"title": "Caza de la Aurora Boreal en Alaska",
+"description": "Una expedición emocionante para presenciar la majestuosa Aurora Boreal en Fairbanks, Alaska. Incluye actividades como paseos en trineo de perros, visitas a pueblos indígenas y noches en acogedoras cabañas árticas.",
+"creator_id": 32,
+"start_date": "2026-02-10 00:00:00",
+"end_date": "2026-02-15 00:00:00",
+"estimated_cost": "950.00",
+"min_participants": 5,
+"transport": "Avión",
+"accommodation": "Cabaña compartida",
+"itinerary": "Día 1: Llegada a Fairbanks y orientación. Día 2: Paseo en trineo de perros y búsqueda de la Aurora Boreal. Día 3: Visita a un pueblo indígena y cultura local. Día 4: Tiempo libre y actividades opcionales. Día 5: Desayuno y regreso a casa.",
+"status": "open",
+"latitude": "64.83777800",
+"longitude": "-147.71638900",
+"created_at": "2025-11-22 00:00:00",
+"updated_at": "2025-11-22 00:00:00",
+"requirements": "Ropa térmica, buen estado físico",
+"flights": 1,
+"tickets": 1,
+"visits": 0,
+"full_board": 1,
+"travel_insurance": 1,
+"tour_guide": 1,
+"informative_material": 0,
+"breakfast": 1,
+"visas": 0,
+"assistance24": 1
 }
 
 ### Petición 5 : ACTUALIZAR UN VIAJE (ID 6)
-PUT {{URL}}/6
+PUT {{URL}}/32
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
@@ -60,7 +71,18 @@ Content-Type: application/json
   "latitude": "69.64920000",
   "longitude": "18.95530000",
   "created_at": "2025-02-11 00:00:00",
-  "updated_at": "2025-02-11 00:00:00"
+  "updated_at": "2025-02-11 00:00:00",
+  "requirements": "Ropa térmica, buen estado físico",
+  "flights": 1,
+  "tickets": 1,
+  "visits": 0,
+  "full_board": 1,
+  "travel_insurance": 1,
+  "tour_guide": 1,
+  "informative_material": 0,
+  "breakfast": 1,
+  "visas": 0,
+  "assistance24": 1
 }
 
 ### Petición 6 : ELIMINAR UN VIAJE (ID 6)

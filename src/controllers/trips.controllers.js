@@ -1,4 +1,5 @@
 import { TripModel } from '../models/trip.model.js';
+import { ParticipationModel } from '../models/participation.model.js';
 
 //----------------------------------------------------------
 // CREATE: Crear viaje
@@ -25,17 +26,26 @@ const createTrip = async (req, res) => {
     const trip = new TripModel(tripData);
     const newTrip = await trip.createTrip();
 
+    // 4. Agregar autor como participante aceptado
+    const creatorPartipation = new ParticipationModel({
+        user_id: creator_id,
+        trip_id: newTrip.id,
+        status: 'accepted'
+    });
+    const newParticipation = await creatorPartipation.createParticipation();
+    
     res.status(201).json({
-        message: 'Viaje creado exitosamente',
-        trip: newTrip
+        message: 'Viaje creado exitosamente y creador agregado como participante aceptado.',
+        trip: newTrip,
+        creator_participation: newParticipation
     });
-  } catch (error) {
-    console.error('Error al crear el viaje:', error);
-    res.status(500).json({
-        message: 'Error interno del servidor al crear el viaje.',
+    } catch (error) {
+        console.error('Error al crear el viaje:', error);
+        res.status(500).json({
+        message: 'Error interno del servidor al crear el viaje y/o añadir al creador como participante.',
         error: error.message
-    });
-  }
+        });
+    }
 };
 
 //----------------------------------------------------------
