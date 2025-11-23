@@ -65,4 +65,73 @@ const getFavoritesById = async (req, res) => {
     }
 };
 
-export { getFavoritesById };
+const createFavorites = async (req, res) => {
+    try {
+        const { idFavorites } = req.params;
+        const { userId, role } = req.user;
+
+        /*
+        // Permitir solo al propio usuario o admin
+        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
+          return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
+        }
+        */
+
+        const deleted = await UserModel.deleteUser(idUser);
+        if (!deleted) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+
+        res.status(200).json({ message: 'Usuario eliminado correctamente.' });
+    } catch (error) {
+        logger.error('Error en deleteUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+};
+
+const updateFavoritesById = async (req, res) => {
+    try {
+        const { idFavorites } = req.params;
+        const { userId, role } = req.user;
+
+        const updatedUser = await UserModel.updateUser(idUser, req.body);
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+
+        res.status(200).json({
+            message: 'Usuario actualizado correctamente.',
+            user: updatedUser
+        });
+
+    } catch (error) {
+        logger.error('Error en updateUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+};
+
+const deleteFavoritesById = async (req, res) => {
+    try {
+        const { idFavorites } = req.params;
+        const { userId, role } = req.user;
+
+        /*
+        // Permitir solo al propio usuario o admin
+        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
+          return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
+        }
+        */
+
+        const deleted = await UserModel.deleteUser(idUser);
+        if (!deleted) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+
+        res.status(200).json({ message: 'Usuario eliminado correctamente.' });
+    } catch (error) {
+        logger.error('Error en deleteUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+};
+
+export { getAllFavorites,getFavoritesById,createFavorites,deleteFavoritesById,updateFavoritesById };
