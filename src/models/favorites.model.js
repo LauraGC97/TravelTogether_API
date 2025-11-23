@@ -24,4 +24,23 @@ export class FavoritesModel extends BaseModel {
         return rows[0];
     }
 
+    static async createfavorite(user_id, trip_id) {
+
+        const [result] = await pool.query(
+            `INSERT INTO favorites ( user_id, trip_id)
+       VALUES (?, ?)`,
+            [user_id,trip_id]
+        );
+
+        // Recuperamos el usuario recién creado para enviarlo al Front
+        const [rows] = await pool.query(
+            ` SELECT id, user_id, trip_id, created_at
+              FROM favorites 
+              WHERE id = ?`,
+            [result.insertId]
+        );
+
+        return rows[0];
+    }    
+
 }

@@ -1,4 +1,5 @@
 import { FavoritesModel } from '../models/favorites.model.js';
+import logger from '../config/logger.js';
 
 /*
   GET /api/users
@@ -66,25 +67,20 @@ const getFavoritesById = async (req, res) => {
 };
 
 const createFavorites = async (req, res) => {
+    
     try {
-        const { idFavorites } = req.params;
-        const { userId, role } = req.user;
-
-        /*
-        // Permitir solo al propio usuario o admin
-        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
-          return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
-        }
-        */
-
-        const deleted = await UserModel.deleteUser(idUser);
-        if (!deleted) {
-            return res.status(404).json({ message: 'Usuario no encontrado.' });
+ 
+        const userId = req.user.id;
+        const { trip_id } = req.body;
+       
+        const favorite = await FavoritesModel.createfavorite(userId, trip_id);
+        if (!favorite) {
+            return res.status(404).json({ message: 'favorite no creado.' });
         }
 
-        res.status(200).json({ message: 'Usuario eliminado correctamente.' });
+        res.status(200).json({ message: 'favorite creado correctamente.' });
     } catch (error) {
-        logger.error('Error en deleteUser:', error);
+        logger.error('Error en createFavorites:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
