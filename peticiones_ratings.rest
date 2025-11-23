@@ -1,0 +1,58 @@
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNDYzMDcyLCJleHAiOjE3OTQ5OTkwNzJ9.799SIZ9R_qvV7yVE0e5RHEWqcq0eMqlm1LAcdCeVtjY
+@URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
+@URL_LOCAL = http://localhost:3000/api
+
+@URL = {{URL_LOCAL}}
+
+### - getAllRatings
+GET {{URL}}/ratings
+Authorization: Bearer {{TOKEN}}
+
+### - getRatingsById
+GET {{URL}}/ratings/3
+Authorization: Bearer {{TOKEN}}
+
+### - Valoraciones por Trip ( getRatingsByTrip )
+GET {{URL}}/ratings/trip/1
+Authorization: Bearer {{TOKEN}}
+
+### - Valoraciones por author ( getRatingsByAuthor )
+GET {{URL}}/ratings/author/2
+Authorization: Bearer {{TOKEN}}
+
+### - Valoraciones por rated_user_id  ( getRatingsByRatedUser )
+GET {{URL}}/ratings/rated_user/14
+Authorization: Bearer {{TOKEN}}
+
+### - Valoracion media  ( getRatingScoreByRatedUser )
+GET {{URL}}/ratings/score/1
+Authorization: Bearer {{TOKEN}}
+
+### - Create Rating
+POST {{URL}}/ratings
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+  "trip_id": 1,
+  "author_id": 2,
+  "rated_user_id": 14,
+  "score": 3,
+  "comment": "Compañero simpatico, aunque escrupuloso con el comer"
+}
+
+### - updateRatingById
+PUT {{URL}}/ratings/5
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+  "score": 5,
+  "comment": "Compañero simpatico, aunque escrupuloso con el comer"
+}
+
+### - deleteRatingById
+DELETE {{URL}}/ratings/5
+Authorization: Bearer {{TOKEN}}
+
+

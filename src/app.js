@@ -1,19 +1,49 @@
-// Creation and configuration of the Express APP
+
 import express from 'express';
 import cors from 'cors';
+import logger from './config/logger.js';
 
 import createError from 'http-errors';
 import path from 'path';
-// const cookieParser = require('cookie-parser') ;
-// var logger = require('morgan');
 
 // importamos rutas propias
 import apiRoutes from './routes/api.routes.js';
+import apiImagesRoutes from './routes/api/images.routes.js';
 
 const app = express();
 
+app.use(cors({
+    origin: (origin, callback) => {
+        callback(null, true);
+    },
+    credentials: true,
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+// app.use('/api/images', apiImagesRoutes);
+
 app.use(express.json());
-app.use(cors());
+app.use((req, res, next) => {
+     if (req.path.includes('/api/images/upload')) {
+        return next(); // no parsear JSON en los upload para permitir form.data desde angular
+    }
+    express.json()(req, res, next);
+});
+
+
+app.options('/api', handleOptions);
+app.options('/api/trips', handleOptions);
+app.options('/api/users', handleOptions);
+app.options('/api/images', handleOptions);
+
+function handleOptions(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Max-Age', '86400');
+    return res.status(200).end();
+}
 
 app.use('/api', apiRoutes);
 
@@ -31,3 +61,36 @@ app.use((err, req, res, next) => {
 });
 
 export default app;
+
+
+/*
+import express from 'express';
+import cors from 'cors';
+import imagesRoutes from './routes/api/images.routes.js';
+
+const app = express();
+
+// CORS básico
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"]
+}));
+
+// Montamos el router de images **antes de cualquier express.json()**
+// app.use('/api/images', imagesRoutes);
+
+// Middleware general para JSON (para otras rutas)
+app.use(express.json());
+app.use('/api', (req, res) => res.json({ ok: true }));
+
+// 404 handler
+app.use((req, res) => res.status(404).json({ message: 'Not found' }));
+
+export default app;
+
+*/
+
+
+

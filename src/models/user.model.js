@@ -57,29 +57,6 @@ export class UserModel extends BaseModel {
 
         return rows[0];
     }
-    /*
-    static async count() {
-        const [rows] = await pool.query('SELECT COUNT(*) AS total FROM users');
-        return rows[0].total;
-    }
-
-    static async getPaginated(offset, limit) {
-        const [rows] = await pool.query(
-            'SELECT * FROM users ORDER BY id ASC LIMIT ? OFFSET ?',
-            [limit, offset]
-        );
-        return rows;
-    }
-
-    static async getAll() {
-        const [rows] = await pool.query(
-            `SELECT id, username, email, image, phone, bio, interests, role, is_active, created_at, updated_at
-     FROM users`
-        );
-        return rows;
-    }
-
-    */
 
     static async getUserById(id) {
         const [rows] = await pool.query(

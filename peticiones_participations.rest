@@ -1,0 +1,31 @@
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJuYW1lIjoibGF1cmFnYXJjaWEiLCJlbWFpbCI6ImxhdXJhZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNzk0NzM1LCJleHAiOjE3NjM4MDE5MzV9.BXYcfzhRxbFrwCiySb0Ic477MWh6sUH0EQ_e5AzsCX8
+@tripId = 2
+@URL = http://localhost:3000/api
+
+### Petición 1 : POST: Invitar a un usuario a un viaje (crear participación status pending)
+POST {{URL}}/participations
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+  "tripId": 2
+}
+
+### Petición 2 : GET: Obtener todas las participaciones
+GET http://localhost:3000/api/participations/trip/{{tripId}}
+Authorization: Bearer {{TOKEN}}
+
+### Petición 3 : PUT: Aceptar o rechazar la invitación (UPDATE)
+PUT http://localhost:3000/api/participations/status/9
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+
+{
+  "newStatus": "accepted"
+}
+
+### Petición 4 : DELETE: Retirarse del viaje (DELETE)
+DELETE http://localhost:3000/api/participations/10
+Authorization: Bearer {{TOKEN}}
+Content-Type: application/json
+

@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/7b6cef96-fcc9-4b6d-ba41-876c5a103286/resourceGroups/traveltogetherAPI_group/providers/Microsoft.Web/sites/traveltogetherAPI",
+    "appService.deploySubpath": "."
+}

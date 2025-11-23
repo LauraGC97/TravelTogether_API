@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt';
 import { UserModel } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
-
-// const { User } = require('../models');
+import logger from '../config/logger.js';
 
 const register = async (req, res) => {
 
@@ -32,13 +31,35 @@ const register = async (req, res) => {
 
         const newUser = await user.createUser();
 
+        const secret = process.env.JWT_SECRET;
+        const expiresIn = process.env.JWT_EXPIRES_IN || '2h';
+
+        if (!secret) {
+            logger.error('JWT_SECRET no está configurada en .env');
+            return res.status(500).json({ message: 'Configuración del servidor incompleta.' });
+        }
+
+        const token = jwt.sign(
+            {
+                id: newUser.id,
+                username: newUser.username,
+                email: newUser.email,
+                role: newUser.role
+            },
+            secret,
+            { expiresIn }
+        );
+
+        delete newUser.password;
+
         res.status(201).json({
             message: 'Usuario registrado correctamente.',
+            token,
             user: newUser
         });
 
     } catch (error) {
-        console.error('Error en registerUser:', error);
+        logger.error('Error en registerUser:', error);
         res.status(500).json({ message: 'Error interno del servidor.', error: error.message });
     }
 };
@@ -68,7 +89,7 @@ const login = async (req, res) => {
         const expiresIn = process.env.JWT_EXPIRES_IN || '2h';
 
         if (!secret) {
-            console.error('JWT_SECRET no está configurada en .env');
+            logger.error('JWT_SECRET no está configurada en .env');
             return res.status(500).json({ message: 'Configuración del servidor incompleta.' });
         }
 
@@ -94,7 +115,7 @@ const login = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en login:', error);
+        logger.error('Error en login:', error);
         res.status(500).json({ message: 'Error interno del servidor.', error: error.message });
     }
 
@@ -119,7 +140,7 @@ const getAllUsers = async (req, res) => {
         const offset = (page - 1) * per_page;
 
         // Obtener total de registros y datos paginados
-        const total = await UserModel.count('username',search);  
+        const total = await UserModel.count('username', search);
         // const results = await UserModel.getPaginated(offset, per_page);
 
         const results = await UserModel.getPaginated({
@@ -142,7 +163,7 @@ const getAllUsers = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en getAllUsers:', error);
+        logger.error('Error en getAllUsers:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -159,61 +180,61 @@ const getUserById = async (req, res) => {
 
         res.status(200).json(user);
     } catch (error) {
-        console.error('Error en getUserById:', error);
+        logger.error('Error en getUserById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
 
 const updateUser = async (req, res) => {
-  try {
-    const { idUser } = req.params;
-    const { userId, role } = req.user;
+    try {
+        const { idUser } = req.params;
+        const { userId, role } = req.user;
 
-    /*
-    // Permitir solo al propio usuario o admin
-    if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
-      return res.status(403).json({ message: 'No tienes permiso para actualizar este usuario.' });
+        /*
+        // Permitir solo al propio usuario o admin
+        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
+          return res.status(403).json({ message: 'No tienes permiso para actualizar este usuario.' });
+        }
+        */
+
+        const updatedUser = await UserModel.updateUser(idUser, req.body);
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+
+        res.status(200).json({
+            message: 'Usuario actualizado correctamente.',
+            user: updatedUser
+        });
+
+    } catch (error) {
+        logger.error('Error en updateUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
     }
-    */
-
-    const updatedUser = await UserModel.updateUser(idUser, req.body);
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'Usuario no encontrado.' });
-    }
-
-    res.status(200).json({
-      message: 'Usuario actualizado correctamente.',
-      user: updatedUser
-    });
-
-  } catch (error) {
-    console.error('Error en updateUser:', error);
-    res.status(500).json({ message: 'Error interno del servidor.' });
-  }
 };
 
 const deleteUser = async (req, res) => {
-  try {
-    const { idUser } = req.params;
-    const { userId, role } = req.user;
+    try {
+        const { idUser } = req.params;
+        const { userId, role } = req.user;
 
-    /*
-    // Permitir solo al propio usuario o admin
-    if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
-      return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
+        /*
+        // Permitir solo al propio usuario o admin
+        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
+          return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
+        }
+        */
+
+        const deleted = await UserModel.deleteUser(idUser);
+        if (!deleted) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+
+        res.status(200).json({ message: 'Usuario eliminado correctamente.' });
+    } catch (error) {
+        logger.error('Error en deleteUser:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
     }
-    */
-
-    const deleted = await UserModel.deleteUser(idUser);
-    if (!deleted) {
-      return res.status(404).json({ message: 'Usuario no encontrado.' });
-    }
-
-    res.status(200).json({ message: 'Usuario eliminado correctamente.' });
-  } catch (error) {
-    console.error('Error en deleteUser:', error);
-    res.status(500).json({ message: 'Error interno del servidor.' });
-  }
 };
 
 export { register, login, getAllUsers, getUserById, updateUser, deleteUser };

@@ -1,0 +1,11 @@
+* text=auto
+
+# Scripts siempre LF (Mac/Linux friendly)
+*.sh text eol=lf
+
+# Archivos por si usáis Node o Config
+*.js text eol=lf
+*.ts text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
