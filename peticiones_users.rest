@@ -9,8 +9,8 @@ POST {{URL}}/users/register
 Content-Type: application/json
 
 {
-  "username": "lauragarcia",
-  "email": "lauragarcia@gmail.com",
+  "username": "elenagarcia",
+  "email": "elenagarcia@gmail.com",
   "password": "1234",
   "image": "https://images.piclumen.com/normal/20251109/19/b332132861a84d339ab55a617e0289ed.webp",
   "phone": "600123458",

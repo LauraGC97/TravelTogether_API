@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { BlobServiceClient } from '@azure/storage-blob';
 import ImagesModel from '../models/images.model.js';
+import logger from '../config/logger.js';
 
 import path from 'path';
 

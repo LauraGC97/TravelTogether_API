@@ -68,7 +68,7 @@ export class ParticipationModel extends BaseModel {
  }
 
  //-----------------------
- // UPDATE: Actualizar el estado de una participación por ID (Nuevo - Usado en el controlador)
+ // UPDATE: Actualizar el estado de una participación por ID
  //-----------------------
  static async updateParticipationStatusById(id, newStatus) {
  const [result] = await pool.query(
@@ -84,8 +84,7 @@ if (result.affectedRows === 0) return null;
  }
  
  //-----------------------
- // UPDATE: Actualizar el estado de una participación (por tripId y userId) (Original)
- // Se mantiene por compatibilidad.
+ // UPDATE: Actualizar el estado de una participación (por tripId y userId)
  //-----------------------
  static async updateParticipationStatus(tripId, userId, newStatus) {
  const [result] = await pool.query(
@@ -101,7 +100,7 @@ if (result.affectedRows === 0) return null;
  }
 
  //-----------------------
- // DELETE: Eliminar una participación específica por ID (Nuevo - Usado en el controlador)
+ // DELETE: Eliminar una participación específica por ID
  //-----------------------
  static async removeParticipationById(id) {
  const [result] = await pool.query(
@@ -112,7 +111,7 @@ if (result.affectedRows === 0) return null;
  }
  
  //-----------------------
- // DELETE: Eliminar una participación específica (Original)
+ // DELETE: Eliminar una participación específica
  //-----------------------
 static async removeParticipation(tripId, userId) {
  const [result] = await pool.query(

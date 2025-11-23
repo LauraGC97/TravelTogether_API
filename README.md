@@ -22,7 +22,7 @@ from [Node.js official website](https://nodejs.org/).
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/mariogiron/express-init-template.git project-name
+git clone https://github.com/LauraGC97/TravelTogether_API.git
 ```
 
 2. **Navigate to the project directory:**
