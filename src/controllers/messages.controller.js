@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { NotificationModel } from '../models/notification.model.js';
+import { MessageModel } from '../models/message.model.js';
 import logger from '../config/logger.js';
 import { getUserFromToken } from '../utils/myUtils.js';
 
-const getAllNotifications = async (req, res) => {
+const getAllMessages = async (req, res) => {
     try {
 
         // Leemos parametros de paginación de query
@@ -18,10 +18,10 @@ const getAllNotifications = async (req, res) => {
         const offset = (page - 1) * per_page;
 
         // Obtener total de registros y datos paginados
-        const total = await NotificationModel.count('username', search);
+        const total = await MessageModel.count('username', search);
         // const results = await UserModel.getPaginated(offset, per_page);
 
-        const results = await NotificationModel.getPaginated({
+        const results = await MessageModel.getPaginated({
             page: parseInt(page),
             per_page: parseInt(per_page),
             searchField: 'username',
@@ -41,24 +41,24 @@ const getAllNotifications = async (req, res) => {
         });
 
     } catch (error) {
-        logger.error('Error en getAllRatings:', error);
+        logger.error('Error en getAllMessages:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
 
-const getNotificationById = async (req, res) => {
+const getMessageById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const rating = await NotificationModel.getNotificationById(id);
+        const message = await MessageModel.getMessagesById(id);
 
-        if (!rating) {
-            return res.status(404).json({ message: 'Notification no encontrado.' });
+        if (!message) {
+            return res.status(404).json({ message: 'Message no encontrado.' });
         }
 
         res.status(200).json(rating);
     } catch (error) {
-        logger.error('Error en getNotificationById:', error);
+        logger.error('Error en getMessageById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -128,7 +128,7 @@ function parseWhereString(whereString) {
     };
 }
 
-const getNotificationWithWhere = async (req, res, next) => {
+const getMessageWithWhere = async (req, res, next) => {
 
     const id = req.params.id;
     const baseWhere = 'WHERE 1=1 ';
@@ -148,9 +148,9 @@ const getNotificationWithWhere = async (req, res, next) => {
 
         const offset = (page - 1) * per_page;
 
-        const total = await NotificationModel.count('WHERE receiver_id = ?', [id]);
+        const total = await MessageModel.count('WHERE receiver_id = ?', [id]);
 
-        const results = await NotificationModel.getWithWhereClause({
+        const results = await MessageModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
             whereClause:finalWhere,
@@ -169,7 +169,7 @@ const getNotificationWithWhere = async (req, res, next) => {
         });
 
     } catch (error) {
-        logger.error('Error en getNotificationByReceiverId:', error);
+        logger.error('Error en getMessageWithWhere:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 
@@ -213,78 +213,78 @@ const getNotificationBySenderId = async (req, res, next) => {
 
 };
 
-const createNotification = async (req, res) => {
+const createMessage = async (req, res) => {
 
     try {
         const creatorId = await getUserFromToken(req.headers.authorization);
-        const notificationData = { ...req.body, creatorId };
-        const notification = new NotificationModel(notificationData);
-        const newNotification = await notification.createNotification();
+        const messageData = { ...req.body, creatorId };
+        const message = new MessageModel(messageData);
+        const newMessage = await message.createMessage();
 
         res.status(201).json({
-            message: 'Notificaction creado exitosamente',
-            notification: newNotification
+            message: 'Message creado exitosamente',
+            newMessage: newMessage
         });
     } catch (error) {
-        logger.error('Error al crear el Notification:', error);
+        logger.error('Error al crear el Message:', error);
         res.status(500).json({
-            message: 'Error interno del servidor al crear notification.',
+            message: 'Error interno del servidor al crear Message.',
             error: error.message
         });
     }
 };
 
-const updateNotificationById = async (req, res) => {
+const updateMessageById = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const updatedNotification = await NotificationModel.updateNotificationById(id, req.body);
+        const updatedMessage = await MessageModel.updateMessageById(id, req.body);
 
-        if (!updatedNotification) {
-            return res.status(404).json({ message: 'Notification no encontrado.' });
+        if (!updatedMessage) {
+            return res.status(404).json({ message: 'Message no encontrado.' });
         }
 
         res.status(200).json({
-            message: 'Notification actualizado correctamente.',
-            notification: updatedNotification
+            message: 'Message actualizado correctamente.',
+            updateMessage: updatedMessage
         });
 
     } catch (error) {
-        logger.error('Error en updateNotification:', error);
+        logger.error('Error en updateMessage:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
 
-const deleteNotificationById = async (req, res) => {
+const deleteMessageById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const notification = await NotificationModel.getNotificationById(id);
+        const message = await MessageModel.getMessageById(id);
 
-        if (!notification) {
-            return res.status(404).json({ message: 'Notification no encontrado.' });
+        if (!message) {
+            return res.status(404).json({ message: 'Message no encontrado.' });
         }
 
-        const deleted = await NotificationModel.deleteNotification(id);
+        const deleted = await MessageModel.deleteMessageById(id);
         if (!deleted) {
-            return res.status(404).json({ message: 'Notification no encontrado.' });
+            return res.status(404).json({ message: 'Message no encontrado.' });
         }
 
-        res.status(200).json({ message: 'Notification eliminado correctamente.', notification: notification });
+        res.status(200).json({ message: 'Message eliminado correctamente.', message: message });
 
     } catch (error) {
-        logger.error('Error en deleteNotificationById:', error);
+        logger.error('Error en deleteMessageById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
 
 export default {
-    getAllNotifications,
-    getNotificationById,
+    getAllMessages,
+    getMessageById,
     getNotificationBySenderId,
     getNotificationByReceiverId,
-    getNotificationWithWhere,
-    updateNotificationById,
-    deleteNotificationById,
-    createNotification
+    getMessageWithWhere,
+    updateMessageById,
+    deleteMessageById,
+    createMessage
 };
