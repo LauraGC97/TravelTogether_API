@@ -41,5 +41,6 @@ router.use('/images', apiImagesRoutes);
 router.use('/ratings', apiRatingsRoutes);
 router.use('/notifications', apiNotificationsRoutes);
 router.use('/participations', apiParticipationsRoutes);
+router.use('/messages', apiParticipationsRoutes);
 
 export default router;

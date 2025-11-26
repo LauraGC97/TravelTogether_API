@@ -1,37 +1,36 @@
 import pool from '../config/db.js';
 import BaseModel from './base.model.js';
 
-export class NotificationModel extends BaseModel {
+export class MessagesModel extends BaseModel {
 
     static tableName = 'notifications';
 
-    constructor({ id, title, message, type, is_read, created_at, sender_id, receiver_id }) {
+    constructor({ id, message, receiver_id, created_at, sender_id, trip_id, group_id}) {
 
-        super('notifications');
+        super('messages');
 
         this.id = id;
-        this.title = title;
         this.message = message;
-        this.type = type;
-        this.is_read = is_read;
+        this.receiver_id = receiver_id;
         this.created_at = created_at;
         this.sender_id = sender_id;
-        this.receiver_id = receiver_id;
+        this.trip_id = trip_id;
+        this.group_id = group_id;
 
     }
 
-    async createNotification() {
+    async createMessage() {
 
         const [result] = await pool.query(
-            `INSERT INTO notifications ( title, message, type, is_read, sender_id, receiver_id)
-       VALUES (?, ?, ?, ?, ?, ? )`,
-            [this.title, this.message, this.type, this.is_read, this.sender_id, this.receiver_id]
+            `INSERT INTO messages ( message, receiver_id, sender_id, trip_id, group_id)
+       VALUES (?, ?, ?, ?, ? )`,
+            [this.message, this.receiver_id, this.sender_id, this.trip_id, this.group_id]
         );
 
         // Recuperamos el usuario recién creado para enviarlo al Front
         const [rows] = await pool.query(
-            ` SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id  
-              FROM notifications 
+            ` SELECT  id, message, receiver_id, created_at, sender_id, trip_id, group_id  
+              FROM messages 
               WHERE id = ?`,
             [result.insertId]
         );
@@ -39,10 +38,10 @@ export class NotificationModel extends BaseModel {
         return rows[0];
     }
 
-    static async getNotificationById(id) {
+    static async getMessagesById(id) {
         const [rows] = await pool.query(
-            `SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id
-             FROM notifications 
+            `SELECT  id, message, receiver_id, created_at, sender_id, trip_id, group_idd
+             FROM messages 
              WHERE id = ?`, [id]
         );
         return rows[0] || null;
@@ -73,31 +72,22 @@ export class NotificationModel extends BaseModel {
         return { total, results: rows, page, per_page, total_pages: Math.ceil(total / per_page) };
     }
 
-    static async getSumScoreById(id) {
-        const [rows] = await pool.query(
-            `SELECT SUM(score) as total
-             FROM ratings 
-             WHERE rated_user_id = ?`, [id]
-        );
-        return rows[0] || null;
-    }
+    static async updateMessageById(id, data) {
 
-    static async updateNotificationById(id, data) {
-
-        const { title, message } = data;
+        const {  message, receiver_id, sender_id, trip_id, group_id } = data;
 
         const [result] = await pool.query(
-            `UPDATE notifications 
-             SET  title = ?, message = ?
+            `UPDATE messages 
+             SET  message = ?, receiver_id = ?, sender_id = ?, trip_id = ?, group_id = ? 
              WHERE id = ?`,
-            [title, message, id]
+            [message, receiver_id, sender_id, trip_id, group_id, id]
         );
 
         if (result.affectedRows === 0) return null;
 
         const [rows] = await pool.query(
-            ` SELECT  id, title, message, type, is_read, created_at, sender_id, receiver_id 
-              FROM notifications
+            ` SELECT  id, message, receiver_id, created_at, sender_id, trip_id, group_id 
+              FROM messages
               WHERE id = ?`,
             [id]
         );
@@ -106,7 +96,7 @@ export class NotificationModel extends BaseModel {
     }
 
     static async deleteNotification(id) {
-        const [result] = await pool.query('DELETE FROM notifications WHERE id = ?', [id]);
+        const [result] = await pool.query('DELETE FROM messages WHERE id = ?', [id]);
         return result.affectedRows > 0;
     }
 
