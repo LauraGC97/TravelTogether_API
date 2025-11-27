@@ -1,18 +1,18 @@
 import express from 'express';
-import notificationsController from '../../controllers/notifications.controller.js';
+import messagesController from '../../controllers/messages.controller.js';
 
 const router = express.Router();
 
-router.get('/', notificationsController.getAllNotifications);
+router.get('/', messagesController.getAllMessages);
 
-router.get('/where', notificationsController.getNotificationWithWhere);
-router.get('/:id', notificationsController.getNotificationById);
+router.get('/where', messagesController.getMessageWithWhere);
+router.get('/:id', messagesController.getMessageById);
 
-router.get('/sender/:id', notificationsController.getNotificationBySenderId);
-router.get('/receiver/:id', notificationsController.getNotificationByReceiverId);
+router.get('/sender/:id', messagesController.getNotificationBySenderId);
+router.get('/receiver/:id', messagesController.getNotificationByReceiverId);
 
-router.post('/', notificationsController.createNotification);
-router.put('/:id', notificationsController.updateNotificationById);
-router.delete('/:id', notificationsController.deleteNotificationById);
+router.post('/', messagesController.createMessage);
+router.put('/:id', messagesController.updateMessageById);
+router.delete('/:id', messagesController.deleteMessageById);
 
 export default router;

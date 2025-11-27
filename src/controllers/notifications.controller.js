@@ -103,8 +103,6 @@ const getNotificationByReceiverId = async (req, res, next) => {
 
 function parseWhereString(whereString) {
 
-    console.log('Entro en parseWhereString');
-
     if (!whereString) return { whereSQL: '', params: [] };
 
     const parts = whereString.split(' and ').map(p => p.trim());

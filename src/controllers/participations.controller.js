@@ -33,8 +33,6 @@ export function getUserIdFromAuthHeader(authHeader) {
 const getParticipationsByTripId = async (req, res) => {
   try {
     const { tripId } = req.params;
-
-    console.log ('tripId :' , tripId) ;
     
     const participations = await ParticipationModel.getParticipationsByTripId(
       tripId

@@ -5,6 +5,7 @@ import logger from '../config/logger.js';
 import { getUserFromToken } from '../utils/myUtils.js';
 
 const getAllMessages = async (req, res) => {
+
     try {
 
         // Leemos parametros de paginación de query
@@ -47,16 +48,17 @@ const getAllMessages = async (req, res) => {
 };
 
 const getMessageById = async (req, res) => {
+
     try {
         const { id } = req.params;
 
-        const message = await MessageModel.getMessagesById(id);
+        const message = await MessageModel.getMessageById(id);
 
         if (!message) {
             return res.status(404).json({ message: 'Message no encontrado.' });
         }
 
-        res.status(200).json(rating);
+        res.status(200).json(message);
     } catch (error) {
         logger.error('Error en getMessageById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
@@ -102,8 +104,6 @@ const getNotificationByReceiverId = async (req, res, next) => {
 };
 
 function parseWhereString(whereString) {
-
-    console.log('Entro en parseWhereString');
 
     if (!whereString) return { whereSQL: '', params: [] };
 
@@ -256,6 +256,7 @@ const updateMessageById = async (req, res) => {
 };
 
 const deleteMessageById = async (req, res) => {
+
     try {
         const { id } = req.params;
 

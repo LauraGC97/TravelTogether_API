@@ -1,53 +1,45 @@
 @TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNTUxODk3LCJleHAiOjE3OTUwODc4OTd9.COtbMG-B8RWr7UdBPEqQk5nVd3G_d1i8nPG5Xw6-g-s
 @URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
-@URL_LOCAL = http://localhost:3000/api/notifications
+@URL_LOCAL = http://localhost:3000/api/messages
 
 @URL = {{URL_LOCAL}}
 
-### Petición 0 : LISTAR TODAS LAS NOTIFICACIONES
+### Petición 0 : LISTAR TODAS LAS MESSAGES
 GET {{URL}}
 Authorization: Bearer {{TOKEN}}
 
-### Petición 0 : LISTAR TODAS LAS NOTIFICACIONES con un where chulo
-GET {{URL}}/where?page=1&per_page=5&where=type:trip and is_read:1
+### Petición 0 : LISTAR TODAS LAS MESSAGES con un where chulo
+GET {{URL}}/where?page=1&per_page=5&where=sender_id:1 and trip_id:1
 Authorization: Bearer {{TOKEN}}
 
-### Petición 1 : LISTAR NOTIFICACIONES POR ID
+### Petición 1 : LISTAR MESSAGES POR ID
 GET {{URL}}/1
 Authorization: Bearer {{TOKEN}}
 
-### Petición 3 : LISTAR NOTIFICACIONES POR USER_ID
-GET {{URL}}/sender/1
-Authorization: Bearer {{TOKEN}}
-
-### Petición 3 : LISTAR NOTIFICACIONES POR USER_ID
-GET {{URL}}/receiver/1
-Authorization: Bearer {{TOKEN}}
-
-### - Create NOTIFICACIONES
+### - Create MESSAGES
 POST {{URL}}
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
-  "title": "un titulo cualquiera",
-  "message": "un message mas cualquiera todavia",
-  "type": "trip",
-  "is_read": 1,
+  "message": "Un mensaje que creo para probar",
+  "receiver_id": 2,
   "sender_id": 3,
-  "receiver_id": 1
+  "receiver_id": 1,
+  "trip_id": 4,
+  "group_id": 2
+
 }
 
-### - updateNotificationById
-PUT {{URL}}/5
+### - updateMessageById
+PUT {{URL}}/8
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
-  "title": "otro titulo",
-  "message": "otro mensaje"
+  "message": "ahora es otro mensaje"
 }
 
-### Petición 4 : ELIMINAR NOTIFICACIONES BY ID
-DELETE {{URL}}/5
+### Petición 4 : ELIMINAR MESSAGES BY ID
+DELETE {{URL}}/8
 Authorization: Bearer {{TOKEN}}

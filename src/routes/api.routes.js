@@ -7,6 +7,7 @@ import apiImagesRoutes from './api/images.routes.js';
 import apiRatingsRoutes from './api/ratings.routes.js';
 import apiParticipationsRoutes from './api/participations.routes.js';
 import apiNotificationsRoutes from './api/notifications.routes.js';
+import apiMessagesRoutes from './api/messages.routes.js';
 
 const router = Router();
 
@@ -41,6 +42,6 @@ router.use('/images', apiImagesRoutes);
 router.use('/ratings', apiRatingsRoutes);
 router.use('/notifications', apiNotificationsRoutes);
 router.use('/participations', apiParticipationsRoutes);
-router.use('/messages', apiParticipationsRoutes);
+router.use('/messages', apiMessagesRoutes);
 
 export default router;

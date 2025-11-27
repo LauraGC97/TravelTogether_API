@@ -62,8 +62,6 @@ export class ParticipationModel extends BaseModel {
  [tripId]
  );
 
- console.log(sqlQuery);
-
  return rows;
  }
 

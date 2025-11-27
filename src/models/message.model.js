@@ -1,9 +1,9 @@
 import pool from '../config/db.js';
 import BaseModel from './base.model.js';
 
-export class MessagesModel extends BaseModel {
+export class MessageModel extends BaseModel {
 
-    static tableName = 'notifications';
+    static tableName = 'messages';
 
     constructor({ id, message, receiver_id, created_at, sender_id, trip_id, group_id}) {
 
@@ -38,9 +38,9 @@ export class MessagesModel extends BaseModel {
         return rows[0];
     }
 
-    static async getMessagesById(id) {
+    static async getMessageById(id) {
         const [rows] = await pool.query(
-            `SELECT  id, message, receiver_id, created_at, sender_id, trip_id, group_idd
+            `SELECT  id, message, receiver_id, created_at, sender_id, trip_id, group_id
              FROM messages 
              WHERE id = ?`, [id]
         );
@@ -74,13 +74,13 @@ export class MessagesModel extends BaseModel {
 
     static async updateMessageById(id, data) {
 
-        const {  message, receiver_id, sender_id, trip_id, group_id } = data;
+        const {  message } = data;
 
         const [result] = await pool.query(
             `UPDATE messages 
-             SET  message = ?, receiver_id = ?, sender_id = ?, trip_id = ?, group_id = ? 
+             SET  message = ? 
              WHERE id = ?`,
-            [message, receiver_id, sender_id, trip_id, group_id, id]
+            [message, id]
         );
 
         if (result.affectedRows === 0) return null;
@@ -95,7 +95,7 @@ export class MessagesModel extends BaseModel {
         return rows[0];
     }
 
-    static async deleteNotification(id) {
+    static async deleteMessageById(id) {
         const [result] = await pool.query('DELETE FROM messages WHERE id = ?', [id]);
         return result.affectedRows > 0;
     }
