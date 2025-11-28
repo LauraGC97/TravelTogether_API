@@ -5,34 +5,18 @@ import logger from '../config/logger.js';
 import { getUserFromToken } from '../utils/myUtils.js';
 
 const getAllMessages = async (req, res) => {
-
     try {
-
-        // Leemos parametros de paginación de query
         const page = Math.max(1, parseInt(req.query.page) || 1);
         const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
         const search = req.query.search || '';
 
-        // Tambien podriamos serializarlo, pero para pruebas lo dejo así 
-        // const { page = 1, per_page = 10, search = '' } = req.query;
-
-        const offset = (page - 1) * per_page;
-
-        // Obtener total de registros y datos paginados
-        const total = await MessageModel.count('username', search);
-        // const results = await UserModel.getPaginated(offset, per_page);
-
-        const results = await MessageModel.getPaginated({
-            page: parseInt(page),
-            per_page: parseInt(per_page),
+        const { results, total, total_pages } = await MessageModel.getPaginated({
+            page,
+            per_page,
             searchField: 'username',
             searchValue: search
         });
 
-        // Calcular páginas totales
-        const total_pages = Math.ceil(total / per_page);
-
-        // Devolvemos respuesta
         res.status(200).json({
             page,
             per_page,
@@ -59,6 +43,7 @@ const getMessageById = async (req, res) => {
         }
 
         res.status(200).json(message);
+
     } catch (error) {
         logger.error('Error en getMessageById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
@@ -132,7 +117,7 @@ const getMessageWithWhere = async (req, res, next) => {
 
     const id = req.params.id;
     const baseWhere = 'WHERE 1=1 ';
-    const baseParams = [] ;
+    const baseParams = [];
 
     const where = req.query.where;
 
@@ -153,7 +138,7 @@ const getMessageWithWhere = async (req, res, next) => {
         const results = await MessageModel.getWithWhereClause({
             page: parseInt(page),
             per_page: parseInt(per_page),
-            whereClause:finalWhere,
+            whereClause: finalWhere,
             queryParams: finalParams
 
         });
@@ -221,10 +206,15 @@ const createMessage = async (req, res) => {
         const message = new MessageModel(messageData);
         const newMessage = await message.createMessage();
 
+        console.log('newMessage:', newMessage);
+
+        const result = await MessageModel.getMessageById(newMessage.id);
+
         res.status(201).json({
             message: 'Message creado exitosamente',
-            newMessage: newMessage
+            newMessage: result
         });
+
     } catch (error) {
         logger.error('Error al crear el Message:', error);
         res.status(500).json({
@@ -243,10 +233,11 @@ const updateMessageById = async (req, res) => {
         if (!updatedMessage) {
             return res.status(404).json({ message: 'Message no encontrado.' });
         }
-
+        const result = await MessageModel.getMessageById(updatedMessage.id);
+        
         res.status(200).json({
             message: 'Message actualizado correctamente.',
-            updateMessage: updatedMessage
+            updateMessage: result
         });
 
     } catch (error) {

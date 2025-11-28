@@ -9,7 +9,7 @@ GET {{URL}}
 Authorization: Bearer {{TOKEN}}
 
 ### Petición 0 : LISTAR TODAS LAS MESSAGES con un where chulo
-GET {{URL}}/where?page=1&per_page=5&where=sender_id:1 and trip_id:1
+GET {{URL}}/where?page=1&per_page=5&where=
 Authorization: Bearer {{TOKEN}}
 
 ### Petición 1 : LISTAR MESSAGES POR ID
