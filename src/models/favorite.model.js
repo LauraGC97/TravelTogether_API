@@ -158,4 +158,23 @@ export class FavoritesModel extends BaseModel {
         return rows[0];
     }
 
+    static async updateFavoritesById(id, trip_id) {
+
+        const [result] = await pool.query(
+            `UPDATE favorites 
+             SET  trip_id = ?
+             WHERE id = ?`,
+            [trip_id, id]
+        );
+
+        if (result.affectedRows === 0) return null;
+
+        return result;
+    }    
+
+    static async deleteFavoritesById(id) {
+        const [result] = await pool.query('DELETE FROM favorites WHERE id = ?', [id]);
+        return result.affectedRows > 0;
+    }    
+
 }

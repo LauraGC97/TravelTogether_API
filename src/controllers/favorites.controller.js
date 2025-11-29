@@ -124,22 +124,29 @@ const createFavorites = async (req, res) => {
 };
 
 const updateFavoritesById = async (req, res) => {
+
     try {
         const { idFavorites } = req.params;
-        const { userId, role } = req.user;
+        const { trip_id } = req.body;
 
-        const updatedUser = await UserModel.updateUser(idUser, req.body);
+        const updatedUser = await FavoritesModel.updateFavoritesById(idFavorites, trip_id);
+        
+        console.log('updatedatedUser', updatedUser) ;
+
         if (!updatedUser) {
-            return res.status(404).json({ message: 'Usuario no encontrado.' });
+            return res.status(404).json({ message: 'Favorites no encontrado.' });
         }
+        console.log('1');
+        const result = await FavoritesModel.getFavoritesById(idFavorites, 'id');
+        console.log('2');
 
         res.status(200).json({
-            message: 'Usuario actualizado correctamente.',
-            user: updatedUser
+            message: 'Favorites actualizado correctamente.',
+            data : result
         });
 
     } catch (error) {
-        logger.error('Error en updateUser:', error);
+        logger.error('Error en updateFavoritesById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -147,23 +154,17 @@ const updateFavoritesById = async (req, res) => {
 const deleteFavoritesById = async (req, res) => {
     try {
         const { idFavorites } = req.params;
-        const { userId, role } = req.user;
 
-        /*
-        // Permitir solo al propio usuario o admin
-        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
-          return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
-        }
-        */
+        const result = await FavoritesModel.getFavoritesById(idFavorites, 'id');
 
-        const deleted = await UserModel.deleteUser(idUser);
+        const deleted = await FavoritesModel.deleteFavoritesById(idFavorites);
         if (!deleted) {
-            return res.status(404).json({ message: 'Usuario no encontrado.' });
+            return res.status(404).json({ message: 'Favorites no encontrado.' });
         }
 
-        res.status(200).json({ message: 'Usuario eliminado correctamente.' });
+        res.status(200).json({ message: 'Favorites eliminado correctamente.', data : result });
     } catch (error) {
-        logger.error('Error en deleteUser:', error);
+        logger.error('Error en deleteFavoritesById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };

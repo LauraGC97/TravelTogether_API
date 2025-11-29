@@ -19,7 +19,7 @@ router.get('/:idFavorites', getFavoritesById);
 router.get('/user/:id', getFavoritesByUserId);
 router.get('/trip/:id', getFavoritesByTripId);
 router.post('/', verifyToken, createFavorites);
-router.put('/', updateFavoritesById);
-router.delete('/', deleteFavoritesById);
+router.put('/:idFavorites', updateFavoritesById);
+router.delete('/:idFavorites', deleteFavoritesById);
 
 export default router;

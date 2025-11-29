@@ -35,9 +35,9 @@ Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
-  "trip_id": 5
+  "trip_id": 63
 }
 
 ### Petición 4 : ELIMINAR FAVORITES BY ID
-DELETE {{URL}}/12
+DELETE {{URL}}/21
 Authorization: Bearer {{TOKEN}}
