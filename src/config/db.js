@@ -6,7 +6,7 @@ const pool = mysql.createPool({
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-    database: process.env.DB_DATABASENAME
+    database: process.env.DB_DATABASENAME,
 });
 
 export default pool ;

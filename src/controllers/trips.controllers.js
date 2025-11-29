@@ -1,18 +1,30 @@
 import { TripModel } from '../models/trip.model.js';
 import { ParticipationModel } from '../models/participation.model.js';
 
+
+    //Validar que la fecha de inicio sea anterior a la fecha de fin
+const validateTripdates = (start_date, end_date) => {
+    if (new Date(start_date) > new Date(end_date)) {
+        return 'La fecha de inicio debe ser anterior a la fecha de fin.';
+    }
+    return null;
+};
 //----------------------------------------------------------
 // CREATE: Crear viaje
 //----------------------------------------------------------
 const createTrip = async (req, res) => {
-  //1. Validacion de campos obligatorios
+    //1. Validacion de campos obligatorios
     try {
     const creator_id = req.user.id;
     const tripData = {...req.body, creator_id };
     if (!tripData.title || !tripData.origin || !tripData.destination || !tripData.start_date || !tripData.end_date) {
         return res.status(400).json({ message: 'Faltan campos obligatorios: titulo, origen, destino, fecha de comienzo, fecha de fin del viaje.' });
     }
-  
+    // 1.5. Validacion de coherencia de fechas
+    const dateError = validateTripdates(tripData.start_date, tripData.end_date);
+    if (dateError) {
+        return res.status(400).json({ message: dateError });
+    }
     // 2. Validacion de superposicion de fechas
     const conflictTripId = await TripModel.hasDateOverlap(creator_id, tripData.start_date, tripData.end_date);
     
@@ -119,10 +131,17 @@ const updateTrip = async (req, res) => {
         if (tripToUpdate.creator_id !== userId) {
             return res.status(403).json({ message: 'No tienes permiso para actualizar este viaje.' });
         }
-
+        // Obtener fechas nuevas o mantener las existentes
         const newStartDate = updatedData.start_date || tripToUpdate.start_date;
         const newEndDate = updatedData.end_date || tripToUpdate.end_date;
 
+        // 1. Validacion de coherencia de fechas si se actualizan
+        const dateError = validateTripdates(newStartDate, newEndDate);
+        if (dateError) {
+            return res.status(400).json({ message: dateError });
+        }
+        
+        // 2. Validacion de superposicion de fechas si se actualizan
         if (updatedData.start_date || updatedData.end_date) {
             
             const conflictTripId = await TripModel.hasDateOverlap(userId, newStartDate, newEndDate, tripId);

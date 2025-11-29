@@ -31,7 +31,7 @@ export class TripModel extends BaseModel {
         this.transport = transport;
         this.accommodation = accommodation;
         this.itinerary = itinerary;
-        this.status = status || 'planned';
+        this.status = status || TRIP_STATUSES.PLANNED;
         this.latitude = latitude;
         this.longitude = longitude;
         this.created_at = created_at;
@@ -83,6 +83,107 @@ export class TripModel extends BaseModel {
         const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE id = ?`, [id]);
         return rows[0] || null;
     }
+
+    //-----------------------
+    // Obtener viajes creados por un usuario con sus participantes aceptados
+    //-----------------------
+static async getMyCreatedTripsWithParticipants(creatorId) {
+    const tableName = "trips";
+    const participationTableName = "participations";
+    const imageTableName = "images"; 
+    const ratingsTableName = "ratings";
+    const userTableName = "users";
+
+    try {
+        const query = `
+            SELECT 
+                t.id AS trip_id, 
+                t.origin, t.destination, t.title, t.description,
+                t.creator_id, t.start_date, t.end_date, t.estimated_cost,
+                t.min_participants, t.transport, t.accommodation, t.itinerary,
+                t.status, t.latitude, t.longitude, t.created_at,
+                ti.url AS trip_image_url,
+                
+                -- Agrupamos los participantes aceptados
+                GROUP_CONCAT(
+                    CASE 
+                        WHEN p.status = 'accepted' THEN 
+                            JSON_OBJECT(
+                                'id', u.id, 
+                                'username', u.username, 
+                                'email', u.email,
+                                'status', p.status,
+                                'is_creator', IF(u.id = t.creator_id, TRUE, FALSE),
+                                'participant_image_url', ui.url,
+                                'participant_avg_score', (
+                                    SELECT AVG(score) 
+                                    FROM ${ratingsTableName} r 
+                                    WHERE r.rated_user_id = u.id
+                                )
+                            ) 
+                        ELSE NULL 
+                    END
+                ) AS accepted_participants_json
+
+            FROM 
+                ${tableName} t
+            LEFT JOIN 
+                ${participationTableName} p ON p.trip_id = t.id
+            LEFT JOIN 
+                ${userTableName} u ON u.id = p.user_id
+            LEFT JOIN 
+                ${imageTableName} ti ON ti.trip_id = t.id AND ti.main_img = 1
+            LEFT JOIN
+                ${imageTableName} ui ON ui.user_id = u.id AND ui.main_img = 1
+            WHERE 
+                t.creator_id = ?
+            GROUP BY 
+                t.id, t.origin, t.destination, t.title, t.description, 
+                t.creator_id, t.start_date, t.end_date, t.estimated_cost,
+                t.min_participants, t.transport, t.accommodation, t.itinerary,
+                t.status, t.latitude, t.longitude, t.created_at, ti.url
+            ORDER BY 
+                t.created_at DESC
+        `;
+        
+        const [rows] = await pool.query(query, [creatorId]);
+
+        // ... El procesamiento JS (map, JSON.parse, delete)
+        const tripsWithParticipants = rows.map(trip => {
+            let allParticipants = [];
+            let acceptedParticipants = [];
+            
+            const rawJsonString = trip.accepted_participants_json;
+            if (rawJsonString && rawJsonString.length > 0) {
+                try {
+                    if (rawJsonString.includes('},{')) {
+                    allParticipants = JSON.parse(`[${rawJsonString}]`);
+                    } else {
+                    acceptedParticipants = [JSON.parse(rawJsonString)];
+                    }    
+                } catch (e) { 
+                    console.warn("Fallo al parsear JSON de participantes para el viaje:", trip.trip_id, e);   
+                }
+            }    
+            delete trip.all_participants_json; 
+                
+            const currentParticipantsCount = acceptedParticipants.length;
+
+            return {
+                ...trip,
+                all_related_participants: acceptedParticipants,
+                current_participants: currentParticipantsCount,
+                capacity: trip.min_participants
+            };
+        });
+
+        return tripsWithParticipants;
+
+    } catch (error) {
+        console.error('Error en TripModel.getMyCreatedTripsWithParticipants:', error);
+        throw error;
+    } 
+}       
     //------------------------
     // Funcionalidad para verificar si el usuario es el creador del viaje
     //------------------------
@@ -100,16 +201,22 @@ export class TripModel extends BaseModel {
         const [rows] = await pool.query(
             `SELECT
                 t.min_participants AS capacity,
+                t.creator_id,
                 (
                     SELECT COUNT(p.id)
                     FROM ${this.participationTableName} p
-                    WHERE p.trip_id = t.id AND p.status = 'accepted'
-                ) AS current_participants
+                    WHERE p.trip_id = t.id AND p.status = 'accepted' AND p.user_id != t.creator_id
+                ) AS accepted_participants_excluding_creator
             FROM ${this.tableName} t
             WHERE t.id = ?`,
             [tripId]
         );
-        return rows[0] || null;
+
+        if (rows.length === 0) return null;
+        const result = rows[0];
+        result.current_participants = result.accepted_participants_excluding_creator + 1; // +1 por el creador
+        delete result.accepted_participants_excluding_creator;
+        return result;
     }
     //--------------------------------------------------------------------------
     //Verificar si hay superposición de fechas para un usuario creado o apuntado
