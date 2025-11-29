@@ -1,22 +1,35 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJuYW1lIjoibGF1cmFnYXJjaWEiLCJlbWFpbCI6ImxhdXJhZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNzk0NzM1LCJleHAiOjE3NjM4MDE5MzV9.BXYcfzhRxbFrwCiySb0Ic477MWh6sUH0EQ_e5AzsCX8
-@tripId = 2
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzY0NDQ4NDI2LCJleHAiOjE3NjQ0NTU2MjZ9.1zHV7QBIAb9pnLc7Afvy0tt9m9UIiMccXPtSEDOUG38
+@tripId = 7
 @URL = http://localhost:3000/api
 
-### Petición 1 : POST: Invitar a un usuario a un viaje (crear participación status pending)
+### Petición 1 : Permitir al usuario autenticado unirse a un viaje (PENDING)
 POST {{URL}}/participations
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
-  "tripId": 2
+  "tripId": 6
 }
 
-### Petición 2 : GET: Obtener todas las participaciones
-GET http://localhost:3000/api/participations/trip/{{tripId}}
+### Petición 2 : GET: Obtener todas las participaciones de un viaje con los detalles del participante (status, imagen y valoracion)
+GET http://localhost:3000/api/participations/trip/6
 Authorization: Bearer {{TOKEN}}
 
-### Petición 3 : PUT: Aceptar o rechazar la invitación (UPDATE)
-PUT http://localhost:3000/api/participations/status/9
+### Petición 3 : GET: Obtener mis viajes creados con los detalles de los participantes y los viajes (valoraciones, detalles del viaje e imagenes)
+GET http://localhost:3000/api/participations/my-created
+Authorization: Bearer {{TOKEN}}
+
+### Petición 4 : GET: Obtener solicitudes pendientes para los viajes creados por el usuario autenticado con los detalles de los participantes y los viajes (valoraciones, detalles del viaje e imagenes)
+GET http://localhost:3000/api/participations/pending
+Authorization: Bearer {{TOKEN}}
+
+### Petición 5 : GET: Obtener mis participaciones de los viajes a los que me he unido con los detalles de los participantes y los viajes (valoraciones, detalles del viaje e imagenes)
+GET http://localhost:3000/api/participations/my-participations
+Authorization: Bearer {{TOKEN}}
+
+
+### Petición 6 : PUT: Aceptar, rechazar o cancelar la invitación (UPDATE)
+PUT http://localhost:3000/api/participations/status/21
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
@@ -24,8 +37,8 @@ Content-Type: application/json
   "newStatus": "accepted"
 }
 
-### Petición 4 : DELETE: Retirarse del viaje (DELETE)
-DELETE http://localhost:3000/api/participations/10
+### Petición 7 : DELETE: Retirarse del viaje (DELETE)
+DELETE http://localhost:3000/api/participations/20
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
