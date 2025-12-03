@@ -58,6 +58,7 @@ export class ParticipationModel extends BaseModel {
 static async getParticipationsByTripId(tripId) {
 const userTableName = "users";
 const imageTableName = "images";
+const ratingsTableName = "ratings";
 
  const [rows] = await pool.query(
     `SELECT
@@ -68,18 +69,17 @@ const imageTableName = "images";
         u.id AS user_id,
         u.username,
         u.email,
-        ui.url AS user_image_url,
+        u.image AS user_image_url,
+
         (
             SELECT AVG(score) 
-            FROM ratings 
+            FROM ${ratingsTableName} 
             WHERE rated_user_id = u.id
         ) AS user_avg_score
     FROM 
         ${this.tableName} p
     JOIN
         ${userTableName} u ON p.user_id = u.id
-    LEFT JOIN
-        ${imageTableName} ui ON ui.user_id = u.id AND ui.main_img = 1 -- Imagen principal del Participante
     WHERE 
         p.trip_id = ?
     ORDER BY p.status DESC, p.request_date ASC`,
@@ -93,47 +93,62 @@ const imageTableName = "images";
  //Obtener todas las participaciones del usuario con detalles del viaje
  //-----------------------
  static async getParticipationsWithTripDetailsByUserId(userId) {
- const [rows] = await pool.query(
- `SELECT 
-  p.id AS participation_id,
-  p.status,
-  p.request_date,
-  p.response_date,
-  t.id AS trip_id,
-  t.title AS trip_name,
-  t.origin,
-  t.destination,
-  t.start_date,
-  t.end_date,
-  t.creator_id,
-  ti.url AS trip_image_url,
-  ui.url AS creator_image_url,
-  (
- SELECT AVG(score) 
- FROM ratings
- WHERE rated_user_id = t.creator_id
- ) AS creator_avg_score
-FROM 
-  participations p
-JOIN 
- trips t ON p.trip_id = t.id
-LEFT JOIN 
- images ti ON ti.trip_id = t.id AND ti.main_img = 1 -- Imagen principal del Viaje
-LEFT JOIN
- images ui ON ui.user_id = t.creator_id AND ui.main_img = 1 -- Imagen principal del Creador del Viaje
-WHERE 
- p.user_id = ?
-`,
-[userId]
-);
-return rows;
+    const userTableName = "users";
+    const imageTableName = "images";
+    const ratingsTableName = "ratings";
+ 
+    const [rows] = await pool.query(
+
+    `SELECT 
+    p.id AS participation_id,
+    p.status,
+    p.request_date,
+    p.response_date,
+    t.id AS trip_id,
+    t.title AS trip_name,
+    t.origin,
+    t.destination,
+    t.start_date,
+    t.end_date,
+    t.creator_id,
+
+    uc.username AS creator_username,
+    uc.email AS creator_email,
+    uc.image AS creator_image_url,  
+            (
+            SELECT url 
+            FROM ${imageTableName} 
+            WHERE trip_id = t.id
+            ORDER BY main_img DESC, created_at DESC
+            LIMIT 1
+            ) AS trip_image_url,       
+            
+            (
+                SELECT AVG(score) 
+                FROM ${ratingsTableName}
+                WHERE rated_user_id = t.creator_id
+            ) AS creator_avg_score 
+    FROM 
+        participations p
+    JOIN 
+        trips t ON p.trip_id = t.id
+    JOIN 
+        ${userTableName} uc ON t.creator_id = uc.id    
+    WHERE 
+        p.user_id = ?
+    `,
+    [userId]
+    );
+    return rows;
 }
 
 //-----------------------
 // GET: Obtener las solicitudes pendientes en los viajes creados por un usuario
 //-----------------------
 static async getPendingRequestsForCreator(creatorId) {
-const [rows] = await pool.query(
+    const imageTableName = "images";
+    const ratingsTableName = "ratings";
+    const [rows] = await pool.query(
 `SELECT
  p.id AS participation_id,
  p.status,
@@ -144,25 +159,28 @@ const [rows] = await pool.query(
  u.id AS participant_user_id,
  u.username AS participant_username,
  u.email AS participant_email,
- ti.url AS trip_image_url,
- ui.url AS participant_image_url,
- (
- SELECT AVG(score) 
- FROM ratings 
- WHERE rated_user_id = p.user_id
- ) AS participant_avg_score
+ u.image AS participant_image_url,
+        ( 
+            SELECT url 
+            FROM ${imageTableName} 
+            WHERE trip_id = t.id
+            ORDER BY main_img DESC, created_at DESC
+            LIMIT 1
+        ) AS trip_image_url,
+
+        (
+            SELECT AVG(score) 
+            FROM ${ratingsTableName} 
+            WHERE rated_user_id = p.user_id
+        ) AS participant_avg_score
 FROM 
- participations p
+    participations p
 JOIN 
- trips t ON p.trip_id = t.id
+    trips t ON p.trip_id = t.id
 JOIN
- users u ON p.user_id = u.id
-LEFT JOIN 
- images ti ON ti.trip_id = t.id AND ti.main_img = 1 -- Imagen principal del Viaje
-LEFT JOIN
- images ui ON ui.user_id = p.user_id AND ui.main_img = 1 -- Imagen principal del Participante
+    users u ON p.user_id = u.id
 WHERE 
- t.creator_id = ? AND p.status = 'pending'
+    t.creator_id = ? AND p.status = 'pending'
 `,
 [creatorId]
 );

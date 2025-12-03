@@ -85,6 +85,24 @@ export class TripModel extends BaseModel {
     }
 
     //-----------------------
+    // Verificar si un usuario es el creador de un viaje
+    //-----------------------
+    static async isTripCreator(tripId, userId) {
+        const { tableName } = TripModel;
+        try {
+            const [rows] = await pool.query(
+                // Busca una fila donde el ID del viaje coincida Y el creator_id sea el userId dado.
+                `SELECT creator_id FROM ${tableName} WHERE id = ? AND creator_id = ?`,
+                [tripId, userId]
+            );
+            // Si se encuentra una fila (rows.length > 0), el usuario es el creador.
+            return rows.length > 0;
+        } catch (error) {
+            console.error('Error en TripModel.isTripCreator:', error);
+            throw error;
+        }
+    }
+    //-----------------------
     // Obtener viajes creados por un usuario con sus participantes aceptados
     //-----------------------
 static async getMyCreatedTripsWithParticipants(creatorId) {
@@ -102,7 +120,13 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
                 t.creator_id, t.start_date, t.end_date, t.estimated_cost,
                 t.min_participants, t.transport, t.accommodation, t.itinerary,
                 t.status, t.latitude, t.longitude, t.created_at,
-                ti.url AS trip_image_url,
+                (
+                    SELECT url 
+                    FROM ${imageTableName} 
+                    WHERE trip_id = t.id
+                    ORDER BY main_img DESC, created_at DESC
+                    LIMIT 1
+                ) AS trip_image_url,
                 
                 -- Agrupamos los participantes aceptados
                 GROUP_CONCAT(
@@ -114,7 +138,8 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
                                 'email', u.email,
                                 'status', p.status,
                                 'is_creator', IF(u.id = t.creator_id, TRUE, FALSE),
-                                'participant_image_url', ui.url,
+                                'participant_image_url', u.image,
+                                    
                                 'participant_avg_score', (
                                     SELECT AVG(score) 
                                     FROM ${ratingsTableName} r 
@@ -131,47 +156,41 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
                 ${participationTableName} p ON p.trip_id = t.id
             LEFT JOIN 
                 ${userTableName} u ON u.id = p.user_id
-            LEFT JOIN 
-                ${imageTableName} ti ON ti.trip_id = t.id AND ti.main_img = 1
-            LEFT JOIN
-                ${imageTableName} ui ON ui.user_id = u.id AND ui.main_img = 1
             WHERE 
                 t.creator_id = ?
             GROUP BY 
                 t.id, t.origin, t.destination, t.title, t.description, 
                 t.creator_id, t.start_date, t.end_date, t.estimated_cost,
                 t.min_participants, t.transport, t.accommodation, t.itinerary,
-                t.status, t.latitude, t.longitude, t.created_at, ti.url
+                t.status, t.latitude, t.longitude, t.created_at, trip_image_url
             ORDER BY 
                 t.created_at DESC
         `;
         
         const [rows] = await pool.query(query, [creatorId]);
-
-        // ... El procesamiento JS (map, JSON.parse, delete)
+        
         const tripsWithParticipants = rows.map(trip => {
-            let allParticipants = [];
             let acceptedParticipants = [];
             
             const rawJsonString = trip.accepted_participants_json;
             if (rawJsonString && rawJsonString.length > 0) {
                 try {
-                    if (rawJsonString.includes('},{')) {
-                    allParticipants = JSON.parse(`[${rawJsonString}]`);
-                    } else {
-                    acceptedParticipants = [JSON.parse(rawJsonString)];
-                    }    
+                    // Ajuste de parseo para GROUP_CONCAT
+                    acceptedParticipants = JSON.parse(`[${rawJsonString}]`);
                 } catch (e) { 
-                    console.warn("Fallo al parsear JSON de participantes para el viaje:", trip.trip_id, e);   
+                    console.warn("Fallo al parsear JSON de participantes para el viaje:", trip.trip_id, e);   
                 }
-            }    
-            delete trip.all_participants_json; 
-                
-            const currentParticipantsCount = acceptedParticipants.length;
+            }
+            delete trip.accepted_participants_json;
+            
+            // Filtramos participantes nulos
+            const cleanedParticipants = acceptedParticipants.filter(p => p !== null);
+
+            const currentParticipantsCount = cleanedParticipants.length;
 
             return {
                 ...trip,
-                all_related_participants: acceptedParticipants,
+                all_related_participants: cleanedParticipants,
                 current_participants: currentParticipantsCount,
                 capacity: trip.min_participants
             };
@@ -183,17 +202,7 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
         console.error('Error en TripModel.getMyCreatedTripsWithParticipants:', error);
         throw error;
     } 
-}       
-    //------------------------
-    // Funcionalidad para verificar si el usuario es el creador del viaje
-    //------------------------
-    static async isTripCreator(tripId, userId) {
-        const [rows] = await pool.query(
-            `SELECT id FROM ${this.tableName} WHERE id = ? AND creator_id = ?`,
-            [tripId, userId]
-        );
-        return rows.length > 0;
-    }
+}
     //-----------------------
     // Funcionalidad para obtener la capacidad del viaje y conteo de participantes de un viaje
     //-----------------------

@@ -1,4 +1,4 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzY0NDQ4NDI2LCJleHAiOjE3NjQ0NTU2MjZ9.1zHV7QBIAb9pnLc7Afvy0tt9m9UIiMccXPtSEDOUG38
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzY0NzgxNjE0LCJleHAiOjE3NjQ3ODg4MTR9.Ska8d3uipAemAzv2LlfkN09-XOM_EYAsTPo729Fv2y8
 @tripId = 7
 @URL = http://localhost:3000/api
 
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### Petición 2 : GET: Obtener todas las participaciones de un viaje con los detalles del participante (status, imagen y valoracion)
-GET http://localhost:3000/api/participations/trip/6
+GET http://localhost:3000/api/participations/trip/7
 Authorization: Bearer {{TOKEN}}
 
 ### Petición 3 : GET: Obtener mis viajes creados con los detalles de los participantes y los viajes (valoraciones, detalles del viaje e imagenes)
