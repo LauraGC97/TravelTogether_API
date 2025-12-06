@@ -252,8 +252,6 @@ const updateParticipationStatus = async (req, res) => {
     const { participationId } = req.params;
     const { newStatus } = req.body;
 
-    console.log('newStatus : ',newStatus) ;
-
     if (!participationId || !newStatus) {
       return res.status(400).json({
         message: "Faltan campos obligatorios: participationId y newStatus.",

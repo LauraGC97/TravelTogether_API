@@ -24,15 +24,13 @@ Content-Type: application/json
 {
   "message": "Un mensaje que creo para probar",
   "receiver_id": 2,
-  "sender_id": 3,
-  "receiver_id": 1,
   "trip_id": 4,
   "group_id": 2
 
 }
 
 ### - updateMessageById
-PUT {{URL}}/8
+PUT {{URL}}/7
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
@@ -41,5 +39,5 @@ Content-Type: application/json
 }
 
 ### Petición 4 : ELIMINAR MESSAGES BY ID
-DELETE {{URL}}/8
+DELETE {{URL}}/7
 Authorization: Bearer {{TOKEN}}

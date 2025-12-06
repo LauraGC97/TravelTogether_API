@@ -188,16 +188,13 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { idUser } = req.params;
-        const { userId, role } = req.user;
+        const { id, role } = req.user;
 
-        /*
-        // Permitir solo al propio usuario o admin
-        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
+        if (parseInt(idUser) !== parseInt(id) && role !== 'admin') {
           return res.status(403).json({ message: 'No tienes permiso para actualizar este usuario.' });
         }
-        */
 
-        const updatedUser = await UserModel.updateUser(idUser, req.body);
+        const updatedUser = await UserModel.updateUser(idUser, role, req.body);
         if (!updatedUser) {
             return res.status(404).json({ message: 'Usuario no encontrado.' });
         }
@@ -216,21 +213,22 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const { idUser } = req.params;
-        const { userId, role } = req.user;
+        const { role } = req.user;
 
-        /*
         // Permitir solo al propio usuario o admin
-        if (parseInt(userId) !== parseInt(id) && role !== 'admin') {
+        if ( role !== 'admin' ) {
           return res.status(403).json({ message: 'No tienes permiso para eliminar este usuario.' });
         }
-        */
+
+        const user = await UserModel.getUserById(idUser) ;
 
         const deleted = await UserModel.deleteUser(idUser);
         if (!deleted) {
             return res.status(404).json({ message: 'Usuario no encontrado.' });
         }
 
-        res.status(200).json({ message: 'Usuario eliminado correctamente.' });
+        res.status(200).json({ message: 'Usuario eliminado correctamente.' , data : user });
+
     } catch (error) {
         logger.error('Error en deleteUser:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
