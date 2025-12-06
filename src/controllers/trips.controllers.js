@@ -1,8 +1,10 @@
 import { TripModel } from '../models/trip.model.js';
 import { ParticipationModel } from '../models/participation.model.js';
+import { sendEmail } from '../services/emailService.js';
+import { getParticipationsByTripId } from './participations.controller.js';
 
 
-    //Validar que la fecha de inicio sea anterior a la fecha de fin
+//Validar que la fecha de inicio sea anterior a la fecha de fin
 const validateTripdates = (start_date, end_date) => {
     if (new Date(start_date) > new Date(end_date)) {
         return 'La fecha de inicio debe ser anterior a la fecha de fin.';
@@ -15,47 +17,47 @@ const validateTripdates = (start_date, end_date) => {
 const createTrip = async (req, res) => {
     //1. Validacion de campos obligatorios
     try {
-    const creator_id = req.user.id;
-    const tripData = {...req.body, creator_id };
-    if (!tripData.title || !tripData.origin || !tripData.destination || !tripData.start_date || !tripData.end_date) {
-        return res.status(400).json({ message: 'Faltan campos obligatorios: titulo, origen, destino, fecha de comienzo, fecha de fin del viaje.' });
-    }
-    // 1.5. Validacion de coherencia de fechas
-    const dateError = validateTripdates(tripData.start_date, tripData.end_date);
-    if (dateError) {
-        return res.status(400).json({ message: dateError });
-    }
-    // 2. Validacion de superposicion de fechas
-    const conflictTripId = await TripModel.hasDateOverlap(creator_id, tripData.start_date, tripData.end_date);
-    
-    if (conflictTripId) {
-        return res.status(409).json({
-            message: `Conflicto de fechas: Ya tienes un viaje con estas fechas (ID: ${conflictTripId}). Por favor, elige fechas diferentes.`,
-            conflict_trip_id: conflictTripId
-        });
-    }
-    // 3. Crear el viaje  
-    const trip = new TripModel(tripData);
-    const newTrip = await trip.createTrip();
+        const creator_id = req.user.id;
+        const tripData = { ...req.body, creator_id };
+        if (!tripData.title || !tripData.origin || !tripData.destination || !tripData.start_date || !tripData.end_date) {
+            return res.status(400).json({ message: 'Faltan campos obligatorios: titulo, origen, destino, fecha de comienzo, fecha de fin del viaje.' });
+        }
+        // 1.5. Validacion de coherencia de fechas
+        const dateError = validateTripdates(tripData.start_date, tripData.end_date);
+        if (dateError) {
+            return res.status(400).json({ message: dateError });
+        }
+        // 2. Validacion de superposicion de fechas
+        const conflictTripId = await TripModel.hasDateOverlap(creator_id, tripData.start_date, tripData.end_date);
 
-    // 4. Agregar autor como participante aceptado
-    const creatorPartipation = new ParticipationModel({
-        user_id: creator_id,
-        trip_id: newTrip.id,
-        status: 'accepted'
-    });
-    const newParticipation = await creatorPartipation.createParticipation();
-    
-    res.status(201).json({
-        message: 'Viaje creado exitosamente y creador agregado como participante aceptado.',
-        trip: newTrip,
-        creator_participation: newParticipation
-    });
+        if (conflictTripId) {
+            return res.status(409).json({
+                message: `Conflicto de fechas: Ya tienes un viaje con estas fechas (ID: ${conflictTripId}). Por favor, elige fechas diferentes.`,
+                conflict_trip_id: conflictTripId
+            });
+        }
+        // 3. Crear el viaje  
+        const trip = new TripModel(tripData);
+        const newTrip = await trip.createTrip();
+
+        // 4. Agregar autor como participante aceptado
+        const creatorPartipation = new ParticipationModel({
+            user_id: creator_id,
+            trip_id: newTrip.id,
+            status: 'accepted'
+        });
+        const newParticipation = await creatorPartipation.createParticipation();
+
+        res.status(201).json({
+            message: 'Viaje creado exitosamente y creador agregado como participante aceptado.',
+            trip: newTrip,
+            creator_participation: newParticipation
+        });
     } catch (error) {
         console.error('Error al crear el viaje:', error);
         res.status(500).json({
-        message: 'Error interno del servidor al crear el viaje y/o añadir al creador como participante.',
-        error: error.message
+            message: 'Error interno del servidor al crear el viaje y/o añadir al creador como participante.',
+            error: error.message
         });
     }
 };
@@ -73,7 +75,7 @@ const getTripById = async (req, res) => {
         res.status(200).json(trip);
     } catch (error) {
         console.error('Error al obtener el viaje:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             message: 'Error interno del servidor al obtener el viaje.',
             error: error.message
         });
@@ -95,8 +97,8 @@ const searchTrips = async (req, res) => {
             status: req.query.status,//Filtrar por estado
             destination: req.query.destination,//Filtrar por destino
         };
-        
-        const { total, trips, page: currentPage, per_page: currentPerPage} = await TripModel.searchTrips(filters);
+
+        const { total, trips, page: currentPage, per_page: currentPerPage } = await TripModel.searchTrips(filters);
         const total_pages = Math.ceil(total / currentPerPage);
 
         res.status(200).json({
@@ -140,21 +142,56 @@ const updateTrip = async (req, res) => {
         if (dateError) {
             return res.status(400).json({ message: dateError });
         }
-        
+
         // 2. Validacion de superposicion de fechas si se actualizan
         if (updatedData.start_date || updatedData.end_date) {
-            
+
             const conflictTripId = await TripModel.hasDateOverlap(userId, newStartDate, newEndDate, tripId);
-            
+
             if (conflictTripId) {
                 return res.status(409).json({
                     message: `Conflicto de fechas: Ya tienes un viaje con estas fechas (ID: ${conflictTripId}). Por favor, elige fechas diferentes.`,
                     conflict_trip_id: conflictTripId
                 });
             }
-        }    
+        }
 
         const updatedTrip = await TripModel.updateTrip(tripId, updatedData);
+
+        // Creamos el mensaje de envio ... una plantilla para cada tipo de email sería lo idoneo
+        // así podriamos personalizarlo y maquetarlo guay, pero no hay tiempooooo
+
+        let message = `
+            <p>Nos ponemos en contacto con usted para informarle de cambios en su viaje:</p>
+            <ul>
+                <li><strong>Origen:</strong> ${updatedData.origin}</li>
+                <li><strong>Destino:</strong> ${updatedData.destination}</li>
+                <li><strong>Coste estimado:</strong> ${updatedData.estimated_cost}</li>
+                <li><strong>Fecha de inicio:</strong> ${updatedData.start_date}</li>
+                <li><strong>Fecha de fin:</strong> ${updatedData.end_date}</li>
+                <li><strong>Transporte:</strong> ${updatedData.transport}</li>
+                <li><strong>Alojamiento:</strong> ${updatedData.accommodation}</li>
+                <li><strong>Itinerario:</strong> ${updatedData.itinerary}</li>
+                <li><strong>Requisitos:</strong> ${updatedData.requirements}</li>
+            </ul>
+        `;
+        
+        // Cargamos 
+        const participations = await ParticipationModel.getParticipationsByTripId(tripId);
+        console.log('participations : ' , participations) ;
+
+        // Variables necesarias para realizar el envio de email de notificacion a los usuarios del trip
+        const variables = [{
+            email: "u2714507676@gmail.com",
+            userName: 'Laura',
+            companyName: 'TravelTogether',
+            message: message
+        }];
+
+        let subject = 'TravelTogether modificacion viaje : ' + req.title;
+
+        sendEmail(subject, '', 'baseEmail', variables);
+
         res.status(200).json({
             message: 'Viaje actualizado correctamente',
             trip: updatedTrip
@@ -191,7 +228,7 @@ const deleteTrip = async (req, res) => {
             error: error.message
         });
     }
-};    
+};
 
 export {
     createTrip,

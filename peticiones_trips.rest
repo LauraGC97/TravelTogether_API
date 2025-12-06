@@ -1,4 +1,4 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJuYW1lIjoibGF1cmFnYXJjaWEiLCJlbWFpbCI6ImxhdXJhZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNzk0NzM1LCJleHAiOjE3NjM4MDE5MzV9.BXYcfzhRxbFrwCiySb0Ic477MWh6sUH0EQ_e5AzsCX8
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiS2V2aW4gRnJhbmNvIiwiZW1haWwiOiJLZXZpbkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTAwNzEzNywiZXhwIjoxNzk2NTQzMTM3fQ.sKaciIzaN9R9Q1CfwIRUupdIucIo7AMo0mVlvpjemoc
 @URL = http://localhost:3000/api/trips
 
 ### Petición 1 : LISTAR TODOS LOS VIAJES (PROTEGIDO)
@@ -50,7 +50,7 @@ Content-Type: application/json
 }
 
 ### Petición 5 : ACTUALIZAR UN VIAJE (ID 6)
-PUT {{URL}}/32
+PUT {{URL}}/63
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 

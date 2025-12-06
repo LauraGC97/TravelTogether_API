@@ -1,11 +1,11 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+// import bcrypt from 'bcrypt';
+// import jwt from 'jsonwebtoken';
 import { MessageModel } from '../models/message.model.js';
 import logger from '../config/logger.js';
 import { getUserFromToken } from '../utils/myUtils.js';
-import { sendEmail } from '../services/emailService.js';
 
 const getAllMessages = async (req, res) => {
+
     try {
         const page = Math.max(1, parseInt(req.query.page) || 1);
         const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
@@ -42,11 +42,7 @@ const getMessageById = async (req, res) => {
         if (!message) {
             return res.status(404).json({ message: 'Message no encontrado.' });
         }
-
-        console.log('antes de enviar') ;
-        sendEmail('u2714507676@gmail.com','Test email','Esto es una prueba') ;
-        console.log('despues de enviar') ;
-
+        
         res.status(200).json(message);
 
     } catch (error) {
@@ -239,7 +235,7 @@ const updateMessageById = async (req, res) => {
             return res.status(404).json({ message: 'Message no encontrado.' });
         }
         const result = await MessageModel.getMessageById(updatedMessage.id);
-        
+
         res.status(200).json({
             message: 'Message actualizado correctamente.',
             updateMessage: result
