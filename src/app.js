@@ -23,12 +23,29 @@ app.use(cors({
 
 // app.use('/api/images', apiImagesRoutes);
 
-app.use(express.json());
+// app.use(express.json());
 app.use((req, res, next) => {
+
+    // no parsear JSON en los upload para permitir form.data desde angular
      if (req.path.includes('/api/images/upload')) {
-        return next(); // no parsear JSON en los upload para permitir form.data desde angular
+        return next(); 
     }
-    express.json()(req, res, next);
+    // express.json()(req, res, next);
+
+    if (req.is('application/json')) {
+        return express.json()(req, res, (err) => {
+            if (err) {
+                return res.status(400).json({
+                    message: "Error JSON mal formado"
+                    // details: err.message
+                });
+            }
+            next();
+        });
+    }
+
+    next();
+
 });
 
 
