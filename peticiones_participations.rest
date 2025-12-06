@@ -1,4 +1,4 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiS2V2aW4gRnJhbmNvIiwiZW1haWwiOiJLZXZpbkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NDg2ODg1MCwiZXhwIjoxNzY0ODc2MDUwfQ.ZvPRVaswHjKbEVwktDKbmLWE0ylE_xQh9oU-fCSqgmE
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiS2V2aW4gRnJhbmNvIiwiZW1haWwiOiJLZXZpbkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2NTAwNzEzNywiZXhwIjoxNzk2NTQzMTM3fQ.sKaciIzaN9R9Q1CfwIRUupdIucIo7AMo0mVlvpjemoc
 @tripId = 7
 @URL = http://localhost:3000/api
 
@@ -29,7 +29,7 @@ Authorization: Bearer {{TOKEN}}
 
 
 ### Petición 6 : PUT: Aceptar, rechazar o cancelar la invitación (UPDATE)
-PUT http://localhost:3000/api/participations/status/21
+PUT http://localhost:3000/api/participations/status/33
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 

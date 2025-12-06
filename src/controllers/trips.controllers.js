@@ -160,35 +160,38 @@ const updateTrip = async (req, res) => {
 
         // Creamos el mensaje de envio ... una plantilla para cada tipo de email sería lo idoneo
         // así podriamos personalizarlo y maquetarlo guay, pero no hay tiempooooo
+        const tripFields = [
+            { label: 'Origen', value: updatedData.origin },
+            { label: 'Destino', value: updatedData.destination },
+            { label: 'Coste estimado', value: updatedData.estimated_cost },
+            { label: 'Fecha de inicio', value: updatedData.start_date },
+            { label: 'Fecha de fin', value: updatedData.end_date },
+            { label: 'Transporte', value: updatedData.transport },
+            { label: 'Alojamiento', value: updatedData.accommodation },
+            { label: 'Itinerario', value: updatedData.itinerary },
+            { label: 'Requisitos', value: updatedData.requirements }
+        ];
 
         let message = `
             <p>Nos ponemos en contacto con usted para informarle de cambios en su viaje:</p>
             <ul>
-                <li><strong>Origen:</strong> ${updatedData.origin}</li>
-                <li><strong>Destino:</strong> ${updatedData.destination}</li>
-                <li><strong>Coste estimado:</strong> ${updatedData.estimated_cost}</li>
-                <li><strong>Fecha de inicio:</strong> ${updatedData.start_date}</li>
-                <li><strong>Fecha de fin:</strong> ${updatedData.end_date}</li>
-                <li><strong>Transporte:</strong> ${updatedData.transport}</li>
-                <li><strong>Alojamiento:</strong> ${updatedData.accommodation}</li>
-                <li><strong>Itinerario:</strong> ${updatedData.itinerary}</li>
-                <li><strong>Requisitos:</strong> ${updatedData.requirements}</li>
+                ${tripFields.map(f => `<li><strong>${f.label}:</strong> ${f.value}</li>`).join('\n')}
             </ul>
         `;
-        
-        // Cargamos 
+
+        // Cargamos participantes del trip
         const participations = await ParticipationModel.getParticipationsByTripId(tripId);
-        console.log('participations : ' , participations) ;
+        const acceptedParticipations = participations.filter(p => p.status === 'accepted');
 
         // Variables necesarias para realizar el envio de email de notificacion a los usuarios del trip
-        const variables = [{
-            email: "u2714507676@gmail.com",
-            userName: 'Laura',
+        const variables = acceptedParticipations.map(p => ({
+            email: p.email,
+            userName: p.username,
             companyName: 'TravelTogether',
             message: message
-        }];
+        }));
 
-        let subject = 'TravelTogether modificacion viaje : ' + req.title;
+        let subject = 'TravelTogether modificacion viaje : ' + tripToUpdate.title;
 
         sendEmail(subject, '', 'baseEmail', variables);
 

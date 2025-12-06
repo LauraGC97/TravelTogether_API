@@ -1,14 +1,17 @@
 import { ParticipationModel } from "../models/participation.model.js";
+import { UserModel } from "../models/user.model.js";
 import { TripModel } from "../models/trip.model.js";
+
 import jwt from "jsonwebtoken";
+import { sendEmail } from "../services/emailService.js";
 
 
 //estados de participación
 const PARTICIPATION_STATUSES = {
-    PENDING: 'pending',
-    ACCEPTED: 'accepted',
-    REJECTED: 'rejected',
-    CANCELLED: 'cancelled',
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
+  REJECTED: 'rejected',
+  CANCELLED: 'cancelled',
 };
 
 //------------------------------------------
@@ -29,7 +32,7 @@ export function getUserIdFromAuthHeader(authHeader) {
 
   try {
     // Usar la clave secreta del entorno
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded.id; // <-- Devuelve el userId del token
   } catch (error) {
     throw new Error("Invalid or expired token");
@@ -42,7 +45,7 @@ export function getUserIdFromAuthHeader(authHeader) {
 const getParticipationsByTripId = async (req, res) => {
   try {
     const { tripId } = req.params;
-    
+
     const participations = await ParticipationModel.getParticipationsByTripId(tripId);
 
     if (!participations || participations.length === 0) {
@@ -73,8 +76,8 @@ const getMyCreatedTripsWithParticipants = async (req, res) => {
     const creatorId = getUserIdFromAuthHeader(req.headers.authorization);
     const tripsWithParticipations =
       await TripModel.getMyCreatedTripsWithParticipants(creatorId);
-      
-    if (!tripsWithParticipations || tripsWithParticipations.length === 0) { 
+
+    if (!tripsWithParticipations || tripsWithParticipations.length === 0) {
       return res.status(200).json({
         message: "No has creado ningún viaje aún.",
         data: [],
@@ -88,17 +91,17 @@ const getMyCreatedTripsWithParticipants = async (req, res) => {
   } catch (error) {
     console.error("Error al obtener viajes creados por el usuario:", error);
     if (error.message.includes("token")) {
-        return res.status(401).json({ 
-            message: "Error de autenticación: Token no válido o no proporcionado.", 
-            error: error.message 
-        });
+      return res.status(401).json({
+        message: "Error de autenticación: Token no válido o no proporcionado.",
+        error: error.message
+      });
     }
     res.status(500).json({
       message: "Error interno del servidor al obtener viajes creados por el usuario.",
       error: error.message,
-    });   
+    });
   }
-};  
+};
 
 //------------------------------------------
 // GET: Obtener todas las participaciones del usuario autenticado (incluye los detalles del viaje)
@@ -124,17 +127,17 @@ const getParticipationsForUser = async (req, res) => {
   } catch (error) {
     console.error("Error al obtener participaciones del usuario:", error);
     if (error.message.includes("token")) {
-        return res.status(401).json({ 
-            message: "Error de autenticación: Token no válido o no proporcionado.", 
-            error: error.message 
-        });
+      return res.status(401).json({
+        message: "Error de autenticación: Token no válido o no proporcionado.",
+        error: error.message
+      });
     }
     res.status(500).json({
       message: "Error interno del servidor al obtener participaciones del usuario.",
       error: error.message,
     });
   }
-};  
+};
 
 //------------------------------------------
 // GET: Obtener solicitudes pendientes para viajes creados por el usuario autenticado (incluye los detalles el usuario y del viaje)
@@ -160,10 +163,10 @@ const pendingRequestsForMyTrips = async (req, res) => {
   } catch (error) {
     console.error("Error al obtener solicitudes pendientes:", error);
     if (error.message.includes("token")) {
-        return res.status(401).json({ 
-            message: "Error de autenticación: Token no válido o no proporcionado.", 
-            error: error.message 
-        });
+      return res.status(401).json({
+        message: "Error de autenticación: Token no válido o no proporcionado.",
+        error: error.message
+      });
     }
     res.status(500).json({
       message: "Error interno del servidor al obtener solicitudes pendientes.",
@@ -249,12 +252,14 @@ const updateParticipationStatus = async (req, res) => {
     const { participationId } = req.params;
     const { newStatus } = req.body;
 
+    console.log('newStatus : ',newStatus) ;
+
     if (!participationId || !newStatus) {
       return res.status(400).json({
         message: "Faltan campos obligatorios: participationId y newStatus.",
       });
     }
-    
+
     // 1. Obtener la participación para verificar IDs y estados
     const participation =
       await ParticipationModel.getParticipationById(participationId);
@@ -269,8 +274,8 @@ const updateParticipationStatus = async (req, res) => {
 
     // 2. Definir estados permitidos
     const allowedStatuses = [
-      PARTICIPATION_STATUSES.ACCEPTED, 
-      PARTICIPATION_STATUSES.REJECTED, 
+      PARTICIPATION_STATUSES.ACCEPTED,
+      PARTICIPATION_STATUSES.REJECTED,
       PARTICIPATION_STATUSES.CANCELLED
     ];
     if (!allowedStatuses.includes(newStatus)) {
@@ -290,23 +295,23 @@ const updateParticipationStatus = async (req, res) => {
         message: "No tienes permiso para modificar el estado de esta participación.",
       });
     }
-    
+
     // El propio usuario (targetUserId) solo puede usar 'cancelled' para salirse (retirada lógica).
     // El creador puede usar 'accepted', 'rejected', o 'cancelled' para gestionar el cupo y el viaje.
     if (isTargetUser && !isCreator && newStatus !== PARTICIPATION_STATUSES.CANCELLED) {
-        return res.status(403).json({
-            message: "Solo puedes cambiar el estado a 'cancelled' para darte de baja del viaje.",
-        });
+      return res.status(403).json({
+        message: "Solo puedes cambiar el estado a 'cancelled' para darte de baja del viaje.",
+      });
     }
 
     // Si el estado actual ya es el nuevo estado, no hacemos nada
     if (currentStatus === newStatus) {
-        return res.status(200).json({
-            message: `La participación ya se encuentra en el estado '${newStatus}'.`,
-            data: participation,
-        });
+      return res.status(200).json({
+        message: `La participación ya se encuentra en el estado '${newStatus}'.`,
+        data: participation,
+      });
     }
-    
+
     // 4. Si el creador está aceptando una participación pendiente, verificar capacidad
     if (newStatus === PARTICIPATION_STATUSES.ACCEPTED && currentStatus === PARTICIPATION_STATUSES.PENDING) {
       const tripData = await TripModel.getCapacityAndParticipantsCount(tripId);
@@ -319,7 +324,7 @@ const updateParticipationStatus = async (req, res) => {
         });
       }
     }
-    
+
     // 5. Actualizar el estado de la participación
     const updatedParticipation =
       await ParticipationModel.updateParticipationStatusById(
@@ -333,6 +338,33 @@ const updateParticipationStatus = async (req, res) => {
       });
     }
 
+    const tripFields = [
+      { label: 'Estado', value: newStatus },
+    ];
+
+    let message = `
+            <p>Nos ponemos en contacto con usted para informarle de cambios en el estado de la participación al viaje</p>
+            <ul>
+                ${tripFields.map(f => `<li><strong>${f.label}:</strong> ${f.value}</li>`).join('\n')}
+            </ul>
+        `;
+
+    // Cargamos datos
+    const myUser = await UserModel.getUserById(targetUserId);
+    const myTrip = await TripModel.getTripById(tripId);
+
+    // Variables necesarias para realizar el envio de email de notificacion a los usuarios del trip
+    const variables = [{
+      email: myUser.email,
+      userName: myUser.username,
+      companyName: 'TravelTogether',
+      message: message
+    }];
+
+    let subject = 'TravelTogether cambio estado petición viaje : ' + myTrip.title;
+
+    sendEmail(subject, '', 'baseEmail', variables);
+
     res.status(200).json({
       message: `Estado de la participación actualizado a '${newStatus}' con éxito.`,
       data: updatedParticipation,
@@ -341,10 +373,10 @@ const updateParticipationStatus = async (req, res) => {
     console.error("Error al actualizar el estado de la participación:", error);
     // Verificar si el error viene de la validación del token
     if (error.message.includes("token")) {
-        return res.status(401).json({ 
-            message: "Error de autenticación: Token no válido o no proporcionado.", 
-            error: error.message 
-        });
+      return res.status(401).json({
+        message: "Error de autenticación: Token no válido o no proporcionado.",
+        error: error.message
+      });
     }
     res.status(500).json({
       message:
@@ -363,30 +395,30 @@ const updateParticipationStatus = async (req, res) => {
 const deleteParticipation = async (req, res) => {
   try {
     const requesterId = getUserIdFromAuthHeader(req.headers.authorization); // ID del usuario autenticado
-    const { participationId } = req.params; 
-    
+    const { participationId } = req.params;
+
     if (!participationId) {
       return res.status(400).json({
         message: "El ID de la participación es obligatorio.",
       });
     }
-    
+
     // 1. Obtener la participación
-    const participation = 
-        await ParticipationModel.getParticipationById(participationId);
-    
+    const participation =
+      await ParticipationModel.getParticipationById(participationId);
+
     if (!participation) {
-        return res.status(404).json({
-            message: "No se encontró la participación para eliminar.",
-        });
+      return res.status(404).json({
+        message: "No se encontró la participación para eliminar.",
+      });
     }
 
     const { user_id: targetUserId, trip_id: tripId } = participation;
-    
+
     // 2. Comprobar permisos
     const isCreator = await TripModel.isTripCreator(tripId, requesterId);
     const isTargetUser = requesterId === targetUserId;
-    
+
     // Solo el creador del viaje o el propio usuario pueden eliminar el registro (físicamente)
     if (!isCreator && !isTargetUser) {
       return res.status(403).json({
@@ -406,19 +438,18 @@ const deleteParticipation = async (req, res) => {
     }
 
     res.status(200).json({
-      message: `Participación eliminada con éxito. Usuario ${
-        isTargetUser ? "se ha dado de baja" : "ha sido eliminado"
-      } del viaje.`,
+      message: `Participación eliminada con éxito. Usuario ${isTargetUser ? "se ha dado de baja" : "ha sido eliminado"
+        } del viaje.`,
       data: { userId: targetUserId, tripId, participationId },
     });
   } catch (error) {
     console.error("Error al eliminar la participación:", error);
     // Verificar si el error viene de la validación del token
     if (error.message.includes("token")) {
-        return res.status(401).json({ 
-            message: "Error de autenticación: Token no válido o no proporcionado.", 
-            error: error.message 
-        });
+      return res.status(401).json({
+        message: "Error de autenticación: Token no válido o no proporcionado.",
+        error: error.message
+      });
     }
     res.status(500).json({
       message: "Error interno del servidor al eliminar la participación.",
