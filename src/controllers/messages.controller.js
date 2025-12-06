@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { MessageModel } from '../models/message.model.js';
 import logger from '../config/logger.js';
 import { getUserFromToken } from '../utils/myUtils.js';
+import { sendEmail } from '../services/emailService.js';
 
 const getAllMessages = async (req, res) => {
     try {
@@ -41,6 +42,10 @@ const getMessageById = async (req, res) => {
         if (!message) {
             return res.status(404).json({ message: 'Message no encontrado.' });
         }
+
+        console.log('antes de enviar') ;
+        sendEmail('u2714507676@gmail.com','Test email','Esto es una prueba') ;
+        console.log('despues de enviar') ;
 
         res.status(200).json(message);
 
