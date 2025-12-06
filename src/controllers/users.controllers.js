@@ -142,7 +142,6 @@ const getAllUsers = async (req, res) => {
 
         // Obtener total de registros y datos paginados
         const total = await UserModel.count('username', search);
-        // const results = await UserModel.getPaginated(offset, per_page);
 
         const results = await UserModel.getPaginated({
             page: parseInt(page),

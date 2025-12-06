@@ -48,7 +48,6 @@ app.use((req, res, next) => {
 
 });
 
-
 app.options('/api', handleOptions);
 app.options('/api/trips', handleOptions);
 app.options('/api/users', handleOptions);
