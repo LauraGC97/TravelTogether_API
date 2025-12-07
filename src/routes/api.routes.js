@@ -40,7 +40,7 @@ router.get('/status', async (req, res) => {
 
 router.use('/trips', apiTripsRoutes);
 router.use('/users', apiUserRoutes);
-router.use('/images', verifyToken, apiImagesRoutes);
+router.use('/images', apiImagesRoutes);
 router.use('/ratings', verifyToken, apiRatingsRoutes);
 router.use('/notifications', verifyToken, apiNotificationsRoutes);
 router.use('/participations', verifyToken, apiParticipationsRoutes);

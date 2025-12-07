@@ -9,8 +9,8 @@ const router = Router();
 router.post('/register', validateEmail, register);
 router.post('/login', validateEmail, login);
 
-router.get('/', verifyToken, getAllUsers);
-router.get('/:idUser', validateInteger('idUser'), verifyToken, getUserById);
+router.get('/', getAllUsers);
+router.get('/:idUser', validateInteger('idUser'), getUserById);
 router.put('/:idUser', validateInteger('idUser'), verifyToken, updateUser);
 router.delete('/:idUser', validateInteger('idUser'), verifyToken, deleteUser);
 

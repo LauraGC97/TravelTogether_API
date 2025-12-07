@@ -6,15 +6,15 @@
 
 ### Petición 1 : LISTAR IMAGEN POR ID
 GET {{URL}}/1
-Authorization: Bearer {{TOKEN}}
+// Authorization: Bearer {{TOKEN}}
 
 ### Petición 2 : LISTAR IMAGENES POR TRIP_ID
 GET {{URL}}/trips/3
-Authorization: Bearer {{TOKEN}}
+// Authorization: Bearer {{TOKEN}}
 
 ### Petición 3 : LISTAR IMAGENES POR USER_ID
 GET {{URL}}/users/3
-Authorization: Bearer {{TOKEN}}
+// Authorization: Bearer {{TOKEN}}
 
 ### Petición 4 : ELIMINAR IMAGEN BY ID
 DELETE {{URL}}/5
