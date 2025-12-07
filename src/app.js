@@ -1,14 +1,13 @@
 
 import express from 'express';
 import cors from 'cors';
-import logger from './config/logger.js';
-
-import createError from 'http-errors';
-import path from 'path';
+// import logger from './config/logger.js';
+// import createError from 'http-errors';
+// import path from 'path';
 
 // importamos rutas propias
 import apiRoutes from './routes/api.routes.js';
-import apiImagesRoutes from './routes/api/images.routes.js';
+// import apiImagesRoutes from './routes/api/images.routes.js';
 
 const app = express();
 
@@ -77,36 +76,6 @@ app.use((err, req, res, next) => {
 });
 
 export default app;
-
-
-/*
-import express from 'express';
-import cors from 'cors';
-import imagesRoutes from './routes/api/images.routes.js';
-
-const app = express();
-
-// CORS básico
-app.use(cors({
-  origin: true,
-  credentials: true,
-  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
-  allowedHeaders: ["Content-Type","Authorization"]
-}));
-
-// Montamos el router de images **antes de cualquier express.json()**
-// app.use('/api/images', imagesRoutes);
-
-// Middleware general para JSON (para otras rutas)
-app.use(express.json());
-app.use('/api', (req, res) => res.json({ ok: true }));
-
-// 404 handler
-app.use((req, res) => res.status(404).json({ message: 'Not found' }));
-
-export default app;
-
-*/
 
 
 
