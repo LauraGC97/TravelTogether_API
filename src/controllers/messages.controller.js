@@ -213,12 +213,8 @@ const createMessage = async (req, res) => {
             return res.status(400).json({ message: 'receiver_id son obligatorios.' });
         }
 
-        if (!req.body.trip_id) {
-            return res.status(400).json({ message: 'trip_id son obligatorios.' });
-        }
-
-        if (!group_id) {
-            return res.status(400).json({ message: 'group_id son obligatorios.' });
+        if (!req.body.trip_id && !req.body.group_id) {
+            return res.status(400).json({ message: 'trip_id o group_id son obligatorios.' });
         }
 
         const messageData = { ...req.body, sender_id };
