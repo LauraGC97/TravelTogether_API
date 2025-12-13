@@ -252,7 +252,9 @@ const getNotificationByTripId = async (req, res, next) => {
 const createNotification = async (req, res) => {
 
     try {
+        
         const creatorId = await getUserFromToken(req.headers.authorization);
+
         const notificationData = { ...req.body, creatorId };
         const notification = new NotificationModel(notificationData);
         const newNotification = await notification.createNotification();

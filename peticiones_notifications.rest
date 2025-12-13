@@ -24,6 +24,10 @@ Authorization: Bearer {{TOKEN}}
 GET {{URL}}/receiver/1
 Authorization: Bearer {{TOKEN}}
 
+### Petición 3 : LISTAR NOTIFICACIONES POR USER_ID
+GET {{URL}}/trip/1
+Authorization: Bearer {{TOKEN}}
+
 ### - Create NOTIFICACIONES
 POST {{URL}}
 Authorization: Bearer {{TOKEN}}
@@ -35,7 +39,8 @@ Content-Type: application/json
   "type": "trip",
   "is_read": 1,
   "sender_id": 3,
-  "receiver_id": 1
+  "receiver_id": 1,
+  "trip_id": 1
 }
 
 ### - updateNotificationById
