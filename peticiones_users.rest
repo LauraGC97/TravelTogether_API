@@ -23,8 +23,8 @@ POST {{URL}}/users/login
 Content-Type: application/json
 
 {
-  "email": "lalsina883@gmail.com",
-  "password": "1234"
+  "email": "u2714507676@gmail.com",
+  "password": "12345"
 }
 
 ###
