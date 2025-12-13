@@ -94,6 +94,7 @@ const ratingsTableName = "ratings";
  //-----------------------
  static async getParticipationsWithTripDetailsByUserId(userId) {
     const userTableName = "users";
+    const tripTableName = "trips";
     const imageTableName = "images";
     const ratingsTableName = "ratings";
  
@@ -129,9 +130,9 @@ const ratingsTableName = "ratings";
                 WHERE rated_user_id = t.creator_id
             ) AS creator_avg_score 
     FROM 
-        participations p
+        ${this.tableName} p
     JOIN 
-        trips t ON p.trip_id = t.id
+        ${tripTableName} t ON p.trip_id = t.id
     JOIN 
         ${userTableName} uc ON t.creator_id = uc.id    
     WHERE 
@@ -146,6 +147,8 @@ const ratingsTableName = "ratings";
 // GET: Obtener las solicitudes pendientes en los viajes creados por un usuario
 //-----------------------
 static async getPendingRequestsForCreator(creatorId) {
+    const tripTableName = "trips";
+    const userTableName = "users";
     const imageTableName = "images";
     const ratingsTableName = "ratings";
     const [rows] = await pool.query(
@@ -174,11 +177,11 @@ static async getPendingRequestsForCreator(creatorId) {
             WHERE rated_user_id = p.user_id
         ) AS participant_avg_score
 FROM 
-    participations p
+    ${this.tableName} p
 JOIN 
-    trips t ON p.trip_id = t.id
+    ${tripTableName} t ON p.trip_id = t.id
 JOIN
-    users u ON p.user_id = u.id
+    ${userTableName} u ON p.user_id = u.id
 WHERE 
     t.creator_id = ? AND p.status = 'pending'
 `,

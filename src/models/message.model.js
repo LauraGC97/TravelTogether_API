@@ -68,8 +68,6 @@ export class MessageModel extends BaseModel {
             ORDER BY messages.id DESC
             LIMIT ? OFFSET ?`;
 
-        console.log ( `query : ${query}` ) ;
-
         const finalParams = [...queryParams, per_page, offset];
         const [rows] = await pool.query(query, finalParams);
 

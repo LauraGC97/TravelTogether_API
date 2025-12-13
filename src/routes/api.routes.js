@@ -9,6 +9,7 @@ import apiParticipationsRoutes from './api/participations.routes.js';
 import apiNotificationsRoutes from './api/notifications.routes.js';
 import apiFavoritesRoutes from './api/favorites.routes.js';
 import apiMessagesRoutes from './api/messages.routes.js';
+import { verifyToken } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -40,10 +41,10 @@ router.get('/status', async (req, res) => {
 router.use('/trips', apiTripsRoutes);
 router.use('/users', apiUserRoutes);
 router.use('/images', apiImagesRoutes);
-router.use('/ratings', apiRatingsRoutes);
-router.use('/notifications', apiNotificationsRoutes);
-router.use('/participations', apiParticipationsRoutes);
-router.use('/messages', apiMessagesRoutes);
-router.use('/favorites', apiFavoritesRoutes);
+router.use('/ratings', verifyToken, apiRatingsRoutes);
+router.use('/notifications', verifyToken, apiNotificationsRoutes);
+router.use('/participations', verifyToken, apiParticipationsRoutes);
+router.use('/messages', verifyToken, apiMessagesRoutes);
+router.use('/favorites', verifyToken, apiFavoritesRoutes);
 
 export default router;

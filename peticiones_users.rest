@@ -1,4 +1,4 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNDAwNTAxLCJleHAiOjE3NjM0MDc3MDF9.tsvbsMTPYdqOF6Xiuh__WapwhVuvB_kZD0dQZeAtLJ0
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksInVzZXJuYW1lIjoibGFsc2luYSIsImVtYWlsIjoibGFsc2luYTg4M0BnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjUwNTIwNDUsImV4cCI6MTc5NjU4ODA0NX0._0zFBeqTkav2iD0QXKZwWZ4HjaUfSRT8YbkzbPOdBiw
 @URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
 @URL_LOCAL = http://localhost:3000/api
  
@@ -9,11 +9,11 @@ POST {{URL}}/users/register
 Content-Type: application/json
 
 {
-  "username": "elenagarcia",
-  "email": "elenagarcia@gmail.com",
+  "username": "lalsina",
+  "email": "lalsina883@gmail.com",
   "password": "1234",
   "image": "https://images.piclumen.com/normal/20251109/19/b332132861a84d339ab55a617e0289ed.webp",
-  "phone": "600123458",
+  "phone": "669361891",
   "bio": "Me gusta la aventura",
   "interests": "musica, animales, viajar"
 }
@@ -23,38 +23,38 @@ POST {{URL}}/users/login
 Content-Type: application/json
 
 {
-  "email": "Kevin@email.com",
+  "email": "u2714507676@gmail.com",
   "password": "12345"
 }
 
 ###
 GET http://localhost:3000/api/users
-Authorization: Bearer {{TOKEN}}
+// Authorization: Bearer {{TOKEN}}
 
 ###
 GET http://localhost:3000/api/users?page=1&per_page=5&search=esmeralda
 Authorization: Bearer {{TOKEN}}
 
 ###
-GET http://localhost:3000/api/users/8
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJsZW9wb2xkbyIsImVtYWlsIjoibGVvcG9sZG9AZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjIyNzE3NzksImV4cCI6MTc2MjI3ODk3OX0.oifPT4QdZOwvGX2ax5V8KYdfDmSyivzS5DX1Ad43mmI
+GET http://localhost:3000/api/users/1
+// Authorization: Bearer {{TOKEN}}
 
 ###
-PUT http://localhost:3000/api/users/9
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJsZW9wb2xkbyIsImVtYWlsIjoibGVvcG9sZG9AZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjIyNzE3NzksImV4cCI6MTc2MjI3ODk3OX0.oifPT4QdZOwvGX2ax5V8KYdfDmSyivzS5DX1Ad43mmI
+PUT http://localhost:3000/api/users/38
+Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
-  "username": "nuevoNombre",
-  "email": "nuevo@email.com",
-  "image": "https://i.pravatar.cc/150?u=nuevo",
-  "phone": "600000000",
-  "bio": "Actualizado con éxito",
-  "interests": "viajar, leer",
-  "role": "user",
+  "username": "lalsina",
+  "email": "lalsina883@gmail.com",
+  "image": "https://images.piclumen.com/normal/20251109/19/b332132861a84d339ab55a617e0289ed.webp",
+  "phone": "669361891",
+  "bio": "Me gusta la aventura x 2",
+  "interests": "musica, animales, viajar",
+  "password": "1234",  
   "is_active": 1
 }
 
 ###
-DELETE http://localhost:3000/api/users/12
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJsZW9wb2xkbyIsImVtYWlsIjoibGVvcG9sZG9AZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjIyNzE3NzksImV4cCI6MTc2MjI3ODk3OX0.oifPT4QdZOwvGX2ax5V8KYdfDmSyivzS5DX1Ad43mmI
+DELETE http://localhost:3000/api/users/39
+Authorization: Bearer {{TOKEN}}

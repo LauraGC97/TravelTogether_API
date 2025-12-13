@@ -9,7 +9,7 @@ GET {{URL}}
 Authorization: Bearer {{TOKEN}}
 
 ### Petición 0 : LISTAR TODAS LAS NOTIFICACIONES con un where chulo
-GET {{URL}}/where?page=1&per_page=5&where=type:trip and is_read:1
+GET {{URL}}/where?page=1&per_page=5&where=type:message and is_read:1
 Authorization: Bearer {{TOKEN}}
 
 ### Petición 1 : LISTAR NOTIFICACIONES POR ID
@@ -39,7 +39,7 @@ Content-Type: application/json
 }
 
 ### - updateNotificationById
-PUT {{URL}}/5
+PUT {{URL}}/6
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
@@ -49,5 +49,5 @@ Content-Type: application/json
 }
 
 ### Petición 4 : ELIMINAR NOTIFICACIONES BY ID
-DELETE {{URL}}/5
+DELETE {{URL}}/6
 Authorization: Bearer {{TOKEN}}

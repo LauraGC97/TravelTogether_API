@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### - updateFavoritesById
-PUT {{URL}}/21
+PUT {{URL}}/28
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 

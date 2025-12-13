@@ -1,20 +1,20 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYyNzAzNTc5LCJleHAiOjE3NjI3MTA3Nzl9.DGinLb3bWqRh2dRY8RvJ-GZqgMzUuHcvS9kb4S6OAMo
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNTUxODk3LCJleHAiOjE3OTUwODc4OTd9.COtbMG-B8RWr7UdBPEqQk5nVd3G_d1i8nPG5Xw6-g-s
 @URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
-@URL_LOCAL = http://localhost:3000/api
+@URL_LOCAL = http://localhost:3000/api/images
 
-@URL = {{URL_AZURE}}
+@URL = {{URL_LOCAL}}
 
 ### Petición 1 : LISTAR IMAGEN POR ID
 GET {{URL}}/1
-Authorization: Bearer {{TOKEN}}
+// Authorization: Bearer {{TOKEN}}
 
 ### Petición 2 : LISTAR IMAGENES POR TRIP_ID
 GET {{URL}}/trips/3
-Authorization: Bearer {{TOKEN}}
+// Authorization: Bearer {{TOKEN}}
 
 ### Petición 3 : LISTAR IMAGENES POR USER_ID
-GET {{URL}}/users/1
-Authorization: Bearer {{TOKEN}}
+GET {{URL}}/users/3
+// Authorization: Bearer {{TOKEN}}
 
 ### Petición 4 : ELIMINAR IMAGEN BY ID
 DELETE {{URL}}/5

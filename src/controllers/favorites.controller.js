@@ -46,10 +46,10 @@ const getAllFavorites = async (req, res) => {
 const getFavoritesByUserId = async (req, res) => {
 
     try {
-        const { id } = req.params;
+        const { idFavorites } = req.params;
         const field = 'user_id';
 
-        const favorites = await FavoritesModel.getFavoritesById(id, field);
+        const favorites = await FavoritesModel.getFavoritesById(idFavorites, field);
 
         if (!favorites) {
             return res.status(404).json({ message: 'Favoritos no encontrados.' });
@@ -66,10 +66,10 @@ const getFavoritesByUserId = async (req, res) => {
 const getFavoritesByTripId = async (req, res) => {
 
     try {
-        const { id } = req.params;
+        const { idFavorites } = req.params;
         const field = 'trip_id';
 
-        const favorites = await FavoritesModel.getFavoritesById(id, field);
+        const favorites = await FavoritesModel.getFavoritesById(idFavorites, field);
 
         if (!favorites) {
             return res.status(404).json({ message: 'Favoritos no encontrados.' });
@@ -109,6 +109,10 @@ const createFavorites = async (req, res) => {
         const userId = req.user.id;
         const { trip_id } = req.body;
 
+        if (!trip_id) {
+            return res.status(400).json({ message: 'trip_id son obligatorios.' });
+        }        
+
         const favorite = await FavoritesModel.createfavorite(userId, trip_id);
         if (!favorite) {
             return res.status(404).json({ message: 'favorite no creado.' });
@@ -129,16 +133,17 @@ const updateFavoritesById = async (req, res) => {
         const { idFavorites } = req.params;
         const { trip_id } = req.body;
 
+        if (!trip_id) {
+            return res.status(400).json({ message: 'trip_id son obligatorios.' });
+        }      
+
         const updatedUser = await FavoritesModel.updateFavoritesById(idFavorites, trip_id);
         
-        console.log('updatedatedUser', updatedUser) ;
-
         if (!updatedUser) {
             return res.status(404).json({ message: 'Favorites no encontrado.' });
         }
-        console.log('1');
+
         const result = await FavoritesModel.getFavoritesById(idFavorites, 'id');
-        console.log('2');
 
         res.status(200).json({
             message: 'Favorites actualizado correctamente.',

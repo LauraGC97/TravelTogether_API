@@ -2,7 +2,7 @@
 // import jwt from 'jsonwebtoken';
 import { MessageModel } from '../models/message.model.js';
 import logger from '../config/logger.js';
-import { getUserFromToken } from '../utils/myUtils.js';
+// import { getUserFromToken } from '../utils/myUtils.js';
 
 const getAllMessages = async (req, res) => {
 
@@ -42,7 +42,7 @@ const getMessageById = async (req, res) => {
         if (!message) {
             return res.status(404).json({ message: 'Message no encontrado.' });
         }
-        
+
         res.status(200).json(message);
 
     } catch (error) {
@@ -202,12 +202,24 @@ const getNotificationBySenderId = async (req, res, next) => {
 const createMessage = async (req, res) => {
 
     try {
-        const creatorId = await getUserFromToken(req.headers.authorization);
-        const messageData = { ...req.body, creatorId };
+        // const creatorId = await getUserFromToken(req.headers.authorization);
+        const sender_id = req.user.id;
+
+        if (!req.body.message) {
+            return res.status(400).json({ message: 'message son obligatorios.' });
+        }
+
+        if (!req.body.receiver_id) {
+            return res.status(400).json({ message: 'receiver_id son obligatorios.' });
+        }
+
+        if (!req.body.trip_id && !req.body.group_id) {
+            return res.status(400).json({ message: 'trip_id o group_id son obligatorios.' });
+        }
+
+        const messageData = { ...req.body, sender_id };
         const message = new MessageModel(messageData);
         const newMessage = await message.createMessage();
-
-        console.log('newMessage:', newMessage);
 
         const result = await MessageModel.getMessageById(newMessage.id);
 

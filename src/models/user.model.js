@@ -66,8 +66,12 @@ export class UserModel extends BaseModel {
         return rows[0] || null;
     }
 
-    static async updateUser(id, data) {
-        const { username, email, image, phone, bio, interests, role, is_active } = data;
+    static async updateUser(id, myRole, data) {
+        let { username, email, image, phone, bio, interests, role, is_active } = data;
+
+        if (!role) {
+            role = myRole ;
+        }
 
         const [result] = await pool.query(
             `UPDATE users 

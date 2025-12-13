@@ -129,7 +129,7 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
                 ) AS trip_image_url,
                 
                 -- Agrupamos los participantes aceptados
-                GROUP_CONCAT(
+                JSON_ARRAYAGG(
                     CASE 
                         WHEN p.status = 'accepted' THEN 
                             JSON_OBJECT(
@@ -148,7 +148,7 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
                             ) 
                         ELSE NULL 
                     END
-                ) AS accepted_participants_json
+                ) AS accepted_participants
 
             FROM 
                 ${tableName} t
@@ -170,27 +170,28 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
         const [rows] = await pool.query(query, [creatorId]);
         
         const tripsWithParticipants = rows.map(trip => {
-            let acceptedParticipants = [];
+            let rawParticipants = trip.accepted_participants;
             
-            const rawJsonString = trip.accepted_participants_json;
-            if (rawJsonString && rawJsonString.length > 0) {
+            if (typeof rawParticipants === 'string') {
                 try {
-                    // Ajuste de parseo para GROUP_CONCAT
-                    acceptedParticipants = JSON.parse(`[${rawJsonString}]`);
-                } catch (e) { 
-                    console.warn("Fallo al parsear JSON de participantes para el viaje:", trip.trip_id, e);   
-                }
+                    rawParticipants = JSON.parse(rawParticipants);
+                    } catch (e) {
+                        console.warn("Fallo al parsear JSON de participantes (JSON_ARRAYAGG):", trip.trip_id, e);
+                        rawParticipants = []; 
+                    }
             }
-            delete trip.accepted_participants_json;
             
-            // Filtramos participantes nulos
-            const cleanedParticipants = acceptedParticipants.filter(p => p !== null);
-
-            const currentParticipantsCount = cleanedParticipants.length;
-
+            if (!Array.isArray(rawParticipants)) {
+                rawParticipants = [];
+            } 
+            
+            const cleanedParticipants = rawParticipants.filter(p => p !== null);
+            const currentParticipantsCount = cleanedParticipants.length;        
+            
+            delete trip.accepted_participants;
             return {
                 ...trip,
-                all_related_participants: cleanedParticipants,
+                accepted_participants: cleanedParticipants,
                 current_participants: currentParticipantsCount,
                 capacity: trip.min_participants
             };
