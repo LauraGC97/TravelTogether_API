@@ -7,7 +7,7 @@ export const validateJson = (req, res, next) => {
 
         if (err) {
             return res.status(400).json({
-                message: "❌ JSON mal formado. Revisa tu petición.",
+                message: "JSON mal formado. Revisa tu petición.",
                 details: err.message
             });
         }

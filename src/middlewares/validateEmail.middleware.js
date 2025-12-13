@@ -1,5 +1,5 @@
 export function validateEmail(req, res, next) {
-    
+
     const email = req.body.email;
 
     if (!email) {

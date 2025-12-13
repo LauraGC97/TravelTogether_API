@@ -79,7 +79,7 @@ export default class ImagesModel extends BaseModel {
     };
 
     static async deleteById(id) {
-        
+
         const row = await this.getById(id);
         if (!row) return null;
 

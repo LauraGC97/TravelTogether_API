@@ -77,8 +77,8 @@ export class RatingModel extends BaseModel {
              WHERE rated_user_id = ?`, [id]
         );
         return rows[0] || null;
-    }    
-    
+    }
+
     static async updateRatingById(id, data) {
 
         const { score, comment } = data;

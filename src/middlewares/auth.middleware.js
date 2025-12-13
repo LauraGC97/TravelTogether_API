@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const verifyToken = (req, res, next) => {
-  
+
   // PREFLIGHT CORS
   if (req.method === 'OPTIONS') {
     return next();

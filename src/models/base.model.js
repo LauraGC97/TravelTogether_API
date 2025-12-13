@@ -20,7 +20,7 @@ export default class BaseModel {
         sort = 'id',
         order = 'DESC'
     } = {}) {
-        
+
         const offset = (page - 1) * per_page;
 
         const total = await this.count(whereClause, queryParams);

@@ -2,11 +2,11 @@ import pool from '../config/db.js';
 import BaseModel from './base.model.js';
 
 export class UserModel extends BaseModel {
-    
-    static tableName = 'users' ;
+
+    static tableName = 'users';
 
     constructor({ id, username, email, password, image, phone, bio, interests, role, created_at, updated_at, is_active }) {
-        
+
         super('users');
 
         this.id = id;
@@ -70,7 +70,7 @@ export class UserModel extends BaseModel {
         let { username, email, image, phone, bio, interests, role, is_active } = data;
 
         if (!role) {
-            role = myRole ;
+            role = myRole;
         }
 
         const [result] = await pool.query(

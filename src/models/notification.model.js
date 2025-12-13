@@ -17,7 +17,7 @@ export class NotificationModel extends BaseModel {
         this.created_at = created_at;
         this.sender_id = sender_id;
         this.receiver_id = receiver_id;
-        this.trip_id = trip_id ;
+        this.trip_id = trip_id;
 
     }
 

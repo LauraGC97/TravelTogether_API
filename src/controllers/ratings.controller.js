@@ -12,14 +12,10 @@ const getAllRatings = async (req, res) => {
         const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
         const search = req.query.search || '';
 
-        // Tambien podriamos serializarlo, pero para pruebas lo dejo así 
-        // const { page = 1, per_page = 10, search = '' } = req.query;
-
         const offset = (page - 1) * per_page;
 
         // Obtener total de registros y datos paginados
         const total = await RatingModel.count('username', search);
-        // const results = await UserModel.getPaginated(offset, per_page);
 
         const results = await RatingModel.getPaginated({
             page: parseInt(page),

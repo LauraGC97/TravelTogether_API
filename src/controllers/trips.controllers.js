@@ -205,10 +205,10 @@ const updateTrip = async (req, res) => {
             <p>Nos ponemos en contacto con usted para informarle de cambios en su viaje:</p>
             <ul>
                 ${tripFields
-                  .map(
-                    (f) => `<li><strong>${f.label}:</strong> ${f.value}</li>`
-                  )
-                  .join("\n")}
+        .map(
+          (f) => `<li><strong>${f.label}:</strong> ${f.value}</li>`
+        )
+        .join("\n")}
             </ul>
         `;
 

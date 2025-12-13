@@ -109,12 +109,6 @@ export class MessageModel extends BaseModel {
 
     async createMessage() {
 
-        console.log("message : ", this.message) ;
-        console.log("receiver_id : ", this.receiver_id) ;
-        console.log("sender_id : ", this.sender_id) ;
-        console.log("trip_id : ", this.trip_id) ;
-        console.log("group_id : ", this.group_id) ;
-
         const [result] = await pool.query(
             `INSERT INTO messages ( message, receiver_id, sender_id, trip_id, group_id)
        VALUES (?, ?, ?, ?, ? )`,
@@ -135,7 +129,7 @@ export class MessageModel extends BaseModel {
     static async getMessageById(id) {
 
         const [rows] = await pool.query(
-           `SELECT 
+            `SELECT 
 
             messages.*,
 

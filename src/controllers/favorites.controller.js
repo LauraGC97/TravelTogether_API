@@ -111,7 +111,7 @@ const createFavorites = async (req, res) => {
 
         if (!trip_id) {
             return res.status(400).json({ message: 'trip_id son obligatorios.' });
-        }        
+        }
 
         const favorite = await FavoritesModel.createfavorite(userId, trip_id);
         if (!favorite) {
@@ -120,7 +120,7 @@ const createFavorites = async (req, res) => {
 
         const result = await FavoritesModel.getFavoritesById(favorite.id, 'id');
 
-        res.status(200).json({ message: 'favorite creado correctamente.' , data : result });
+        res.status(200).json({ message: 'favorite creado correctamente.', data: result });
     } catch (error) {
         logger.error('Error en createFavorites:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
@@ -135,10 +135,10 @@ const updateFavoritesById = async (req, res) => {
 
         if (!trip_id) {
             return res.status(400).json({ message: 'trip_id son obligatorios.' });
-        }      
+        }
 
         const updatedUser = await FavoritesModel.updateFavoritesById(idFavorites, trip_id);
-        
+
         if (!updatedUser) {
             return res.status(404).json({ message: 'Favorites no encontrado.' });
         }
@@ -147,7 +147,7 @@ const updateFavoritesById = async (req, res) => {
 
         res.status(200).json({
             message: 'Favorites actualizado correctamente.',
-            data : result
+            data: result
         });
 
     } catch (error) {
@@ -167,7 +167,7 @@ const deleteFavoritesById = async (req, res) => {
             return res.status(404).json({ message: 'Favorites no encontrado.' });
         }
 
-        res.status(200).json({ message: 'Favorites eliminado correctamente.', data : result });
+        res.status(200).json({ message: 'Favorites eliminado correctamente.', data: result });
     } catch (error) {
         logger.error('Error en deleteFavoritesById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });

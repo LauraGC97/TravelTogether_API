@@ -1,8 +1,5 @@
-// import bcrypt from 'bcrypt';
-// import jwt from 'jsonwebtoken';
 import { MessageModel } from '../models/message.model.js';
 import logger from '../config/logger.js';
-// import { getUserFromToken } from '../utils/myUtils.js';
 
 const getAllMessages = async (req, res) => {
 
@@ -202,10 +199,8 @@ const getNotificationBySenderId = async (req, res, next) => {
 const createMessage = async (req, res) => {
 
     try {
-        // const creatorId = await getUserFromToken(req.headers.authorization);
-        const sender_id = req.user.id;
 
-        console.log("sender_id:", sender_id) ;
+        const sender_id = req.user.id;
 
         if (!req.body.message) {
             return res.status(400).json({ message: 'message son obligatorios.' });

@@ -105,15 +105,15 @@ export class TripModel extends BaseModel {
     //-----------------------
     // Obtener viajes creados por un usuario con sus participantes aceptados
     //-----------------------
-static async getMyCreatedTripsWithParticipants(creatorId) {
-    const tableName = "trips";
-    const participationTableName = "participations";
-    const imageTableName = "images"; 
-    const ratingsTableName = "ratings";
-    const userTableName = "users";
+    static async getMyCreatedTripsWithParticipants(creatorId) {
+        const tableName = "trips";
+        const participationTableName = "participations";
+        const imageTableName = "images";
+        const ratingsTableName = "ratings";
+        const userTableName = "users";
 
-    try {
-        const query = `
+        try {
+            const query = `
             SELECT 
                 t.id AS trip_id, 
                 t.origin, t.destination, t.title, t.description,
@@ -166,44 +166,44 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
             ORDER BY 
                 t.created_at DESC
         `;
-        
-        const [rows] = await pool.query(query, [creatorId]);
-        
-        const tripsWithParticipants = rows.map(trip => {
-            let rawParticipants = trip.accepted_participants;
-            
-            if (typeof rawParticipants === 'string') {
-                try {
-                    rawParticipants = JSON.parse(rawParticipants);
+
+            const [rows] = await pool.query(query, [creatorId]);
+
+            const tripsWithParticipants = rows.map(trip => {
+                let rawParticipants = trip.accepted_participants;
+
+                if (typeof rawParticipants === 'string') {
+                    try {
+                        rawParticipants = JSON.parse(rawParticipants);
                     } catch (e) {
                         console.warn("Fallo al parsear JSON de participantes (JSON_ARRAYAGG):", trip.trip_id, e);
-                        rawParticipants = []; 
+                        rawParticipants = [];
                     }
-            }
-            
-            if (!Array.isArray(rawParticipants)) {
-                rawParticipants = [];
-            } 
-            
-            const cleanedParticipants = rawParticipants.filter(p => p !== null);
-            const currentParticipantsCount = cleanedParticipants.length;        
-            
-            delete trip.accepted_participants;
-            return {
-                ...trip,
-                accepted_participants: cleanedParticipants,
-                current_participants: currentParticipantsCount,
-                capacity: trip.min_participants
-            };
-        });
+                }
 
-        return tripsWithParticipants;
+                if (!Array.isArray(rawParticipants)) {
+                    rawParticipants = [];
+                }
 
-    } catch (error) {
-        console.error('Error en TripModel.getMyCreatedTripsWithParticipants:', error);
-        throw error;
-    } 
-}
+                const cleanedParticipants = rawParticipants.filter(p => p !== null);
+                const currentParticipantsCount = cleanedParticipants.length;
+
+                delete trip.accepted_participants;
+                return {
+                    ...trip,
+                    accepted_participants: cleanedParticipants,
+                    current_participants: currentParticipantsCount,
+                    capacity: trip.min_participants
+                };
+            });
+
+            return tripsWithParticipants;
+
+        } catch (error) {
+            console.error('Error en TripModel.getMyCreatedTripsWithParticipants:', error);
+            throw error;
+        }
+    }
     //-----------------------
     // Funcionalidad para obtener la capacidad del viaje y conteo de participantes de un viaje
     //-----------------------
@@ -242,7 +242,7 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
         if (excludeTripId) {
             excludeClause = 'AND t.id != ?';
         }
-        
+
         const query = `
         SELECT t.id FROM ${tableName} t
         WHERE
@@ -258,7 +258,7 @@ static async getMyCreatedTripsWithParticipants(creatorId) {
             ${excludeClause}
         LIMIT 1
         `;
-// Se duplican los parámetros de fechas para ambas condiciones (creador y participante)
+        // Se duplican los parámetros de fechas para ambas condiciones (creador y participante)
         const finalQueryParameters = [
             userId,
             endDate,

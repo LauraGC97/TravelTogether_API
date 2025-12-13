@@ -170,11 +170,11 @@ export class FavoritesModel extends BaseModel {
         if (result.affectedRows === 0) return null;
 
         return result;
-    }    
+    }
 
     static async deleteFavoritesById(id) {
         const [result] = await pool.query('DELETE FROM favorites WHERE id = ?', [id]);
         return result.affectedRows > 0;
-    }    
+    }
 
 }

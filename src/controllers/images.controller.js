@@ -53,7 +53,7 @@ const uploadImage = async (req, res, next) => {
 
         return res.status(201).json({ message: 'Uploaded', data: inserted || imageRecord });
     } catch (error) {
-        logger.error(error) ;
+        logger.error(error);
         next(error);
     }
 };
@@ -65,7 +65,7 @@ const getById = async (req, res, next) => {
         if (!row) return res.status(404).json({ message: 'Not found' });
         res.json(row);
     } catch (error) {
-        logger.error(error) ;
+        logger.error(error);
         next(error);
     }
 };
@@ -155,7 +155,7 @@ const deleteImage = async (req, res, next) => {
 
         if (blobServiceClient && image.url) {
             const containerClient = blobServiceClient.getContainerClient(CONTAINER_NAME);
-            
+
             const blobName = path.basename(image.url);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
