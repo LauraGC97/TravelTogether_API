@@ -5,7 +5,7 @@ export class NotificationModel extends BaseModel {
 
     static tableName = 'notifications';
 
-    constructor({ id, title, message, type, is_read, created_at, sender_id, receiver_id }) {
+    constructor({ id, title, message, type, is_read, created_at, sender_id, receiver_id, trip_id }) {
 
         super('notifications');
 
@@ -17,20 +17,21 @@ export class NotificationModel extends BaseModel {
         this.created_at = created_at;
         this.sender_id = sender_id;
         this.receiver_id = receiver_id;
+        this.trip_id = trip_id ;
 
     }
 
     async createNotification() {
 
         const [result] = await pool.query(
-            `INSERT INTO notifications ( title, message, type, is_read, sender_id, receiver_id)
-       VALUES (?, ?, ?, ?, ?, ? )`,
-            [this.title, this.message, this.type, this.is_read, this.sender_id, this.receiver_id]
+            `INSERT INTO notifications ( title, message, type, is_read, sender_id, receiver_id, trip_id)
+       VALUES (?, ?, ?, ?, ?, ?, ? )`,
+            [this.title, this.message, this.type, this.is_read, this.sender_id, this.receiver_id, this.trip_id]
         );
 
         // Recuperamos el usuario recién creado para enviarlo al Front
         const [rows] = await pool.query(
-            ` SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id  
+            ` SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id, trip_id  
               FROM notifications 
               WHERE id = ?`,
             [result.insertId]
@@ -41,7 +42,7 @@ export class NotificationModel extends BaseModel {
 
     static async getNotificationById(id) {
         const [rows] = await pool.query(
-            `SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id
+            `SELECT id, title, message, type, is_read, created_at, sender_id, receiver_id, trip_id
              FROM notifications 
              WHERE id = ?`, [id]
         );
@@ -96,7 +97,7 @@ export class NotificationModel extends BaseModel {
         if (result.affectedRows === 0) return null;
 
         const [rows] = await pool.query(
-            ` SELECT  id, title, message, type, is_read, created_at, sender_id, receiver_id 
+            ` SELECT  id, title, message, type, is_read, created_at, sender_id, receiver_id, trip_id 
               FROM notifications
               WHERE id = ?`,
             [id]

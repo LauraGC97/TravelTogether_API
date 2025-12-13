@@ -11,6 +11,7 @@ router.get('/:id', validateInteger('id'), notificationsController.getNotificatio
 
 router.get('/sender/:id', validateInteger('id'), notificationsController.getNotificationBySenderId);
 router.get('/receiver/:id', validateInteger('id'), notificationsController.getNotificationByReceiverId);
+router.get('/trip/:id', validateInteger('id'), notificationsController.getNotificationByTripId);
 
 router.post('/', notificationsController.createNotification);
 router.put('/:id', validateInteger('id'), notificationsController.updateNotificationById);
