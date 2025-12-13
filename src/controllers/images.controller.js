@@ -9,7 +9,7 @@ const AZ_CONN = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const CONTAINER_NAME = process.env.AZURE_STORAGE_CONTAINER || 'imagenes';
 
 if (!AZ_CONN) {
-    console.warn('Falta AZURE_STORAGE_CONNECTION_STRING en .env');
+    logger.warn('Falta AZURE_STORAGE_CONNECTION_STRING en .env');
 }
 
 const blobServiceClient = AZ_CONN ? BlobServiceClient.fromConnectionString(AZ_CONN) : null;

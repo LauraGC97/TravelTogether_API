@@ -38,7 +38,7 @@ const getAllFavorites = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error en getAllFavorites:', error);
+        logger.error('Error en getAllFavorites:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -58,7 +58,7 @@ const getFavoritesByUserId = async (req, res) => {
         res.status(200).json(favorites);
 
     } catch (error) {
-        console.error('Error en getFavoritesById:', error);
+        logger.error('Error en getFavoritesById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -78,7 +78,7 @@ const getFavoritesByTripId = async (req, res) => {
         res.status(200).json(favorites);
 
     } catch (error) {
-        console.error('Error en getFavoritesById:', error);
+        logger.error('Error en getFavoritesById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };
@@ -97,7 +97,7 @@ const getFavoritesById = async (req, res) => {
         res.status(200).json(favorites);
 
     } catch (error) {
-        console.error('Error en getFavoritesById:', error);
+        logger.error('Error en getFavoritesById:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
     }
 };

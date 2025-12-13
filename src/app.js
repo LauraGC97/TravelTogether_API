@@ -1,7 +1,7 @@
 
 import express from 'express';
 import cors from 'cors';
-// import logger from './config/logger.js';
+import logger from './config/logger.js';
 // import createError from 'http-errors';
 // import path from 'path';
 
