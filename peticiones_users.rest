@@ -1,8 +1,8 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksInVzZXJuYW1lIjoibGFsc2luYSIsImVtYWlsIjoibGFsc2luYTg4M0BnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjUwNTIwNDUsImV4cCI6MTc5NjU4ODA0NX0._0zFBeqTkav2iD0QXKZwWZ4HjaUfSRT8YbkzbPOdBiw
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDUsInVzZXJuYW1lIjoiTGx1aXMiLCJlbWFpbCI6ImxhbHNpbmE4ODNAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjU2NjEzMjQsImV4cCI6MTc5NzE5NzMyNH0.COMZikBC7U1Oeu19Vmsb0qdtslFokN6s3ukN5W3Vp9I
 @URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
 @URL_LOCAL = http://localhost:3000/api
  
-@URL = {{URL_LOCAL}}
+@URL = {{URL_AZURE}}
  
 
 POST {{URL}}/users/register
@@ -23,20 +23,20 @@ POST {{URL}}/users/login
 Content-Type: application/json
 
 {
-  "email": "u2714507676@gmail.com",
-  "password": "12345"
+  "email": "lalsina883@gmail.com",
+  "password": "12345678"
 }
 
 ###
-GET http://localhost:3000/api/users
+GET  {{URL}}/users
 // Authorization: Bearer {{TOKEN}}
 
 ###
-GET http://localhost:3000/api/users?page=1&per_page=5&search=esmeralda
+GET  {{URL}}/users?page=1&per_page=5&search=esmeralda
 Authorization: Bearer {{TOKEN}}
 
 ###
-GET http://localhost:3000/api/users/1
+GET  {{URL}}/users/42
 // Authorization: Bearer {{TOKEN}}
 
 ###

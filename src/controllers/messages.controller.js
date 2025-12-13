@@ -205,6 +205,8 @@ const createMessage = async (req, res) => {
         // const creatorId = await getUserFromToken(req.headers.authorization);
         const sender_id = req.user.id;
 
+        console.log("sender_id:", sender_id) ;
+
         if (!req.body.message) {
             return res.status(400).json({ message: 'message son obligatorios.' });
         }

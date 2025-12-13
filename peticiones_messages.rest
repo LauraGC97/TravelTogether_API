@@ -1,5 +1,5 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiZWxlbmFnYXJjaWEiLCJlbWFpbCI6ImVsZW5hZ2FyY2lhQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNTUxODk3LCJleHAiOjE3OTUwODc4OTd9.COtbMG-B8RWr7UdBPEqQk5nVd3G_d1i8nPG5Xw6-g-s
-@URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDUsInVzZXJuYW1lIjoiTGx1aXMiLCJlbWFpbCI6ImxhbHNpbmE4ODNAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjU2NjEzMjQsImV4cCI6MTc5NzE5NzMyNH0.COMZikBC7U1Oeu19Vmsb0qdtslFokN6s3ukN5W3Vp9I
+@URL_AZURE = https://traveltogetherapi-bfd4dhgfb9dhhnbe.spaincentral-01.azurewebsites.net/api/messages
 @URL_LOCAL = http://localhost:3000/api/messages
 
 @URL = {{URL_LOCAL}}
@@ -23,8 +23,8 @@ Content-Type: application/json
 
 {
   "message": "Un mensaje que creo para probar",
-  "receiver_id": 2
-  // "trip_id": 4
+  "receiver_id": 44,
+  "trip_id": 86
   // "group_id": 2
 }
 
