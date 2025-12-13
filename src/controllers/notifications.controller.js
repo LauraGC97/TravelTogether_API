@@ -211,6 +211,44 @@ const getNotificationBySenderId = async (req, res, next) => {
 
 };
 
+const getNotificationByTripId = async (req, res, next) => {
+
+    const id = req.params.id;
+
+    try {
+
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const per_page = Math.max(1, parseInt(req.query.per_page) || 10);
+        let search = req.query.search || '';
+
+        const offset = (page - 1) * per_page;
+
+        const total = await NotificationModel.count('WHERE trip_id = ?', [id]);
+
+        const results = await NotificationModel.getWithWhereClause({
+            page: parseInt(page),
+            per_page: parseInt(per_page),
+            whereClause: 'WHERE trip_id = ?',
+            queryParams: [id]
+        });
+
+        const total_pages = Math.ceil(total / per_page);
+
+        res.status(200).json({
+            page,
+            per_page,
+            total,
+            total_pages,
+            results
+        });
+
+    } catch (error) {
+        logger.error('Error en getNotificationBySenderId:', error);
+        res.status(500).json({ message: 'Error interno del servidor.' });
+    }
+
+};
+
 const createNotification = async (req, res) => {
 
     try {
@@ -281,6 +319,7 @@ export default {
     getNotificationById,
     getNotificationBySenderId,
     getNotificationByReceiverId,
+    getNotificationByTripId,
     getNotificationWithWhere,
     updateNotificationById,
     deleteNotificationById,
